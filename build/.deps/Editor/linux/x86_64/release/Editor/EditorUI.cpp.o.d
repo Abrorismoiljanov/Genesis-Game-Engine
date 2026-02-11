@@ -1,0 +1,23 @@
+{
+    values = {
+        "/usr/bin/g++",
+        {
+            "-m64",
+            "-fvisibility=hidden",
+            "-fvisibility-inlines-hidden",
+            "-O3",
+            "-Iinclude",
+            "-IDataTypes",
+            "-Iimgui",
+            "-Iimgui/backends",
+            "-IDataTypesDef",
+            "-DNDEBUG"
+        }
+    },
+    files = {
+        "Editor/EditorUI.cpp"
+    },
+    depfiles = "EditorUI.o: Editor/EditorUI.cpp include/EditorUI.h include/Panels.h  DataTypes/project.h DataTypes/scene.h DataTypes/entity.h  DataTypes/components.h include/SelectedEntity.h  Editor/../imgui/backends/imgui_impl_opengl3.h imgui/imgui.h  imgui/imconfig.h Editor/../imgui/backends/imgui_impl_sdl2.h  include/ComponentRegisterList.h include/CompRegister.h  DataTypes/transformcomponent.h DataTypes/MeshComponent.h  include/ImGuiFileDialog.h include/ImGuiFileDialogConfig.h  DataTypes/Assets/MaterialAsset.h\
+",
+    depfiles_format = "gcc"
+}
