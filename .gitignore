@@ -4,7 +4,9 @@
 ./out/
 ./Debug/
 ./Release/
-./assets/*
+./assets/
+./.xmake/
+./.cache
 # OS files
 .DS_Store
 Thumbs.db
