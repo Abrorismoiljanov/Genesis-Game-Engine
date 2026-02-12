@@ -8,7 +8,7 @@ target("Editor")
     set_kind("binary")
     add_files("Editor/*.cpp", "./DataTypesDef/*.cpp")
     add_includedirs("include", "DataTypes")
-    add_links("SDL2", "GL", "GLEW")
+    add_links("SDL2", "GL", "GLEW", "assimp")
     add_packages(
     "glm", 
     "nlohmann_json"

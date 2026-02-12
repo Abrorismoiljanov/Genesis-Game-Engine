@@ -1,3 +1,4 @@
+#pragma once
 #include "components.h"
 #include "glm/glm.hpp"
 #include "imgui.h"
@@ -5,24 +6,15 @@
 
 #include "Assets/MaterialAsset.h"
 #include "transformcomponent.h"
-
-
-struct Vertex {
-    glm::vec3 position;
-    glm::vec3 normal;
-    glm::vec2 uv;
-};
-
-struct MeshData {
-    std::vector<Vertex> vertices;
-    std::vector<uint32_t> indices;
-};
+#include "Assets/MeshAsset.h"
 
 class MeshComponent: public Component{
 public:
 
-    TransformData transform;
+    std::vector<Mesh> meshes;
+   TransformData transform;
     std::string MeshPath;
+
 
     std::string Getname(){
         return "Mesh";
@@ -65,4 +57,3 @@ private:
         return ++s_NextID;
     }
 };
-uint32_t MeshComponent::s_NextID = 0;

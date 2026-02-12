@@ -2,7 +2,7 @@
 #include "project.h"
 #include "scene.h"
 #include "FrameBuffer.h"
-
+#include "GL/glew.h"
 
 class Renderer{
 
@@ -16,4 +16,5 @@ public:
 
 private:
     FrameBuffer m_Framebuffer;
+    GLuint DefaultShader;
 };

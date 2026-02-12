@@ -1,8 +1,22 @@
+#pragma once
 #include "unordered_map"
 #include "string"
+#include "MaterialAsset.h"
+#include <vector>
+#include <cstdint>
+#include <glm/glm.hpp>
 
-struct MeshData{
-    unsigned int VAO, VBO, EBO;
-    size_t IndexCount;
+struct Vertex{
+    glm::vec3 position;  
+    glm::vec3 normal;    
+    glm::vec2 uv;        
 };
-std::unordered_map<std::string, MeshData> MeshCache;
+
+struct Mesh{
+    unsigned int VAO, VBO, EBO = 0;
+    size_t IndexCount = 0;
+    MaterialData Mat;
+
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+};
