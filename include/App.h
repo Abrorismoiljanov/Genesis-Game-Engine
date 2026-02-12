@@ -1,5 +1,6 @@
 #include "project.h"
 #include "EditorUI.h"
+#include "Renderer.h"
 
 class app {
 private:
@@ -12,6 +13,7 @@ private:
 
     project Project;
     EditorUI UI;
+    Renderer renderer;
 
     void PollEvent(bool& running);
     void Update();

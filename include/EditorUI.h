@@ -8,7 +8,7 @@
 class EditorUI{
 public:
  
-    void Init(SDL_Window* window, SDL_GLContext glContext, project& Proj);
+    void Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer);
     void Update();
     void Render();
     void AddPanel(std::shared_ptr<Panel> panel) {
@@ -20,5 +20,5 @@ private:
     project* Project = nullptr;
     std::vector<std::shared_ptr<Panel>> panels; 
     SelectedEntity Selection;
-
+    Renderer* renderer = nullptr;
 };

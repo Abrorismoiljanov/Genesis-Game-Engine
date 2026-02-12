@@ -1,6 +1,7 @@
 #pragma once
 #include "string"
 #include "project.h"
+#include "Renderer.h"
 #include "SelectedEntity.h"
 
 class Panel{
@@ -53,5 +54,21 @@ public:
 private:
     project& Proj;
     SelectedEntity& selection;
+};
+
+class Viewport: public Panel{
+public:
+    Viewport(const std::string& n, project& Proj, SelectedEntity& selection, Renderer* renderer): 
+        Panel(n),
+        Proj(Proj),
+        selection(selection),
+        m_renderer(renderer) {}
+    
+    void Render() override;
+
+private:
+    project& Proj;
+    SelectedEntity& selection;
+    Renderer* m_renderer;
 };
 

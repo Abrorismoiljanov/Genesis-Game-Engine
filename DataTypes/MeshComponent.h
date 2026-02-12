@@ -30,7 +30,7 @@ public:
 
     void DrawComponentUI(){
 
-        if (ImGui::Button("Load Mesh")) {
+        if (ImGui::Button("Load Mesh", ImVec2(0,30))) {
             IGFD::FileDialogConfig cfg;
 
             ImGuiFileDialog::Instance()->OpenDialog(
@@ -40,7 +40,7 @@ public:
                 cfg
             );
         }
-
+        ImGui::SameLine();
 
 
         if (ImGuiFileDialog::Instance()->Display("Choosef"))
@@ -48,10 +48,12 @@ public:
             if (ImGuiFileDialog::Instance()->IsOk())
             {
         MeshPath = ImGuiFileDialog::Instance()->GetFilePathName();
-    }
-
-    ImGuiFileDialog::Instance()->Close();
-}
+            }
+            ImGuiFileDialog::Instance()->Close();
+        }
+        ImGui::BeginChild("MeshPathBox", ImVec2(0, 30), true); // true = frame 
+        ImGui::Text("%s", MeshPath.c_str());
+        ImGui::EndChild();
 
         ImGui::Separator();
     }

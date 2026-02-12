@@ -5,8 +5,10 @@
 #include "ComponentRegisterList.h"
 
 
-void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj){
+void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer){
   
+
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -24,6 +26,7 @@ void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj){
     panels.push_back(std::make_unique<TestPanel>("Panel 1"));
     panels.push_back(std::make_unique<EntityList>("Scene List", Proj, Selection));
     panels.push_back(std::make_unique<Inspector>("Inspector", Proj, Selection));
+    panels.push_back(std::make_unique<Viewport>("Viewport", Proj, Selection, renderer));
 
 };
 

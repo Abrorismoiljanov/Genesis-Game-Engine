@@ -185,3 +185,20 @@ void Inspector::Render(){
     ImGui::End();   
 }
 
+void Viewport::Render(){
+    ImGui::Begin("Viewport");
+    ImVec2 size = ImGui::GetContentRegionAvail();
+
+    uint32_t tex = m_renderer->GetFinalImage();
+
+    ImGui::Image(
+        (ImTextureID)(uintptr_t)tex,
+        size,
+        ImVec2(0,1),
+        ImVec2(1,0));
+
+    ImGui::End();
+}
+
+
+

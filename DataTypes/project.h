@@ -10,6 +10,7 @@
 #include "scene.h"
 #include "entity.h"
 #include "components.h"
+#include "AssetManager.h"
 
 struct ProjectParam{
     std::string name = "Default Project";
@@ -26,6 +27,7 @@ struct project{
     std::vector<scene> SceneList;
     std::vector<entity> EntityList;
     std::vector<std::unique_ptr<Component>> ComponentList;
+    AssetManager Assets;
     uint32_t activeSceneID; 
     uint32_t NextComponentID = 0;
     uint32_t NextEntityID = 0;

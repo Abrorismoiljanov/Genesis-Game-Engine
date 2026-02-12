@@ -50,7 +50,8 @@ bool app::Init(){
 
 
 
-    UI.Init(window, glContext, Project);
+    UI.Init(window, glContext, Project, &renderer);
+    renderer.Init(1280, 720);
 
     return true;
 
@@ -100,12 +101,13 @@ void app::Render(){
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
     
-    glViewport(0, 0, w, h); 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    renderer.BeginFrame(w, h);
+    if (!Project.SceneList.empty())
+        renderer.Render(Project.SceneList[0], Project);
+ 
+    renderer.EndFrame();
 
     UI.Render();
-
     SDL_GL_SwapWindow(window);
 }
 

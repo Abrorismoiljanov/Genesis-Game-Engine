@@ -10,11 +10,13 @@
         }
     },
     files = {
+        "build/.objs/Editor/linux/x86_64/release/Editor/FrameBuffer.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/Editor/app.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/Editor/Panels.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/Editor/stb_image.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/Editor/EditorUI.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/Editor/main.cpp.o",
+        "build/.objs/Editor/linux/x86_64/release/Editor/Renderer.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/DataTypesDef/entity.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/DataTypesDef/components.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/imgui/imgui.cpp.o",
