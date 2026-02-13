@@ -14,9 +14,9 @@
             "-DNDEBUG"
         }
     },
-    depfiles_format = "gcc",
     depfiles = "FrameBuffer.o: Editor/FrameBuffer.cpp include/FrameBuffer.h\
 ",
+    depfiles_format = "gcc",
     files = {
         "Editor/FrameBuffer.cpp"
     }

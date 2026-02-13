@@ -14,10 +14,10 @@
             "-DNDEBUG"
         }
     },
-    files = {
-        "Editor/ShaderUtils.cpp"
-    },
     depfiles = "ShaderUtils.o: Editor/ShaderUtils.cpp include/ShaderUtils.h\
 ",
-    depfiles_format = "gcc"
+    depfiles_format = "gcc",
+    files = {
+        "Editor/ShaderUtils.cpp"
+    }
 }
