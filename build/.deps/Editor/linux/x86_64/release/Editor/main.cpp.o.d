@@ -14,7 +14,7 @@
             "-DNDEBUG"
         }
     },
-    depfiles = "main.o: Editor/main.cpp include/App.h DataTypes/project.h  DataTypes/scene.h DataTypes/entity.h DataTypes/components.h  DataTypes/AssetManager.h imgui/imgui.h imgui/imconfig.h  DataTypes/Assets/MaterialAsset.h include/EditorUI.h include/Panels.h  include/Renderer.h include/FrameBuffer.h include/SelectedEntity.h\
+    depfiles = "main.o: Editor/main.cpp include/App.h DataTypes/project.h  DataTypes/scene.h DataTypes/entity.h DataTypes/components.h  DataTypes/AssetManager.h imgui/imgui.h imgui/imconfig.h  DataTypes/Assets/MaterialAsset.h include/EditorUI.h include/Panels.h  include/Renderer.h include/FrameBuffer.h include/ViewportCamera.h  include/SelectedEntity.h\
 ",
     depfiles_format = "gcc",
     files = {

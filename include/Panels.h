@@ -8,7 +8,7 @@ class Panel{
 public:
     explicit Panel(std::string name) : name(std::move(name)) {};
 
-    virtual void Update() {};
+    virtual void Update(float dt) = 0;
     virtual void Render() = 0;
     const char* GetName() const { return name.c_str(); }
 
@@ -30,6 +30,7 @@ public:
     TestPanel(const std::string& n): Panel(n) {}
 
     void Render() override;
+    void Update(float dt) override;
 
 
 private:
@@ -39,6 +40,7 @@ class EntityList : public Panel{
 public:
     EntityList(const std::string& n, project& Proj, SelectedEntity& selection): Panel(n), Proj(Proj), selection(selection) {}
     void Render() override;
+    void Update(float dt) override;
 
 private:
     project& Proj;
@@ -50,6 +52,7 @@ public:
     Inspector(const std::string& n, project& Proj, SelectedEntity& selection):  Panel(n), Proj(Proj), selection(selection) {}
     void DrawAddComponentMenu(entity* CurrentEntity, project& Proj);
     void Render() override;
+    void Update(float dt) override;
 
 private:
     project& Proj;
@@ -64,9 +67,13 @@ public:
         selection(selection),
         m_renderer(renderer) {}
     
+    void Update(float dt) override;
     void Render() override;
 
 private:
+    bool m_CapturingMouse = false;
+    ImVec2 m_LastMousePos;
+    float deltatime;
     project& Proj;
     SelectedEntity& selection;
     Renderer* m_renderer;

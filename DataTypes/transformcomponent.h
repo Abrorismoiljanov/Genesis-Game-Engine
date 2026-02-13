@@ -1,9 +1,12 @@
 #pragma once
 
 #include "glm/glm.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "components.h"
 #include "imgui.h"
 #include "project.h"
+
 
 struct TransformData{
     glm::vec3 position {0.0f};
@@ -19,6 +22,24 @@ public:
     std::string Getname(){
         return "Transform";
     }
+
+glm::mat4 GetMatrix() const {
+    glm::mat4 T = glm::translate(glm::mat4(1.0f), transform.position);
+
+    glm::mat4 Rx = glm::rotate(glm::mat4(1.0f),
+                               glm::radians(transform.rotation.x),
+                               glm::vec3(1,0,0));
+    glm::mat4 Ry = glm::rotate(glm::mat4(1.0f),
+                               glm::radians(transform.rotation.y),
+                               glm::vec3(0,1,0));
+    glm::mat4 Rz = glm::rotate(glm::mat4(1.0f),
+                               glm::radians(transform.rotation.z),
+                               glm::vec3(0,0,1));
+
+    glm::mat4 S = glm::scale(glm::mat4(1.0f), transform.scale);
+
+    return T * Rz * Ry * Rx * S;
+}
 
     void DrawComponentUI(){
 

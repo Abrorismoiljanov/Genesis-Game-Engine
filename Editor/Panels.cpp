@@ -8,6 +8,7 @@ void TestPanel::Render(){
     ImGui::Text("This is a test panel!");
     ImGui::End();
 }
+void TestPanel::Update(float dt){};
 
 void EntityList::Render(){
     ImGui::Begin( name.c_str());
@@ -71,15 +72,17 @@ for (size_t i = 0; i < defaultScene.EntityIDs.size(); ++i) {
         ImGui::EndDragDropTarget();
     }
     // -------------------
+    
+                ImGui::PopID();
 
-    ImGui::PopID();
-}
-
-
+            }
+        
         }
     }
     ImGui::End();
 }
+
+void EntityList::Update(float dt){};
 
 void Inspector::Render(){
 
@@ -185,9 +188,42 @@ void Inspector::Render(){
     ImGui::End();   
 }
 
+void Inspector::Update(float dt){};
+
 void Viewport::Render(){
     ImGui::Begin("Viewport");
+
     ImVec2 size = ImGui::GetContentRegionAvail();
+
+    m_renderer->m_Camera.SetViewportSize(size.x, size.y);
+
+    ImVec2 mousePos = ImGui::GetMousePos();
+    bool hovered = ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows);
+    bool rmbPressed = ImGui::IsMouseDown(ImGuiMouseButton_Right);
+
+    if (hovered && rmbPressed) {
+        if (!m_CapturingMouse) {
+            m_CapturingMouse = true;
+            m_LastMousePos = mousePos;
+            SDL_ShowCursor(SDL_DISABLE); 
+        }
+
+        // Calculate delta
+        float dx = mousePos.x - m_LastMousePos.x;
+        float dy = mousePos.y - m_LastMousePos.y;
+        m_LastMousePos = mousePos;
+
+        
+        // Send to camera
+        m_renderer->m_Camera.ProcessMouseMotion(dx, dy);
+    } else if (m_CapturingMouse) {
+        m_CapturingMouse = false;
+        SDL_ShowCursor(SDL_ENABLE); 
+    }
+
+    // Camera keyboard movement
+    const Uint8* keystate = SDL_GetKeyboardState(NULL);
+    m_renderer->m_Camera.ProcessKeyboard(keystate, deltatime);
 
     uint32_t tex = m_renderer->GetFinalImage();
 
@@ -197,7 +233,13 @@ void Viewport::Render(){
         ImVec2(0,1),
         ImVec2(1,0));
 
+    ImGui::SetCursorPos(ImVec2(10, 30)); // offset inside the window
+    ImGui::Text("deltaTime: %.6f", deltatime);
+
     ImGui::End();
+}
+void Viewport::Update(float dt){
+    deltatime = dt; 
 }
 
 

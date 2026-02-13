@@ -1,9 +1,8 @@
 #version 330 core
+
 out vec4 FragColor;
-in vec2 TexCoord;
 
-uniform sampler2D diffuseTex;
-
-void main() {
-    FragColor = texture(diffuseTex, TexCoord);
+void main()
+{
+    FragColor = vec4(0.2, 0.7, 0.3, 1.0); // static color
 }

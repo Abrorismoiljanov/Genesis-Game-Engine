@@ -42,12 +42,15 @@ bool app::Init(){
         std::cout << "GL context creation failed" << '\n';
         return false;
     }
-    
+    glewExperimental = GL_TRUE;
+
     if (glewInit() != GLEW_OK) {
+         std::cout << "GLEW init failed\n";
         return false;
     }
-    
 
+
+    lastTime = SDL_GetPerformanceCounter();
 
 
     UI.Init(window, glContext, Project, &renderer);
@@ -59,8 +62,12 @@ bool app::Init(){
 
 
 void app::Run(){
+
     while (running) {
-        PollEvent(running);
+        PollEvent(running); 
+        Uint64 currentTime = SDL_GetPerformanceCounter();
+        deltaTime = (currentTime - lastTime) / (float)SDL_GetPerformanceFrequency();
+        lastTime = currentTime;
         Update();
         Render();
     }
@@ -95,6 +102,7 @@ void app::PollEvent(bool& running){
 };
 
 void app::Update(){
+    UI.Update(deltaTime);
 }
 
 void app::Render(){
@@ -103,7 +111,7 @@ void app::Render(){
     
     renderer.BeginFrame(w, h);
     if (!Project.SceneList.empty())
-        renderer.Render(Project.SceneList[0], Project);
+        renderer.Render(Project);
  
     renderer.EndFrame();
 

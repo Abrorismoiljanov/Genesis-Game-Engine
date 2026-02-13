@@ -9,7 +9,7 @@ class EditorUI{
 public:
  
     void Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer);
-    void Update();
+    void Update(float deltatime);
     void Render();
     void AddPanel(std::shared_ptr<Panel> panel) {
         panels.push_back(panel);

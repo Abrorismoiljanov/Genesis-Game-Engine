@@ -30,7 +30,11 @@ void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, 
 
 };
 
-void EditorUI::Update(){};
+void EditorUI::Update(float deltaTime){
+    for (auto& panel : panels) {
+        panel->Update(deltaTime);
+    }
+};
 
 void EditorUI::Render(){
 

@@ -15,11 +15,16 @@ private:
     EditorUI UI;
     Renderer renderer;
 
+    Uint64 lastTime = 0;   
+    float deltaTime = 0.0f; 
+
     void PollEvent(bool& running);
     void Update();
     void Render();
 
 public:
+ 
+
     app();  
     bool Init();
     void Run();
