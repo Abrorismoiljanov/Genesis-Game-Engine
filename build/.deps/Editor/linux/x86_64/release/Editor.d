@@ -9,6 +9,7 @@
         "build/.objs/Editor/linux/x86_64/release/Editor/main.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/Editor/ShaderUtils.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/Editor/Renderer.cpp.o",
+        "build/.objs/Editor/linux/x86_64/release/DataTypesDef/AssetManager.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/DataTypesDef/entity.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/DataTypesDef/components.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/imgui/imgui.cpp.o",

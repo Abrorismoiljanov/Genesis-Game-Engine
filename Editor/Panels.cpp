@@ -205,7 +205,7 @@ void Viewport::Render(){
         if (!m_CapturingMouse) {
             m_CapturingMouse = true;
             m_LastMousePos = mousePos;
-            SDL_ShowCursor(SDL_DISABLE); 
+            imgui:
         }
 
         // Calculate delta
@@ -218,7 +218,6 @@ void Viewport::Render(){
         m_renderer->m_Camera.ProcessMouseMotion(dx, dy);
     } else if (m_CapturingMouse) {
         m_CapturingMouse = false;
-        SDL_ShowCursor(SDL_ENABLE); 
     }
 
     // Camera keyboard movement
