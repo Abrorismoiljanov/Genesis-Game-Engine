@@ -7,6 +7,7 @@
 
 #include "transformcomponent.h"
 #include "Assets/MeshAsset.h"
+#include "Assets/MaterialAsset.h"
 
 class MeshComponent: public Component{
 private:
@@ -14,8 +15,13 @@ private:
 public:
     AssetHandle HandleMesh;
     TransformData transform;
+    std::vector<AssetHandle> HandleMaterials;
+    
+    bool Loaded = false;
     std::string MeshPath;
 
+   bool MatNeedsLoad() const { return !Loaded; }
+    void MatMarkLoaded() { Loaded = true; }
 
     std::string Getname(){
         return "Mesh";
@@ -55,7 +61,7 @@ glm::mat4 GetMatrix() const {
             ImGuiFileDialog::Instance()->OpenDialog(
                 ("Choosef##" + std::to_string(ID)).c_str(),
                 "Choose File",
-                ".obj,.glb,.gltf",
+                ".glb,.fbx,.obj,.gltf",
                 cfg
             );
         }

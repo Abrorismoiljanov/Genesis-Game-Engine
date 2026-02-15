@@ -8,6 +8,7 @@
 
 void Renderer::Init(int w, int h){
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 
     DefaultShader = CompileShader("/home/abror/Project/GGE/Shader/VSH.glsl","/home/abror/Project/GGE/Shader/FSH.glsl");
     m_Framebuffer.Create(w, h);
@@ -69,12 +70,29 @@ void Renderer::Render(project& Proj){
 
                 std::shared_ptr<MeshAsset> asset = Proj.Assets.Get<MeshAsset>(meshComp->HandleMesh);
                 if (!asset) continue;
-
+// Ensure material handles match submeshes
+if (meshComp->HandleMaterials.size() != asset->meshes.size()) {
+    // fallback: just create dummy handles pointing to default material
+    meshComp->HandleMaterials.resize(asset->meshes.size(), 0);
+}
        
-                for (auto& mesh : asset->meshes){
-                    glBindVertexArray(mesh.VAO);
-                    glDrawElements(GL_TRIANGLES, mesh.IndexCount, GL_UNSIGNED_INT, 0);
-                }
+for (size_t i = 0; i < asset->meshes.size(); ++i) {
+    auto& mesh = asset->meshes[i];
+    glBindVertexArray(mesh.VAO);
+
+    std::shared_ptr<MaterialAsset> mat = Proj.Assets.Get<MaterialAsset>(meshComp->HandleMaterials[i]);
+    if (mat) {
+        glUniform4fv(glGetUniformLocation(DefaultShader, "u_DiffuseColor"), 1, glm::value_ptr(mat->DiffuseColor));
+        glUniform4fv(glGetUniformLocation(DefaultShader, "u_SpecularColor"), 1, glm::value_ptr(mat->SpecularColor));
+        glUniform1f(glGetUniformLocation(DefaultShader, "u_Shininess"), mat->Shininess);
+    } else {
+        glUniform4f(glGetUniformLocation(DefaultShader, "u_DiffuseColor"), 0.8f, 0.8f, 0.8f, 1.0f);
+        glUniform4f(glGetUniformLocation(DefaultShader, "u_SpecularColor"), 1.0f, 1.0f, 1.0f, 1.0f);
+        glUniform1f(glGetUniformLocation(DefaultShader, "u_Shininess"), 32.0f);
+    }
+
+    glDrawElements(GL_TRIANGLES, mesh.IndexCount, GL_UNSIGNED_INT, 0);
+}
             }
         }
     }

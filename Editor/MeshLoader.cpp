@@ -9,7 +9,8 @@ std::shared_ptr<MeshAsset> MeshLoader::Load(const std::string& path){
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate |
                                              aiProcess_JoinIdenticalVertices |
-                                             aiProcess_GenNormals |
+                                             aiProcess_ImproveCacheLocality|
+                                             aiProcess_GenSmoothNormals |
                                              aiProcess_FlipUVs);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode){
@@ -97,3 +98,48 @@ std::shared_ptr<MeshAsset> MeshLoader::Load(const std::string& path){
 
     return meshAsset;
 };
+
+
+std::vector<std::shared_ptr<MaterialAsset>> MeshLoader::MateriaLoad(const std::string& path){
+
+    Assimp::Importer importer;
+    const aiScene* scene = importer.ReadFile(
+    path,
+    aiProcess_Triangulate | 
+    aiProcess_JoinIdenticalVertices | 
+    aiProcess_GenNormals | 
+    aiProcess_FlipUVs
+    );
+    std::vector<std::shared_ptr<MaterialAsset>> out;
+    
+    if (!scene || !scene->mRootNode || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) {
+        std::cout << "Failed to load mesh: " << importer.GetErrorString() << "\n";
+        return {};}
+
+    for (unsigned int m = 0; m < scene->mNumMeshes; ++m) {
+        aiMesh* ai_mesh = scene->mMeshes[m];
+        unsigned int materialIndex = ai_mesh->mMaterialIndex;
+
+        aiMaterial* ai_material = scene->mMaterials[materialIndex];
+
+        std::shared_ptr<MaterialAsset> mat = std::make_shared<MaterialAsset>("Material_" + std::to_string(m));
+
+        aiColor4D diffuse;
+        if (AI_SUCCESS == ai_material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse)) {
+            mat->DiffuseColor = {diffuse.r, diffuse.g, diffuse.b, diffuse.a};
+        }
+
+        aiColor4D specular;
+        if (AI_SUCCESS == ai_material->Get(AI_MATKEY_COLOR_SPECULAR, specular)) {
+            mat->SpecularColor = {specular.r, specular.g, specular.b, specular.a};
+            // specular.r, specular.g, specular.b, specular.a
+        }
+
+        float shininess = 32.0f; // default
+        ai_material->Get(AI_MATKEY_SHININESS, shininess);
+        mat->Shininess = shininess;
+        out.push_back(mat);
+    }
+    return out;
+};
+

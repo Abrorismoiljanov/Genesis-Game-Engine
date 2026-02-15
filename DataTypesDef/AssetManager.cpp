@@ -45,19 +45,30 @@ void AssetManager::CleanupUnusedAssets(const std::vector<std::unique_ptr<Compone
 
 
 void AssetManager::Update(const std::vector<std::unique_ptr<Component>>& components){
-    for (auto& compPtr : components) {
+      for (auto& compPtr : components) {
         auto* meshComp = dynamic_cast<MeshComponent*>(compPtr.get());
         if (!meshComp) continue;
         if (!meshComp->NeedsLoad()) continue;
 
-        std::shared_ptr<MeshAsset> newAsset = MeshLoader().Load(meshComp->MeshPath.c_str());
-        if (!newAsset) continue;
+        // 1️⃣ Load the mesh
+        std::shared_ptr<MeshAsset> newMesh = MeshLoader().Load(meshComp->MeshPath);
+        if (!newMesh) continue;
 
-        AssetHandle handle = RegisterAsset(newAsset);
-        meshComp->HandleMesh = handle;
+        AssetHandle meshHandle = RegisterAsset(newMesh);
+        meshComp->HandleMesh = meshHandle;
+
+        // 2️⃣ Load materials for the mesh
+        auto materials = MeshLoader().MateriaLoad(meshComp->MeshPath);
+
+        meshComp->HandleMaterials.clear();
+        for (auto& mat : materials) {
+            AssetHandle matHandle = RegisterAsset(mat);
+            meshComp->HandleMaterials.push_back(matHandle);
+        }
+
         meshComp->MarkLoaded();
 
-        std::cout << "Model Loaded: " << meshComp->MeshPath << "\n";
+        std::cout << "Model Loaded: " << meshComp->MeshPath 
+                  << " with " << materials.size() << " materials.\n";
     }
-
 };

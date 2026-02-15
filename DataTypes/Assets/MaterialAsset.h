@@ -1,19 +1,17 @@
 #pragma once
+#include "Asset.h"
 #include "glm/glm.hpp"
-#include "string"
+#include <string>
 
-struct MaterialData{
-    glm::vec4 albedo {1.0f};
-    float textureScale = 1.0f;
-    float metallic = 0.0f;
-    float roughness = 1.0f;
-    float emissiveIntensity = 0.0f;
+class MaterialAsset : public Asset {
+public:
+    MaterialAsset(const std::string& name) : Name(name) {}
 
-    
-    std::string albedoTexturePath;
-    std::string normalTexturePath;
-    std::string metallicTexturePath;
-    std::string roughnessTexturePath;
-    std::string emissiveTexturePath;
+    std::string Name;
+
+    glm::vec4 DiffuseColor = glm::vec4(1.0f); 
+    glm::vec4 SpecularColor = glm::vec4(1.0f);
+    float Shininess = 32.0f; 
+
+    void Bind() const {}
 };
-
