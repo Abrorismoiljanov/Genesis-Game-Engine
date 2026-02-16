@@ -11,34 +11,27 @@ struct Vertex{
     glm::vec2 uv;        
 };
 
-struct Mesh{
+struct SubMesh{
     unsigned int VBO = 0;
     unsigned int VAO = 0;
     unsigned int EBO = 0;
 
     size_t IndexCount = 0;
+    AssetHandle MaterialHandle;
 
-
-    Mesh() = default;
-    Mesh(const Mesh&) = delete;
-    Mesh& operator=(const Mesh&) = delete;
-
-    Mesh(Mesh&&) noexcept = default;
-
-    Mesh& operator=(Mesh&&) noexcept = default;
 
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
  
 };
 
-class MeshAsset : public Asset{
+class ModelAsset : public Asset{
 public:
     static constexpr AssetType StaticType = AssetType::Mesh;
 
-    MeshAsset() { Type = AssetType::Mesh; }
+    ModelAsset() { Type = AssetType::Mesh; }
 
-    std::vector<Mesh> meshes;
+    std::vector<SubMesh> SubMeshes;
 
 };
 

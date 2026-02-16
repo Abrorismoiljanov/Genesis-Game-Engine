@@ -1,7 +1,7 @@
 {
-    depfiles_format = "gcc",
-    depfiles = "MeshLoader.o: Editor/MeshLoader.cpp include/MeshLoader.h  DataTypes/Assets/MeshAsset.h DataTypes/Assets/Asset.h  DataTypes/Assets/MaterialAsset.h\
+    depfiles = "MeshLoader.o: Editor/MeshLoader.cpp include/MeshLoader.h  DataTypes/Assets/ModelAsset.h DataTypes/Assets/Asset.h  DataTypes/Assets/MaterialAsset.h\
 ",
+    depfiles_format = "gcc",
     values = {
         "/usr/bin/g++",
         {

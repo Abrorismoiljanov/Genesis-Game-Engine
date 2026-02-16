@@ -4,7 +4,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-std::shared_ptr<MeshAsset> MeshLoader::Load(const std::string& path){
+std::shared_ptr<ModelAsset> MeshLoader::Load(const std::string& path){
 
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate |
@@ -18,13 +18,13 @@ std::shared_ptr<MeshAsset> MeshLoader::Load(const std::string& path){
         return nullptr;
     }
 
-    auto meshAsset = std::make_shared<MeshAsset>();
+    auto meshAsset = std::make_shared<ModelAsset>();
     meshAsset->Path = path;
 
 
     for (unsigned int m = 0; m < scene->mNumMeshes; ++m){
         aiMesh* ai_mesh = scene->mMeshes[m];
-        Mesh mesh;
+        SubMesh mesh;
  
         for (unsigned int i = 0; i < ai_mesh->mNumVertices; ++i){
             Vertex vertex;
@@ -93,7 +93,7 @@ std::shared_ptr<MeshAsset> MeshLoader::Load(const std::string& path){
 
         glBindVertexArray(0);
    
-        meshAsset->meshes.push_back(std::move(mesh));
+        meshAsset->SubMeshes.push_back(std::move(mesh));
     }
 
     return meshAsset;

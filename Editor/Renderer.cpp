@@ -4,7 +4,7 @@
 #include "Renderer.h"
 #include "transformcomponent.h"
 #include "MeshComponent.h"
-#include "Assets/MeshAsset.h"
+#include "Assets/ModelAsset.h"
 
 void Renderer::Init(int w, int h){
     glEnable(GL_DEPTH_TEST);
@@ -68,16 +68,16 @@ void Renderer::Render(project& Proj){
                 glm::mat4 model = entityMatrix * meshLocal;
                 glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
 
-                std::shared_ptr<MeshAsset> asset = Proj.Assets.Get<MeshAsset>(meshComp->HandleMesh);
+                std::shared_ptr<ModelAsset> asset = Proj.Assets.Get<ModelAsset>(meshComp->HandleMesh);
                 if (!asset) continue;
-// Ensure material handles match submeshes
-if (meshComp->HandleMaterials.size() != asset->meshes.size()) {
+// Ensure material handles match subSubMeshes
+if (meshComp->HandleMaterials.size() != asset->SubMeshes.size()) {
     // fallback: just create dummy handles pointing to default material
-    meshComp->HandleMaterials.resize(asset->meshes.size(), 0);
+    meshComp->HandleMaterials.resize(asset->SubMeshes.size(), 0);
 }
        
-for (size_t i = 0; i < asset->meshes.size(); ++i) {
-    auto& mesh = asset->meshes[i];
+for (size_t i = 0; i < asset->SubMeshes.size(); ++i) {
+    auto& mesh = asset->SubMeshes[i];
     glBindVertexArray(mesh.VAO);
 
     std::shared_ptr<MaterialAsset> mat = Proj.Assets.Get<MaterialAsset>(meshComp->HandleMaterials[i]);

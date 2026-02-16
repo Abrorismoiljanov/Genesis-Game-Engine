@@ -6,7 +6,7 @@
 #include "GL/glew.h"
 
 #include "transformcomponent.h"
-#include "Assets/MeshAsset.h"
+#include "Assets/ModelAsset.h"
 #include "Assets/MaterialAsset.h"
 
 class MeshComponent: public Component{

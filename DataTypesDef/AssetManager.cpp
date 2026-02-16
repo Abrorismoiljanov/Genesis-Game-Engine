@@ -51,7 +51,7 @@ void AssetManager::Update(const std::vector<std::unique_ptr<Component>>& compone
         if (!meshComp->NeedsLoad()) continue;
 
         // 1️⃣ Load the mesh
-        std::shared_ptr<MeshAsset> newMesh = MeshLoader().Load(meshComp->MeshPath);
+        std::shared_ptr<ModelAsset> newMesh = MeshLoader().Load(meshComp->MeshPath);
         if (!newMesh) continue;
 
         AssetHandle meshHandle = RegisterAsset(newMesh);
