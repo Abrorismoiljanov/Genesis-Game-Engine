@@ -25,7 +25,6 @@ public:
     };
 
     AssetHandle GenerateHandle();
-    void Update(const std::vector<std::unique_ptr<Component>>& components);
     void CleanupUnusedAssets(const std::vector<std::unique_ptr<Component>>& components);
 
 private:

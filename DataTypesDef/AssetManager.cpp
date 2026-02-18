@@ -1,6 +1,5 @@
 #include "AssetManager.h"
-#include "MeshComponent.h"
-#include "MeshLoader.h"
+#include <filesystem>
 
 AssetHandle AssetManager::GenerateHandle(){
     return m_LastHandle++;
@@ -23,52 +22,6 @@ AssetHandle AssetManager::RegisterAsset(const std::shared_ptr<Asset>& asset){
     return handle;
 };
 
-void AssetManager::CleanupUnusedAssets(const std::vector<std::unique_ptr<Component>>& components) {
-    std::unordered_set<AssetHandle> usedHandles;
+void AssetManager::CleanupUnusedAssets(const std::vector<std::unique_ptr<Component>>& components) {}
+    
 
-    for (auto& comp : components) {
-        if (auto* mesh = dynamic_cast<MeshComponent*>(comp.get())) {
-            usedHandles.insert(mesh->HandleMesh);
-        }
-    }
-
-    for (auto it = m_Assets.begin(); it != m_Assets.end(); ) {
-        if (usedHandles.find((*it)->Handle) == usedHandles.end()) {
-            m_PathRegistry.erase((*it)->Path);
-            m_HandleToIndex.erase((*it)->Handle);
-            it = m_Assets.erase(it); // this will free memory if no other shared_ptr exists
-        } else {
-            ++it;
-        }
-    }
-}
-
-
-void AssetManager::Update(const std::vector<std::unique_ptr<Component>>& components){
-      for (auto& compPtr : components) {
-        auto* meshComp = dynamic_cast<MeshComponent*>(compPtr.get());
-        if (!meshComp) continue;
-        if (!meshComp->NeedsLoad()) continue;
-
-        // 1️⃣ Load the mesh
-        std::shared_ptr<ModelAsset> newMesh = MeshLoader().Load(meshComp->MeshPath);
-        if (!newMesh) continue;
-
-        AssetHandle meshHandle = RegisterAsset(newMesh);
-        meshComp->HandleMesh = meshHandle;
-
-        // 2️⃣ Load materials for the mesh
-        auto materials = MeshLoader().MateriaLoad(meshComp->MeshPath);
-
-        meshComp->HandleMaterials.clear();
-        for (auto& mat : materials) {
-            AssetHandle matHandle = RegisterAsset(mat);
-            meshComp->HandleMaterials.push_back(matHandle);
-        }
-
-        meshComp->MarkLoaded();
-
-        std::cout << "Model Loaded: " << meshComp->MeshPath 
-                  << " with " << materials.size() << " materials.\n";
-    }
-};

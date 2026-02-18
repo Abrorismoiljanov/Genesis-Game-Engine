@@ -103,7 +103,6 @@ void app::PollEvent(bool& running){
 
 void app::Update(){
     UI.Update(deltaTime);
-    Project.Assets.Update(Project.ComponentList);
 }
 
 void app::Render(){
