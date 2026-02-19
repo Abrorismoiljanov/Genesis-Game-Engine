@@ -134,7 +134,7 @@ void Inspector::Render(){
                 bool open = ImGui::CollapsingHeader(c->Getname().c_str(), flags);
  
                 if (open) {
-                    c->DrawComponentUI();
+                    c->DrawComponentUI(Proj.Assets);
                 }
             }
             ImGui::PopID();

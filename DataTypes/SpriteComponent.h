@@ -1,0 +1,81 @@
+#pragma once
+#include "components.h"
+#include "Assets/Asset.h"
+#include "Assets/MaterialAsset.h"
+#include "imgui.h"
+#include "AssetManager.h"
+#include "ImGuiFileDialog.h"
+#include "glm/glm.hpp"
+
+struct SpriteComponent : public Component {
+    AssetHandle materialHandle = INVALID_ASSET; // reference to a MaterialAsset
+    glm::vec2 size = {1.0f, 1.0f};              // width/height
+    float rotation = 0.0f;                      // rotation in degrees
+
+    std::string Getname(){
+        return "Sprite";
+    };
+
+   void DrawComponentUI(AssetManager& assetManager){
+ 
+        auto mat = assetManager.Get<MaterialAsset>(materialHandle);
+        std::string path = mat && mat->GetTexture() ? mat->GetTexture()->Path : "None";
+        TextureAsset* tex = nullptr;
+        if(mat) {
+            tex = mat->GetTexture().get();
+        }
+ 
+        std::string tpath = tex ? tex->Path : "None";
+        ImGui::Text("Material: %s", path.c_str());
+ 
+
+
+        if(!mat) {
+            auto newMat = std::make_shared<MaterialAsset>();
+            auto newTex = std::make_shared<TextureAsset>();
+            newMat->SetTexture(newTex);
+            materialHandle = assetManager.RegisterAsset(newMat);
+            mat = newMat;
+            tex = newTex.get();
+        }
+
+
+
+        ImGui::DragFloat2("Size", &size.x, 0.1f);
+        ImGui::DragFloat("Rotation", &rotation, 1.0f);
+
+        std::string btnID = "Load Material##" + std::to_string(ID);
+        if (ImGui::Button(btnID.c_str(), ImVec2(0,30))) {
+            IGFD::FileDialogConfig cfg;
+
+            ImGuiFileDialog::Instance()->OpenDialog(
+                ("Choosef##" + std::to_string(ID)).c_str(),
+                "Choose File",
+                ".png,.jpeg,.jpg,.bmp",
+                cfg
+            );
+        }
+        ImGui::SameLine();
+
+        std::string dlgID = "Choosef##" + std::to_string(ID);
+        if (ImGuiFileDialog::Instance()->Display(dlgID.c_str(), ImGuiWindowFlags_NoCollapse, ImVec2(800, 600))){
+            if (ImGuiFileDialog::Instance()->IsOk()){
+                path = ImGuiFileDialog::Instance()->GetFilePathName();
+                mat->GetTexture()->LoadFromFile(path);
+                mat->GetTexture()->UploadToGPU();
+            }
+            ImGuiFileDialog::Instance()->Close();
+        }
+   
+        ImGui::BeginChild("MeshPathBox", ImVec2(0, 150), true); // true = frame 
+        if(tex && tex->ID) {
+            ImVec2 previewSize(128, 128); 
+            ImGui::Image((ImTextureID)(uintptr_t)tex->ID, previewSize, ImVec2(0,1), ImVec2(1,0));
+        }
+        ImGui::EndChild();
+
+        ImGui::Separator();
+    }
+
+
+};

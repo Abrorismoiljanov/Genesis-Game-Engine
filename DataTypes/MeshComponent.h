@@ -51,7 +51,7 @@ glm::mat4 GetMatrix() const {
     return T * Rz * Ry * Rx * S;
 }
 
-    void DrawComponentUI(){
+    void DrawComponentUI(AssetManager &AssetManager){
         std::string btnID = "Load Mesh##" + std::to_string(ID);
         if (ImGui::Button(btnID.c_str(), ImVec2(0,30))) {
             IGFD::FileDialogConfig cfg;

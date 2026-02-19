@@ -2,8 +2,7 @@
 #include <cstdint>
 #include <string>
 
-struct project;
-
+class AssetManager;
 
 class Component {
 public:
@@ -13,6 +12,6 @@ public:
     virtual std::string Getname() = 0;
 
 
-    virtual void DrawComponentUI() = 0;
+    virtual void DrawComponentUI(AssetManager& AssetManager) = 0;
 };
 

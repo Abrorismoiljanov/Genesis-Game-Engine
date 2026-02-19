@@ -19,4 +19,9 @@ public:
 private:
     FrameBuffer m_Framebuffer;
     GLuint DefaultShader;
+
+
+    GLuint QuadVAO = 0;
+    GLuint QuadVBO = 0;
+    GLuint QuadEBO = 0;
 };
