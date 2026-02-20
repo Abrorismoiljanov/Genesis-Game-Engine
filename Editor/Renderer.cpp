@@ -61,13 +61,18 @@ void Renderer::EndFrame(){
     m_Framebuffer.UnBind();
 }
 void Renderer::Render(project& Proj){
-   glUseProgram(DefaultShader);
+    
+    glUseProgram(DefaultShader);
 
-    glm::mat4 view = m_Camera.GetView();
-    glm::mat4 projection = m_Camera.GetProjection();
 
-    glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_View"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    float scale = m_Camera.Zoom; 
+
+    m_Camera.Position.x = round(m_Camera.Position.x * scale) / scale;
+    m_Camera.Position.y = round(m_Camera.Position.y * scale) / scale;
+
+    glm::mat4 view = m_Camera.GetViewProjection();
+
+    glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(view));
 
     if (Proj.SceneList.empty()) return;
     scene& activeScene = Proj.SceneList[0];
@@ -106,28 +111,25 @@ void Renderer::Render(project& Proj){
     }
     if (!sprite) continue;
 
-    // Fetch material & texture from AssetManager
-    auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
-    if (!mat) continue;
-    TextureAsset* tex = mat->GetTexture().get();
-    if (!tex || tex->ID == 0) continue;
+        auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
 
-    // Build model matrix
-    glm::mat4 model(1.0f);
-    model = glm::translate(model, glm::vec3(pos, 0.0f));
-    model = glm::rotate(model, glm::radians(rot), glm::vec3(0,0,1));
-    model = glm::scale(model, glm::vec3(scale * sprite->size, 1.0f));
+        if (!mat) continue;
+        TextureAsset* tex = mat->GetTexture().get();
+        if (!tex || tex->ID == 0) continue;
 
-    glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
+        glm::mat4 model(1.0f);
+        model = glm::translate(model, glm::vec3(pos, 0.0f));
+        model = glm::rotate(model, glm::radians(rot), glm::vec3(0,0,1));
+        model = glm::scale(model, glm::vec3(scale * sprite->size, 1.0f));
 
-    // Bind texture & draw quad
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, tex->ID);
-    glUniform1i(glGetUniformLocation(DefaultShader, "u_Texture"), 0);
+        glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
 
-    glBindVertexArray(QuadVAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, tex->ID);
+        glUniform1i(glGetUniformLocation(DefaultShader, "u_Texture"), 0);
 
+        glBindVertexArray(QuadVAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
     }
 }

@@ -72,7 +72,7 @@ public:
 
 private:
     bool m_CapturingMouse = false;
-    ImVec2 m_LastMousePos;
+    ImVec2 m_LastMousePos = {0,0};
     float deltatime;
     project& Proj;
     SelectedEntity& selection;

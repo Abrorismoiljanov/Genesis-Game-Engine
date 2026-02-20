@@ -6,8 +6,10 @@
 
 class TextureAsset : public Asset{
 public:
+    int Width = 0;
+    int Height = 0;
+    
     bool LoadFromFile(const std::string& path) {
-
         stbi_set_flip_vertically_on_load(true);
         this->Path = path;   
         this->Type = AssetType::Texture;
@@ -15,10 +17,13 @@ public:
         unsigned char* data = stbi_load(path.c_str(), &w, &h, &c, 4);
         if (!data) return false;
         width = w; height = h;
+        Width = width;
+        Height = height;
         pixels.assign(data, data + (w * h * 4));
         stbi_image_free(data);
         return true;
     }
+
     
 
     void UploadToGPU() {

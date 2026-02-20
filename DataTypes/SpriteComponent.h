@@ -39,10 +39,7 @@ struct SpriteComponent : public Component {
             tex = newTex.get();
         }
 
-
-
         ImGui::DragFloat2("Size", &size.x, 0.1f);
-        ImGui::DragFloat("Rotation", &rotation, 1.0f);
 
         std::string btnID = "Load Material##" + std::to_string(ID);
         if (ImGui::Button(btnID.c_str(), ImVec2(0,30))) {
@@ -69,6 +66,13 @@ struct SpriteComponent : public Component {
    
         ImGui::BeginChild("MeshPathBox", ImVec2(0, 150), true); // true = frame 
         if(tex && tex->ID) {
+        
+        ImVec2 maxSize(128, 128); 
+        float texWidth  = (float)tex->Width;  
+        float texHeight = (float)tex->Height;
+
+        float scale = std::min(maxSize.x / texWidth, maxSize.y / texHeight);
+
             ImVec2 previewSize(128, 128); 
             ImGui::Image((ImTextureID)(uintptr_t)tex->ID, previewSize, ImVec2(0,1), ImVec2(1,0));
         }

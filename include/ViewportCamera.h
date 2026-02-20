@@ -10,59 +10,62 @@ public:
         ViewHeight = h;
     }
 
-    void ProcessMouseMotion(float dx, float dy) {
-        yaw   += dx * MouseSpeed;
-        pitch -= dy * MouseSpeed;
-
-        if (pitch > 89.0f)  pitch = 89.0f;
-        if (pitch < -89.0f) pitch = -89.0f;
-
-        UpdateVectors();
-    }
-
-    void ProcessKeyboard(const Uint8* keystate, float dt) {
+    void Update(float dt, const Uint8* keys) {
         float velocity = MoveSpeed * dt;
-        if (keystate[SDL_SCANCODE_W]) Position += Front * velocity;
-        if (keystate[SDL_SCANCODE_S]) Position -= Front * velocity;
-        if (keystate[SDL_SCANCODE_A]) Position -= Right * velocity;
-        if (keystate[SDL_SCANCODE_D]) Position += Right * velocity;
+
+        if (keys[SDL_SCANCODE_W]) Position.y += velocity;
+        if (keys[SDL_SCANCODE_S]) Position.y -= velocity;
+        if (keys[SDL_SCANCODE_A]) Position.x -= velocity;
+        if (keys[SDL_SCANCODE_D]) Position.x += velocity;
     }
 
-    glm::mat4 GetView() const {
-        return glm::lookAt(Position, Position + Front, Up);
+    void ProcessMousePan(float dx, float dy) {
+        Position.x -= dx / Zoom;
+        Position.y -= dy / Zoom;
     }
 
-    glm::mat4 GetProjection() const {
-        return glm::perspective(glm::radians(FOV), (float)ViewWidth / ViewHeight, Near, Far);
+
+    void ProcessScroll(float scrollDelta, glm::vec2 mouseScreen){
+
+        glm::vec2 before = ScreenToWorld(mouseScreen);
+        Zoom += scrollDelta * 0.1f;
+        Zoom = std::max(Zoom, 0.1f);
+        glm::vec2 after = ScreenToWorld(mouseScreen);
+        Position += before - after;
     }
 
+    glm::vec2 ScreenToWorld(glm::vec2 screen) const{
+        float worldX = screen.x / Zoom + Position.x;
+        float worldY = screen.y / Zoom + Position.y;
+        return { worldX, worldY };
+    }
+
+    glm::mat4 GetViewProjection() const {
+
+
+        glm::mat4 projection = glm::ortho(
+            0.0f,
+             (float)ViewWidth/Zoom,
+            (float)ViewHeight/Zoom,
+            0.0f,
+            -1.0f,
+             1.0f
+        );
+
+        glm::mat4 view = glm::translate(
+            glm::mat4(1.0f),
+            glm::vec3(-Position, 0.0f)
+        );
+
+        return projection * view;
+    }
+
+
+    float Zoom = 0.8f;
+    glm::vec2 Position{-1.0f, -1.0f};
 private:
-    void UpdateVectors() {
-        // Recalculate front vector from yaw/pitch
-        glm::vec3 front;
-        front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-        front.y = sin(glm::radians(pitch));
-        front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-        Front = glm::normalize(front);
+    float MoveSpeed = 500.0f;
 
-        Right = glm::normalize(glm::cross(Front, WorldUp));
-        Up    = glm::normalize(glm::cross(Right, Front));
-    }
-
-private:
-    glm::vec3 Position {0,0,5};
-    glm::vec3 Front {0,0,-1};
-    glm::vec3 Up {0,1,0};
-    glm::vec3 Right {1,0,0};
-    const glm::vec3 WorldUp {0,1,0};
-
-    float yaw   = -90.0f; // init looking down -Z
-    float pitch = 0.0f;
-    float FOV = 60.0f;
-    float Near = 0.1f, Far = 100.0f;
-    float MoveSpeed = 5.0f;
-    float MouseSpeed = 0.1f;
-
-    int ViewWidth = 1920;
+    int ViewWidth = 1280;
     int ViewHeight = 1080;
 };

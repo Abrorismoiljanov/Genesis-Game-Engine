@@ -16,8 +16,8 @@
     },
     depfiles = "FrameBuffer.o: Editor/FrameBuffer.cpp include/FrameBuffer.h\
 ",
-    depfiles_format = "gcc",
     files = {
         "Editor/FrameBuffer.cpp"
-    }
+    },
+    depfiles_format = "gcc"
 }

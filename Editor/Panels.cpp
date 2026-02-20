@@ -197,42 +197,61 @@ void Viewport::Render(){
 
     m_renderer->m_Camera.SetViewportSize(size.x, size.y);
 
-    ImVec2 mousePos = ImGui::GetMousePos();
-    bool hovered = ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows);
-    bool rmbPressed = ImGui::IsMouseDown(ImGuiMouseButton_Right);
-
-    if (hovered && rmbPressed) {
-        if (!m_CapturingMouse) {
-            m_CapturingMouse = true;
-            m_LastMousePos = mousePos;
-            imgui:
-        }
-
-        // Calculate delta
-        float dx = mousePos.x - m_LastMousePos.x;
-        float dy = mousePos.y - m_LastMousePos.y;
-        m_LastMousePos = mousePos;
-
-        
-        // Send to camera
-        m_renderer->m_Camera.ProcessMouseMotion(dx, dy);
-    } else if (m_CapturingMouse) {
-        m_CapturingMouse = false;
-    }
-
-    // Camera keyboard movement
-    const Uint8* keystate = SDL_GetKeyboardState(NULL);
-    m_renderer->m_Camera.ProcessKeyboard(keystate, deltatime);
 
     uint32_t tex = m_renderer->GetFinalImage();
-
+  
     ImGui::Image(
         (ImTextureID)(uintptr_t)tex,
         size,
         ImVec2(0,1),
         ImVec2(1,0));
 
-    ImGui::SetCursorPos(ImVec2(10, 30)); // offset inside the window
+    bool hovered = ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows);
+    bool rmbPressed = ImGui::IsMouseDown(ImGuiMouseButton_Right);
+ 
+
+    bool imageHovered = ImGui::IsItemHovered();
+
+    ImVec2 mousePos = ImGui::GetMousePos();
+    ImVec2 imageMin = ImGui::GetItemRectMin();
+
+    glm::vec2 localMouse = {
+        mousePos.x - imageMin.x,
+        mousePos.y - imageMin.y
+    };
+
+    bool rmb = ImGui::IsMouseDown(ImGuiMouseButton_Right);
+
+    if (imageHovered && rmb)
+    {
+        if (!m_CapturingMouse)
+        {
+            m_CapturingMouse = true;
+            m_LastMousePos = mousePos;
+        }
+
+        float dx = mousePos.x - m_LastMousePos.x;
+        float dy = mousePos.y - m_LastMousePos.y;
+
+        m_LastMousePos = mousePos;
+
+        m_renderer->m_Camera.ProcessMousePan(dx, dy);
+    }
+    else
+    {
+        m_CapturingMouse = false;
+    }
+
+    if (imageHovered)
+    {
+        float scroll = ImGui::GetIO().MouseWheel;
+        if (scroll != 0.0f)
+        {
+            m_renderer->m_Camera.ProcessScroll(scroll, localMouse);
+        }
+    }
+
+    ImGui::SetCursorPos(ImVec2(10, 30)); 
     ImGui::Text("deltaTime: %.6f", deltatime);
 
     ImGui::End();
