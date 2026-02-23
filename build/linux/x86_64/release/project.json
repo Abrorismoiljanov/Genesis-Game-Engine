@@ -4,7 +4,7 @@
         "asset_manifest": [
             {
                 "handle": 1,
-                "texture_path": "/home/abror/Documents/.folder/SHINFAN+(2)/Eng/14.jpg",
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Msdos-1730606937.png",
                 "type": "Material"
             }
         ],
@@ -50,7 +50,7 @@
         "name": "Default Project",
         "nextComponentID": 2,
         "nextEntityID": 1,
-        "nextSceneID": 0,
+        "nextSceneID": 1,
         "scenes": [
             {
                 "EntityIDs": [
