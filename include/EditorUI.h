@@ -14,10 +14,11 @@ public:
     void AddPanel(std::shared_ptr<Panel> panel) {
         panels.push_back(panel);
     }
-
+    void RenderMenuBar();
+    EditorUI(project& proj);
 
 private:
-    project* Project = nullptr;
+    project& Project;
     std::vector<std::shared_ptr<Panel>> panels; 
     SelectedEntity Selection;
     Renderer* renderer = nullptr;

@@ -12,8 +12,35 @@ struct SpriteComponent : public Component {
     glm::vec2 size = {1.0f, 1.0f};              // width/height
     float rotation = 0.0f;                      // rotation in degrees
 
-    std::string Getname(){
+    std::string Getname() const override{
         return "Sprite";
+    };
+
+json Serialize() const override {
+        json j;
+        j["materialHandle"] = materialHandle;
+        j["size"]           = {size.x, size.y};
+        j["rotation"]       = rotation;
+        return j;
+    }
+
+    void Deserialize(const json& data) override {
+        materialHandle = INVALID_ASSET;
+        size           = {1.0f, 1.0f};
+        rotation       = 0.0f;
+
+        if (data.contains("materialHandle")) {
+            materialHandle = data["materialHandle"].get<AssetHandle>();
+        }
+
+        if (data.contains("size") && data["size"].is_array() && data["size"].size() == 2) {
+            size.x = data["size"][0].get<float>();
+            size.y = data["size"][1].get<float>();
+        }
+
+        if (data.contains("rotation")) {
+            rotation = data["rotation"].get<float>();
+        }
     };
 
    void DrawComponentUI(AssetManager& assetManager){

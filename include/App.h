@@ -1,8 +1,9 @@
+#define IMGUI_DEFINE_MATH_OPERATORS
 #include "project.h"
 #include "EditorUI.h"
 #include "Renderer.h"
 
-class app {
+class app{
 private:
 
     SDL_Window* window;

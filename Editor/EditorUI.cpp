@@ -4,10 +4,9 @@
 #include "SDL2/SDL.h"
 #include "ComponentRegisterList.h"
 
+EditorUI::EditorUI(project& proj): Project(proj), renderer(nullptr){}
 
 void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer){
-  
-
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -44,6 +43,8 @@ void EditorUI::Render(){
 
     ImGui::DockSpaceOverViewport();
 
+    RenderMenuBar();
+
     for (auto& panel : panels) {
         panel->Render();
     }
@@ -52,4 +53,38 @@ void EditorUI::Render(){
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 };
 
+void EditorUI::RenderMenuBar() {
 
+    if (ImGui::BeginMainMenuBar()) {
+
+        if (ImGui::BeginMenu("File")) {
+
+            // Save Project
+            if (ImGui::MenuItem("Save Project")) {
+                if (Project.SaveToFile("project.json")) {
+                    std::cout << "Project saved successfully\n";
+                } else {
+                    std::cout << "Failed to save project\n";
+                }
+            }
+
+            // Load Project
+            if (ImGui::MenuItem("Load Project")) {
+                if (Project.LoadFromFile("project.json")) {
+                    std::cout << "Project loaded successfully\n";
+                } else {
+                    std::cout << "Failed to load project\n";
+                }
+            }
+
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Edit")) {
+            if (ImGui::MenuItem("Project Parameter")) {}
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMainMenuBar();
+    }
+}

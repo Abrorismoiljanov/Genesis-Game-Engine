@@ -12,7 +12,8 @@
 
 app::app():
 window(nullptr),
-glContext(nullptr)
+glContext(nullptr), 
+UI(Project)
 {}
 
 bool app::Init(){

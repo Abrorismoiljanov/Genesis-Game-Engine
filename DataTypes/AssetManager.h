@@ -13,7 +13,7 @@ public:
     AssetHandle RegisterAsset( const std::shared_ptr<Asset>& asset);
 
     template<typename T>
-    std::shared_ptr<T> Get(AssetHandle handle){
+    std::shared_ptr<T> Get(AssetHandle handle) const{
         auto it = m_HandleToIndex.find(handle);
         if (it == m_HandleToIndex.end()) 
             return nullptr;

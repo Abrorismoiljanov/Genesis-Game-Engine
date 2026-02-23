@@ -1,4 +1,7 @@
 {
+    depfiles_format = "gcc",
+    depfiles = "components.o: DataTypesDef/components.cpp DataTypes/components.h\
+",
     values = {
         "/usr/bin/g++",
         {
@@ -14,9 +17,6 @@
             "-DNDEBUG"
         }
     },
-    depfiles = "components.o: DataTypesDef/components.cpp DataTypes/components.h\
-",
-    depfiles_format = "gcc",
     files = {
         "DataTypesDef/components.cpp"
     }
