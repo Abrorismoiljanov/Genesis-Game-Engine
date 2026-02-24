@@ -83,22 +83,11 @@ void Renderer::Render(project& Proj){
    entity* e = Proj.GetEntityByID(entityID);
     if (!e) continue;
 
-    // Get TransformComponent by ID
-    TransformComponent* t = nullptr;
-    for (uint32_t compID : e->ComponentIDs) {
-        Component* c = Proj.GetComponentByID(compID);
-        if (!c) continue;
-
-        if (c->Getname() == "Transform") {
-            t = static_cast<TransformComponent*>(c);
-            break;
-        }
-    }
 
 
-    glm::vec2 pos = t ? t->transform.position : glm::vec2(0.0f);
-    float rot = t ? t->transform.rotation : 0.0f;
-    glm::vec2 scale = t ? t->transform.scale : glm::vec2(1.0f);
+    glm::vec2 pos = e ? e->transform.position : glm::vec2(0.0f);
+    float rot = e ? e->transform.rotation : 0.0f;
+    glm::vec2 scale = e ? e->transform.scale : glm::vec2(1.0f);
 
     // Get SpriteComponent by ID
     SpriteComponent* sprite = nullptr;

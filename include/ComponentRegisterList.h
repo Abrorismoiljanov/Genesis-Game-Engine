@@ -5,6 +5,5 @@
 void RegisterAllComponents() {
     auto& reg = ComponentRegistry::Get();
         
-    reg.Register<TransformComponent>("Transform", false);
     reg.Register<SpriteComponent>("Sprite", true);
 }

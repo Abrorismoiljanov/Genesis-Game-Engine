@@ -13,7 +13,6 @@
 #include "SpriteComponent.h"
 #include "AssetManager.h"
 #include "nlohmann/json.hpp"
-#include "transformcomponent.h"
 #include "Assets/MaterialAsset.h"
 #include "unordered_set"
 #include "fstream"
@@ -59,7 +58,7 @@ struct project{
         json ent;
         ent["id"] = e.ID;
         ent["name"] = e.name;
-        
+        ent["transform"] = e.Serialize();
         pj["entities"].push_back(ent);
     }
 
@@ -135,6 +134,9 @@ for (AssetHandle h : used_handles) {
                 entity e;
                 e.ID   = ej.value("id", 0u);
                 e.name = ej.value("name", "Entity");
+                if (ej.contains("transform")) {
+                    e.Deserialize(ej["transform"]);   // <-- load transform
+                }
                 EntityList.push_back(e);
             }
         }
@@ -161,10 +163,7 @@ for (AssetHandle h : used_handles) {
 
             std::unique_ptr<Component> comp = nullptr;
 
-            if (type == "Transform") {
-                comp = std::make_unique<TransformComponent>();
-            }
-            else if (type == "Sprite") {
+            if (type == "Sprite") {
                 comp = std::make_unique<SpriteComponent>();
             }
             // add more types here later

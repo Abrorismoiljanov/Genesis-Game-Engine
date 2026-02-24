@@ -1,6 +1,4 @@
 {
-    depfiles = "entity.o: DataTypesDef/entity.cpp DataTypes/entity.h imgui/imgui.h  imgui/imconfig.h\
-",
     values = {
         "/usr/bin/g++",
         {
@@ -19,5 +17,7 @@
     files = {
         "DataTypesDef/entity.cpp"
     },
-    depfiles_format = "gcc"
+    depfiles_format = "gcc",
+    depfiles = "entity.o: DataTypesDef/entity.cpp DataTypes/entity.h imgui/imgui.h  imgui/imconfig.h\
+"
 }

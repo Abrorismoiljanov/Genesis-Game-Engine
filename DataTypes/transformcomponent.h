@@ -8,12 +8,6 @@
 #include "project.h"
 
 
-struct TransformData{
-    glm::vec3 position {0.0f};
-    float rotation {0.0f}; 
-    glm::vec3 scale    {1.0f};
-};
-
 
 class TransformComponent: public Component{
 public:
