@@ -24,8 +24,9 @@ public:
     
     };
 
+    AssetHandle RegisterAssetWithHandle(const std::shared_ptr<Asset>& asset,AssetHandle forcedHandle);
     AssetHandle GenerateHandle();
-    void CleanupUnusedAssets(const std::vector<std::unique_ptr<Component>>& components);
+ //   void CleanupUnusedAssets(const std::vector<std::unique_ptr<Component>>& components);
 
 private:
     std::vector<std::shared_ptr<Asset>> m_Assets;

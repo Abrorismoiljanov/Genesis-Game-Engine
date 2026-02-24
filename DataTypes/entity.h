@@ -6,7 +6,7 @@
 class entity{
 public:
     std::string name;
-    uint32_t ID = GenerateID();
+    uint32_t ID = 0;
     std::vector<uint32_t> ComponentIDs; 
 
     void DrawInfoUI();
@@ -14,9 +14,5 @@ public:
 
 private:
 
-    uint32_t GenerateID() {
-        static uint32_t currentID = 0;
-        return currentID++;
-    }
 
 };

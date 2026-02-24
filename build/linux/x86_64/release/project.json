@@ -18,8 +18,8 @@
                     ],
                     "rotation": 0.0,
                     "scale": [
-                        1.2000000476837158,
-                        1.7999999523162842,
+                        1.0,
+                        1.0,
                         1.0
                     ]
                 },
@@ -32,8 +32,8 @@
                     "materialHandle": 1,
                     "rotation": 0.0,
                     "size": [
-                        128.0,
-                        128.0
+                        32.0,
+                        32.0
                     ]
                 },
                 "id": 1,
@@ -44,13 +44,13 @@
         "entities": [
             {
                 "id": 0,
-                "name": "Msdos"
+                "name": "Entity"
             }
         ],
         "name": "Default Project",
         "nextComponentID": 2,
         "nextEntityID": 1,
-        "nextSceneID": 1,
+        "nextSceneID": 0,
         "scenes": [
             {
                 "EntityIDs": [

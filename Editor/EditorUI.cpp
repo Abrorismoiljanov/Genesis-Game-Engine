@@ -3,6 +3,7 @@
 #include "../imgui/backends/imgui_impl_sdl2.h"
 #include "SDL2/SDL.h"
 #include "ComponentRegisterList.h"
+#include "ImGuiFileDialog.h"
 
 EditorUI::EditorUI(project& proj): Project(proj), renderer(nullptr){}
 
@@ -49,32 +50,57 @@ void EditorUI::Render(){
         panel->Render();
     }
 
+if (ImGuiFileDialog::Instance()->Display("SaveProjectDlg"))
+{
+    if (ImGuiFileDialog::Instance()->IsOk())
+    {
+        std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
+        Project.SaveToFile(filePath);
+    }
+
+    ImGuiFileDialog::Instance()->Close();
+}
+
+if (ImGuiFileDialog::Instance()->Display("LoadProjectDlg"))
+{
+    if (ImGuiFileDialog::Instance()->IsOk())
+    {
+        std::string filePath = ImGuiFileDialog::Instance()->GetFilePathName();
+        Project.LoadFromFile(filePath);
+    }
+
+    ImGuiFileDialog::Instance()->Close();
+}
+
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 };
 
 void EditorUI::RenderMenuBar() {
 
+    IGFD::FileDialogConfig cfg;
     if (ImGui::BeginMainMenuBar()) {
 
         if (ImGui::BeginMenu("File")) {
 
             // Save Project
             if (ImGui::MenuItem("Save Project")) {
-                if (Project.SaveToFile("project.json")) {
-                    std::cout << "Project saved successfully\n";
-                } else {
-                    std::cout << "Failed to save project\n";
-                }
+                ImGuiFileDialog::Instance()->OpenDialog(
+                    "SaveProjectDlg",
+                    "Save Project",
+                    ".json",
+                    cfg
+                );
             }
 
             // Load Project
             if (ImGui::MenuItem("Load Project")) {
-                if (Project.LoadFromFile("project.json")) {
-                    std::cout << "Project loaded successfully\n";
-                } else {
-                    std::cout << "Failed to load project\n";
-                }
+                ImGuiFileDialog::Instance()->OpenDialog(
+                    "LoadProjectDlg",
+                    "Load Project",
+                    ".json",
+                    cfg
+                );
             }
 
             ImGui::EndMenu();
@@ -86,5 +112,8 @@ void EditorUI::RenderMenuBar() {
         }
 
         ImGui::EndMainMenuBar();
+    
+
+
     }
 }

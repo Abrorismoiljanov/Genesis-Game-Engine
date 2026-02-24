@@ -217,31 +217,22 @@ if (pj.contains("asset_manifest")) {
             continue;
         }
 
-        // Create fresh texture
         auto new_tex = std::make_shared<TextureAsset>();
         new_tex->LoadFromFile(texture_path);
 
 
         new_tex->UploadToGPU();  // or whatever method you use to prepare for rendering
 
-        // Create material and attach texture
-        auto new_mat = std::make_shared<MaterialAsset>();
-        new_mat->SetTexture(new_tex);
+     
+                auto new_mat = std::make_shared<MaterialAsset>();
+                new_mat->SetTexture(new_tex);
 
-        // Register it back — ideally with the same handle
-        AssetHandle new_handle = Assets.RegisterAsset(new_mat);  // ← your normal registration
+                Assets.RegisterAssetWithHandle(new_mat, saved_handle);
+            }
 
-        // If your AssetManager allows forcing the handle, do:
-        // AssetHandle new_handle = Assets.RegisterAssetWithHandle(new_mat, saved_handle);
-        // If not, you may need to remap handles (see below)
-
-        std::cout << "[DEBUG] Reloaded material from " << texture_path 
-                  << " with handle " << new_handle << "\n";
+        } else {
+        std::cout << "[DEBUG] No asset_manifest found — no materials reloaded\n";
     }
-} else {
-    std::cout << "[DEBUG] No asset_manifest found — no materials reloaded\n";
-}
-
     }
 
 
@@ -329,6 +320,35 @@ if (pj.contains("asset_manifest")) {
         }
         return raw;
     }
+void DeleteComponent(uint32_t compID) {
+
+    // 1. Find component
+    Component* comp = GetComponentByID(compID);
+    if (!comp) return;
+
+    uint32_t ownerID = comp->OwnerEntityID;
+
+    // 2. Remove from ComponentList
+    ComponentList.erase(
+        std::remove_if(
+            ComponentList.begin(),
+            ComponentList.end(),
+            [compID](const std::unique_ptr<Component>& c) {
+                return c->ID == compID;
+            }
+        ),
+        ComponentList.end()
+    );
+
+    // 3. Remove ID from entity
+    if (entity* e = GetEntityByID(ownerID)) {
+        auto& ids = e->ComponentIDs;
+        ids.erase(
+            std::remove(ids.begin(), ids.end(), compID),
+            ids.end()
+        );
+    }
+}
 
 
     Component* GetComponentByID(uint32_t id) {

@@ -1,7 +1,4 @@
 {
-    files = {
-        "Editor/main.cpp"
-    },
     values = {
         "/usr/bin/g++",
         {
@@ -17,7 +14,10 @@
             "-DNDEBUG"
         }
     },
-    depfiles_format = "gcc",
     depfiles = "main.o: Editor/main.cpp include/App.h DataTypes/project.h  DataTypes/scene.h DataTypes/entity.h DataTypes/components.h  DataTypes/SpriteComponent.h DataTypes/Assets/Asset.h  DataTypes/Assets/MaterialAsset.h DataTypes/Assets/TextureAsset.h  include/stb_image.h imgui/imgui.h imgui/imconfig.h  DataTypes/AssetManager.h include/ImGuiFileDialog.h  include/ImGuiFileDialogConfig.h DataTypes/transformcomponent.h  include/EditorUI.h include/Panels.h include/Renderer.h  include/FrameBuffer.h include/ViewportCamera.h include/SelectedEntity.h\
-"
+",
+    files = {
+        "Editor/main.cpp"
+    },
+    depfiles_format = "gcc"
 }

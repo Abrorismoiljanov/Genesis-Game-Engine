@@ -35,19 +35,20 @@ void EntityList::Render(){
             ImGui::Text("No entities in this scene");
         } else {
         
-for (size_t i = 0; i < defaultScene.EntityIDs.size(); ++i) {
-    uint32_t entityID = defaultScene.EntityIDs[i];
-    entity* e = Proj.GetEntityByID(entityID);
-    if (!e) continue;
+            for (size_t i = 0; i < defaultScene.EntityIDs.size(); ++i) {
+                uint32_t entityID = defaultScene.EntityIDs[i];
+                entity* e = Proj.GetEntityByID(entityID);
+                if (!e) continue;
 
-    ImGui::PushID(entityID);
+                ImGui::PushID(entityID);
 
-    // Selection
-    bool selected = (selection.EntityID == e->ID);
-    if (ImGui::Selectable(e->name.c_str(), selected)) {
-        selection.ClearEntity();
-        selection.EntityID = e->ID;
-    }
+
+                bool selected = (selection.EntityID == e->ID);
+                if (ImGui::Selectable(e->name.c_str(), selected)) {
+                    selection.ClearEntity();
+                    selection.EntityID = e->ID;
+
+                }
 
     // --- Drag & Drop ---
     if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
@@ -67,16 +68,13 @@ for (size_t i = 0; i < defaultScene.EntityIDs.size(); ++i) {
                 uint32_t movedID = ids[srcIndex];
                 ids.erase(ids.begin() + srcIndex);
                 ids.insert(ids.begin() + i, movedID);
-            }
-        }
-        ImGui::EndDragDropTarget();
-    }
-    // -------------------
     
+                        }
+                    }
+                    ImGui::EndDragDropTarget();
+                }
                 ImGui::PopID();
-
             }
-        
         }
     }
     ImGui::End();
@@ -108,6 +106,9 @@ void Inspector::Render(){
 
         auto& comps = CurrentEntity->ComponentIDs;
 
+        uint32_t componentToDelete = 0;
+        bool hasDeleteRequest = false;
+
         for (size_t i = 0; i < comps.size(); ++i) {    
             uint32_t compID = comps[i];
  
@@ -116,11 +117,19 @@ void Inspector::Render(){
                 ImGui::Dummy(ImVec2(1, 1));
                 ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
                 
-                float totalButtonWidth = 40.0f; // 2 buttons × 20 width
+                float totalButtonWidth = 60.0f; // 2 buttons × 20 width
                 float spacing = 4.0f;
                 float posX = ImGui::GetWindowContentRegionMax().x - totalButtonWidth - spacing;
                 ImGui::SameLine(posX);
 
+                bool requestDelete = false;
+
+                if (ImGui::Button("X")) {
+                    hasDeleteRequest = true;
+                    componentToDelete = compID;
+                }
+
+                ImGui::SameLine(0, 5.0f);
 
                 if (ImGui::ArrowButton("##up", ImGuiDir_Up) && i > 0) {
                     std::swap(comps[i], comps[i - 1]);
@@ -136,8 +145,13 @@ void Inspector::Render(){
                 if (open) {
                     c->DrawComponentUI(Proj.Assets);
                 }
+           
+                ImGui::PopID();
             }
-            ImGui::PopID();
+        }
+
+        if (hasDeleteRequest) {
+            Proj.DeleteComponent(componentToDelete);
         }
         
         ImGui::Spacing(); 
@@ -179,9 +193,9 @@ void Inspector::Render(){
             }
      
             ImGui::EndPopup();
-        }
-       ImGui::PopStyleColor(2);
-            ImGui::PopStyleVar(3);
+        }   
+        ImGui::PopStyleColor(2);
+        ImGui::PopStyleVar(3);
 
     }
  

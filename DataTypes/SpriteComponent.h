@@ -26,8 +26,8 @@ json Serialize() const override {
 
     void Deserialize(const json& data) override {
         materialHandle = INVALID_ASSET;
-        size           = {1.0f, 1.0f};
-        rotation       = 0.0f;
+        size = {1.0f, 1.0f};
+        rotation = 0.0f;
 
         if (data.contains("materialHandle")) {
             materialHandle = data["materialHandle"].get<AssetHandle>();
@@ -87,6 +87,7 @@ json Serialize() const override {
                 path = ImGuiFileDialog::Instance()->GetFilePathName();
                 mat->GetTexture()->LoadFromFile(path);
                 mat->GetTexture()->UploadToGPU();
+                size = {tex->Width, tex->Height};
             }
             ImGuiFileDialog::Instance()->Close();
         }

@@ -21,7 +21,17 @@ AssetHandle AssetManager::RegisterAsset(const std::shared_ptr<Asset>& asset){
     }
     return handle;
 };
+AssetHandle AssetManager::RegisterAssetWithHandle(const std::shared_ptr<Asset>& asset,AssetHandle forcedHandle){
+    uint32_t index = m_Assets.size();
+    m_Assets.push_back(asset);
 
-void AssetManager::CleanupUnusedAssets(const std::vector<std::unique_ptr<Component>>& components) {}
+    m_HandleToIndex[forcedHandle] = index;
+
+    m_LastHandle = std::max(m_LastHandle, forcedHandle + 1);
+
+    return forcedHandle;
+}
+
+// void AssetManager::CleanupUnusedAssets(const std::vector<std::unique_ptr<Component>>& components) {}
     
 
