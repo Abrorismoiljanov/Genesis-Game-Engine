@@ -205,6 +205,7 @@ void Inspector::Render(){
 void Inspector::Update(float dt){};
 
 void Viewport::Render(){
+    
     ImGui::Begin("Viewport");
 
     ImVec2 size = ImGui::GetContentRegionAvail();

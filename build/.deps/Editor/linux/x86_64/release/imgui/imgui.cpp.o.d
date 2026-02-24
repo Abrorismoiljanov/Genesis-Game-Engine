@@ -1,4 +1,6 @@
 {
+    depfiles = "imgui.o: imgui/imgui.cpp imgui/imgui.h imgui/imconfig.h  imgui/imgui_internal.h\
+",
     values = {
         "/usr/bin/g++",
         {
@@ -14,8 +16,6 @@
             "-DNDEBUG"
         }
     },
-    depfiles = "imgui.o: imgui/imgui.cpp imgui/imgui.h imgui/imconfig.h  imgui/imgui_internal.h\
-",
     depfiles_format = "gcc",
     files = {
         "imgui/imgui.cpp"

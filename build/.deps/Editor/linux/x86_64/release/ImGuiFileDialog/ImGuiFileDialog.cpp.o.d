@@ -1,4 +1,6 @@
 {
+    depfiles = "ImGuiFileDialog.o: ImGuiFileDialog/ImGuiFileDialog.cpp  ImGuiFileDialog/ImGuiFileDialog.h  ImGuiFileDialog/ImGuiFileDialogConfig.h imgui/imgui.h imgui/imconfig.h  imgui/imgui_internal.h\
+",
     values = {
         "/usr/bin/g++",
         {
@@ -14,8 +16,6 @@
             "-DNDEBUG"
         }
     },
-    depfiles = "ImGuiFileDialog.o: ImGuiFileDialog/ImGuiFileDialog.cpp  ImGuiFileDialog/ImGuiFileDialog.h  ImGuiFileDialog/ImGuiFileDialogConfig.h imgui/imgui.h imgui/imconfig.h  imgui/imgui_internal.h\
-",
     depfiles_format = "gcc",
     files = {
         "ImGuiFileDialog/ImGuiFileDialog.cpp"

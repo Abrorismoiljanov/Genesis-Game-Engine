@@ -1,4 +1,6 @@
 {
+    depfiles = "ShaderUtils.o: Editor/ShaderUtils.cpp include/ShaderUtils.h\
+",
     values = {
         "/usr/bin/g++",
         {
@@ -14,8 +16,6 @@
             "-DNDEBUG"
         }
     },
-    depfiles = "ShaderUtils.o: Editor/ShaderUtils.cpp include/ShaderUtils.h\
-",
     depfiles_format = "gcc",
     files = {
         "Editor/ShaderUtils.cpp"

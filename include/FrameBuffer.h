@@ -9,7 +9,7 @@ public:
     void Resize(uint32_t w, uint32_t h);
 
     uint32_t GetColorAttachment() const { return m_ColorAttachment; }
-private:    
+    
     uint32_t m_FBO = 0;
     uint32_t m_ColorAttachment = 0;
     uint32_t m_DepthAttachment = 0;

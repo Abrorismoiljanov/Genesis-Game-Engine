@@ -1,4 +1,6 @@
 {
+    depfiles = "imgui_impl_sdl2.o: imgui/backends/imgui_impl_sdl2.cpp imgui/imgui.h  imgui/imconfig.h imgui/backends/imgui_impl_sdl2.h\
+",
     values = {
         "/usr/bin/g++",
         {
@@ -14,8 +16,6 @@
             "-DNDEBUG"
         }
     },
-    depfiles = "imgui_impl_sdl2.o: imgui/backends/imgui_impl_sdl2.cpp imgui/imgui.h  imgui/imconfig.h imgui/backends/imgui_impl_sdl2.h\
-",
     depfiles_format = "gcc",
     files = {
         "imgui/backends/imgui_impl_sdl2.cpp"

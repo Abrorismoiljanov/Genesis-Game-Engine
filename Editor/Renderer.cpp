@@ -49,11 +49,11 @@ void Renderer::Init(int w, int h){
     glBindVertexArray(0);
 }
 
-void Renderer::BeginFrame(int w, int h){
+void Renderer::BeginFrame(){
 
     m_Framebuffer.Bind();
 
-    glViewport(0, 0, w, h); 
+    glViewport(0, 0, m_Framebuffer.m_Width, m_Framebuffer.m_Height); 
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

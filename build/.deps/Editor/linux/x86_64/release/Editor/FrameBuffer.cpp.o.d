@@ -1,4 +1,5 @@
 {
+    depfiles_format = "gcc",
     values = {
         "/usr/bin/g++",
         {
@@ -18,6 +19,5 @@
 ",
     files = {
         "Editor/FrameBuffer.cpp"
-    },
-    depfiles_format = "gcc"
+    }
 }

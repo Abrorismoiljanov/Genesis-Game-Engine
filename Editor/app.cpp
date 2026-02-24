@@ -110,7 +110,7 @@ void app::Render(){
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
     
-    renderer.BeginFrame(w, h);
+    renderer.BeginFrame();
     if (!Project.SceneList.empty())
         renderer.Render(Project);
  

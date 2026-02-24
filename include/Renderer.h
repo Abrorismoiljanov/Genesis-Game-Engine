@@ -9,7 +9,7 @@ class Renderer{
 
 public:
     void Init(int w, int h);
-    void BeginFrame(int w, int h);
+    void BeginFrame();
     void Render(project& Proj);
     void EndFrame();
     ViewportCamera m_Camera;

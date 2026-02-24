@@ -1,7 +1,4 @@
 {
-    files = {
-        "DataTypesDef/AssetManager.cpp"
-    },
     depfiles = "AssetManager.o: DataTypesDef/AssetManager.cpp DataTypes/AssetManager.h  imgui/imgui.h imgui/imconfig.h DataTypes/Assets/Asset.h  DataTypes/components.h\
 ",
     values = {
@@ -19,5 +16,8 @@
             "-DNDEBUG"
         }
     },
-    depfiles_format = "gcc"
+    depfiles_format = "gcc",
+    files = {
+        "DataTypesDef/AssetManager.cpp"
+    }
 }
