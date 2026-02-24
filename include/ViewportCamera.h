@@ -63,9 +63,9 @@ public:
 
     float Zoom = 0.8f;
     glm::vec2 Position{-1.0f, -1.0f};
-private:
-    float MoveSpeed = 500.0f;
-
     int ViewWidth = 1280;
     int ViewHeight = 1080;
+    int HalfWidth = ViewWidth/2;
+    int HalfHeight = ViewHeight/2;
+    float MoveSpeed = 500.0f;
 };

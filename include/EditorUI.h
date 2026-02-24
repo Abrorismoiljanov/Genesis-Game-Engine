@@ -8,15 +8,16 @@
 class EditorUI{
 public:
  
-    void Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer);
+    void Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer, bool& running);
     void Update(float deltatime);
     void Render();
     void AddPanel(std::shared_ptr<Panel> panel) {
         panels.push_back(panel);
     }
     void RenderMenuBar();
-    EditorUI(project& proj);
+    EditorUI(project& proj, bool& running);
 
+    bool& Run;
 private:
     project& Project;
     std::vector<std::shared_ptr<Panel>> panels; 

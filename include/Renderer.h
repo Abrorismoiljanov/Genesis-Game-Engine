@@ -14,11 +14,15 @@ public:
     void EndFrame();
     ViewportCamera m_Camera;
 
+
+    void RenderGrid();
+
     uint32_t GetFinalImage() const { return m_Framebuffer.GetColorAttachment(); }
 
 private:
     FrameBuffer m_Framebuffer;
     GLuint DefaultShader;
+    GLuint GridShader;
 
 
     GLuint QuadVAO = 0;

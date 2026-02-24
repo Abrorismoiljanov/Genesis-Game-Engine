@@ -13,7 +13,7 @@
 app::app():
 window(nullptr),
 glContext(nullptr), 
-UI(Project)
+UI(Project, running)
 {}
 
 bool app::Init(){
@@ -54,8 +54,8 @@ bool app::Init(){
     lastTime = SDL_GetPerformanceCounter();
 
 
-    UI.Init(window, glContext, Project, &renderer);
-    renderer.Init(1280, 720);
+    UI.Init(window, glContext, Project, &renderer, running);
+    renderer.Init(1280, 1020);
 
     return true;
 

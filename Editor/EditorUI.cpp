@@ -5,9 +5,11 @@
 #include "ComponentRegisterList.h"
 #include "ImGuiFileDialog.h"
 
-EditorUI::EditorUI(project& proj): Project(proj), renderer(nullptr){}
+EditorUI::EditorUI(project& proj, bool& running): Project(proj), renderer(nullptr), Run(running){}
 
-void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer){
+void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer, bool& running){
+
+    running = Run;
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -72,6 +74,7 @@ if (ImGuiFileDialog::Instance()->Display("LoadProjectDlg"))
     ImGuiFileDialog::Instance()->Close();
 }
 
+
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 };
@@ -110,10 +113,14 @@ void EditorUI::RenderMenuBar() {
             if (ImGui::MenuItem("Project Parameter")) {}
             ImGui::EndMenu();
         }
+        if(ImGui::BeginMenu("Editor")){
+            if (ImGui::MenuItem("Quit")){
+                Run = false;
+            }
+            ImGui::EndMenu();
+        }
 
         ImGui::EndMainMenuBar();
-    
-
 
     }
 }

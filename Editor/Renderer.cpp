@@ -11,10 +11,11 @@ void Renderer::Init(int w, int h){
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     DefaultShader = CompileShader("/home/abror/Project/GGE/Shader/VSH.glsl","/home/abror/Project/GGE/Shader/FSH.glsl");
+    GridShader = CompileShader("/home/abror/Project/GGE/Shader/GridVert.glsl","/home/abror/Project/GGE/Shader/GridFrag.glsl");
+ 
     m_Framebuffer.Create(w, h);
 
     float vertices[] = {
-        // positions   // uvs
         -0.5f, -0.5f,  0.0f, 0.0f,
          0.5f, -0.5f,  1.0f, 0.0f,
          0.5f,  0.5f,  1.0f, 1.0f,
@@ -61,9 +62,10 @@ void Renderer::EndFrame(){
     m_Framebuffer.UnBind();
 }
 void Renderer::Render(project& Proj){
-    
-    glUseProgram(DefaultShader);
+ 
+    RenderGrid();
 
+    glUseProgram(DefaultShader);
 
     float scale = m_Camera.Zoom; 
 
@@ -133,3 +135,4 @@ void Renderer::Render(project& Proj){
         glBindVertexArray(0);
     }
 }
+void Renderer::RenderGrid(){}
