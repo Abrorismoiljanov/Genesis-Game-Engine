@@ -55,7 +55,7 @@ bool app::Init(){
 
 
     UI.Init(window, glContext, Project, &renderer, running);
-    renderer.Init(1280, 1020);
+    renderer.Init(1920, 1080);
 
     return true;
 
