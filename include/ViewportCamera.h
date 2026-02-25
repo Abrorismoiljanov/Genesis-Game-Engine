@@ -10,6 +10,24 @@ public:
         ViewHeight = h;
     }
 
+
+    glm::mat4 GetViewMatrix() const{
+        return glm::translate(
+            glm::mat4(1.0f),
+            glm::vec3(-Position, 0.0f)
+        );
+    }
+
+    glm::mat4 GetProjectionMatrix() const{
+        return glm::ortho(
+            0.0f,
+            (float)ViewWidth / Zoom,
+            (float)ViewHeight / Zoom,
+            0.0f,
+            -1.0f,
+            1.0f);
+    }
+
     void Update(float dt, const Uint8* keys) {
         float velocity = MoveSpeed * dt;
 
@@ -41,23 +59,7 @@ public:
     }
 
     glm::mat4 GetViewProjection() const {
-
-
-        glm::mat4 projection = glm::ortho(
-            0.0f,
-             (float)ViewWidth/Zoom,
-            (float)ViewHeight/Zoom,
-            0.0f,
-            -1.0f,
-             1.0f
-        );
-
-        glm::mat4 view = glm::translate(
-            glm::mat4(1.0f),
-            glm::vec3(-Position, 0.0f)
-        );
-
-        return projection * view;
+        return GetProjectionMatrix() * GetViewMatrix();
     }
 
 

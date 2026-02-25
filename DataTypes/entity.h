@@ -59,11 +59,25 @@ public:
         }
     }
 
+    glm::mat4 GetTransformMatrix() const{
+
+        glm::mat4 mat = glm::mat4(1.0f);
+
+        mat = glm::translate(mat, transform.position);
+
+        mat = glm::rotate(
+            mat,
+            glm::radians(transform.rotation),
+            glm::vec3(0.0f, 0.0f, 1.0f)
+        );
+        mat = glm::scale(mat, transform.scale);
+        return mat;
+    }
+
 
     void DrawInfoUI();
 
 
 private:
-
-
 };
+

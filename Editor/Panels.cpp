@@ -2,6 +2,23 @@
 #include "imgui.h"
 #include "project.h"
 #include "CompRegister.h"
+#include "ImGuizmo.h"
+
+void ApplyMatrixTo2D(entity* e, const glm::mat4& mat){
+    // Translation
+    e->transform.position.x = mat[3][0];
+    e->transform.position.y = mat[3][1];
+
+    // Scale (length of basis vectors)
+    e->transform.scale.x = glm::length(glm::vec2(mat[0]));
+    e->transform.scale.y = glm::length(glm::vec2(mat[1]));
+
+    // Rotation (extract from normalized X axis)
+    glm::vec2 right = glm::normalize(glm::vec2(mat[0]));
+    float angle = atan2(right.y, right.x);
+    e->transform.rotation = glm::degrees(angle);
+}
+
 
 void TestPanel::Render(){
     ImGui::Begin(name.c_str());
@@ -206,6 +223,15 @@ void Inspector::Update(float dt){};
 
 void Viewport::Render(){
     
+    entity* CurrentEntity = nullptr;
+    uint32_t selectedID = selection.EntityID;
+
+    for (auto& SelectedE : Proj.EntityList) {
+        if (selection.EntityID == SelectedE.ID) {
+            CurrentEntity = &SelectedE;
+        }
+    } 
+
     ImGui::Begin("Viewport");
 
     ImVec2 size = ImGui::GetContentRegionAvail();
@@ -229,18 +255,20 @@ void Viewport::Render(){
 
     ImVec2 mousePos = ImGui::GetMousePos();
     ImVec2 imageMin = ImGui::GetItemRectMin();
+    ImVec2 imageMax = ImGui::GetItemRectMax();
+
+    bool overGizmo = ImGuizmo::IsOver();
 
     glm::vec2 localMouse = {
+
         mousePos.x - imageMin.x,
-        mousePos.y - imageMin.y
+        imageMax.y - mousePos.y // Y flipped here to match framebuffer
     };
 
     bool rmb = ImGui::IsMouseDown(ImGuiMouseButton_Right);
 
-    if (imageHovered && rmb)
-    {
-        if (!m_CapturingMouse)
-        {
+    if (imageHovered && rmb && !overGizmo){
+        if (!m_CapturingMouse){
             m_CapturingMouse = true;
             m_LastMousePos = mousePos;
         }
@@ -249,11 +277,8 @@ void Viewport::Render(){
         float dy = mousePos.y - m_LastMousePos.y;
 
         m_LastMousePos = mousePos;
-
         m_renderer->m_Camera.ProcessMousePan(dx, dy);
-    }
-    else
-    {
+    }else{
         m_CapturingMouse = false;
     }
 
@@ -266,6 +291,42 @@ void Viewport::Render(){
         }
     }
 
+    bool DrawGizmo = false;
+    if (CurrentEntity == nullptr) DrawGizmo = false;else DrawGizmo = true;
+
+    if (DrawGizmo){
+
+        ImGuizmo::BeginFrame();
+    
+        ImGuizmo::SetOrthographic(true); 
+        ImGuizmo::SetDrawlist();
+
+        ImVec2 imageSize = ImGui::GetItemRectSize();
+
+        ImGuizmo::SetRect(imageMin.x, imageMin.y, imageMax.x - imageMin.x, imageMax.y - imageMin.y);
+
+        glm::mat4 view = m_renderer->m_Camera.GetViewMatrix();
+        glm::mat4 proj = m_renderer->m_Camera.GetProjectionMatrix();
+
+        glm::mat4 transform = CurrentEntity->GetTransformMatrix();
+        ImGuizmo::SetGizmoSizeClipSpace(0.2f);
+
+    
+        ImGuizmo::Enable(true);
+
+        ImGuizmo::Manipulate(
+            glm::value_ptr(view),
+            glm::value_ptr(proj),
+            ImGuizmo::TRANSLATE,   
+            ImGuizmo::LOCAL,
+            glm::value_ptr(transform)
+        );
+
+        if (ImGuizmo::IsUsing()){
+            ApplyMatrixTo2D(CurrentEntity, transform);
+        }
+    }
+ 
     ImGui::SetCursorPos(ImVec2(10, 30)); 
     ImGui::Text("deltaTime: %.6f", deltatime);
 
@@ -274,6 +335,4 @@ void Viewport::Render(){
 void Viewport::Update(float dt){
     deltatime = dt; 
 }
-
-
 

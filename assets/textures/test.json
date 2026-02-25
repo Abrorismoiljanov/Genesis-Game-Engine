@@ -1,0 +1,100 @@
+{
+    "project": {
+        "activeSceneID": 0,
+        "asset_manifest": [
+            {
+                "handle": 2,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Ultrakill_poster.png",
+                "type": "Material"
+            },
+            {
+                "handle": 1,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Msdos-1730606937.png",
+                "type": "Material"
+            }
+        ],
+        "components": [
+            {
+                "data": {
+                    "materialHandle": 1,
+                    "rotation": 0.0,
+                    "size": [
+                        1200.0,
+                        1280.0
+                    ]
+                },
+                "id": 0,
+                "owner": 0,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "materialHandle": 2,
+                    "rotation": 0.0,
+                    "size": [
+                        1920.0,
+                        1080.0
+                    ]
+                },
+                "id": 1,
+                "owner": 1,
+                "type": "Sprite"
+            }
+        ],
+        "entities": [
+            {
+                "id": 0,
+                "name": "Entity",
+                "transform": {
+                    "position": [
+                        -287.3999938964844,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": 121.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 1,
+                "name": "Entity",
+                "transform": {
+                    "position": [
+                        1231.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            }
+        ],
+        "name": "Default Project",
+        "nextComponentID": 2,
+        "nextEntityID": 2,
+        "nextSceneID": 0,
+        "scenes": [
+            {
+                "EntityIDs": [
+                    1,
+                    0
+                ],
+                "Scenename": "",
+                "id": 0
+            }
+        ],
+        "window": {
+            "flags": 0,
+            "height": 1920,
+            "width": 1080
+        }
+    }
+}

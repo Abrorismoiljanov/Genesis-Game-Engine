@@ -12,6 +12,7 @@
         "build/.objs/Editor/linux/x86_64/release/DataTypesDef/entity.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/DataTypesDef/components.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/imgui/imgui.cpp.o",
+        "build/.objs/Editor/linux/x86_64/release/imgui/ImGuizmo.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/imgui/imgui_draw.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/imgui/imgui_widgets.cpp.o",
         "build/.objs/Editor/linux/x86_64/release/imgui/imgui_tables.cpp.o",

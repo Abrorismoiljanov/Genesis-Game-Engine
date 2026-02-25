@@ -15,6 +15,7 @@ target("Editor")
 )
     add_includedirs("./imgui", "./imgui/backends/", "./DataTypesDef")
     add_files("./imgui/imgui.cpp",
+              "./imgui/ImGuizmo.cpp",
               "./imgui/imgui_draw.cpp",
               "./imgui/imgui_widgets.cpp",
               "./imgui/imgui_tables.cpp",
