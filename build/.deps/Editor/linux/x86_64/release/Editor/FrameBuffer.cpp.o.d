@@ -1,4 +1,6 @@
 {
+    depfiles = "FrameBuffer.o: Editor/FrameBuffer.cpp include/FrameBuffer.h\
+",
     depfiles_format = "gcc",
     values = {
         "/usr/bin/g++",
@@ -15,8 +17,6 @@
             "-DNDEBUG"
         }
     },
-    depfiles = "FrameBuffer.o: Editor/FrameBuffer.cpp include/FrameBuffer.h\
-",
     files = {
         "Editor/FrameBuffer.cpp"
     }

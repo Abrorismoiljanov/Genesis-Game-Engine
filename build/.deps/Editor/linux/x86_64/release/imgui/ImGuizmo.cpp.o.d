@@ -1,9 +1,7 @@
 {
     depfiles = "ImGuizmo.o: imgui/ImGuizmo.cpp imgui/imgui.h imgui/imconfig.h  imgui/imgui_internal.h imgui/ImGuizmo.h\
 ",
-    files = {
-        "imgui/ImGuizmo.cpp"
-    },
+    depfiles_format = "gcc",
     values = {
         "/usr/bin/g++",
         {
@@ -19,5 +17,7 @@
             "-DNDEBUG"
         }
     },
-    depfiles_format = "gcc"
+    files = {
+        "imgui/ImGuizmo.cpp"
+    }
 }

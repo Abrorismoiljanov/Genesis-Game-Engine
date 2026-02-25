@@ -1,6 +1,7 @@
 {
     depfiles = "imgui_tables.o: imgui/imgui_tables.cpp imgui/imgui.h imgui/imconfig.h  imgui/imgui_internal.h\
 ",
+    depfiles_format = "gcc",
     values = {
         "/usr/bin/g++",
         {
@@ -16,7 +17,6 @@
             "-DNDEBUG"
         }
     },
-    depfiles_format = "gcc",
     files = {
         "imgui/imgui_tables.cpp"
     }

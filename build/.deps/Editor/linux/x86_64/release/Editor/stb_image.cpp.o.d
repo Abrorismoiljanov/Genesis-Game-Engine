@@ -1,6 +1,7 @@
 {
     depfiles = "stb_image.o: Editor/stb_image.cpp include/stb_image.h\
 ",
+    depfiles_format = "gcc",
     values = {
         "/usr/bin/g++",
         {
@@ -16,7 +17,6 @@
             "-DNDEBUG"
         }
     },
-    depfiles_format = "gcc",
     files = {
         "Editor/stb_image.cpp"
     }
