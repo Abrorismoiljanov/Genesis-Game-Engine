@@ -5,7 +5,7 @@
 
 class MaterialAsset: public Asset{
 public:
-    std::shared_ptr<TextureAsset> texture; // the texture this material uses
+    std::shared_ptr<TextureAsset> texture; 
 
     MaterialAsset(const std::shared_ptr<TextureAsset>& tex = nullptr)
         : texture(tex) 

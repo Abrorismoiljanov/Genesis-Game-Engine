@@ -31,6 +31,31 @@ AssetHandle AssetManager::RegisterAssetWithHandle(const std::shared_ptr<Asset>& 
 
     return forcedHandle;
 }
+void AssetManager::DeleteAsset(AssetHandle handle) {
+    auto it = m_HandleToIndex.find(handle);
+    if (it == m_HandleToIndex.end()) return;
+
+    uint32_t index = it->second;
+
+    // Remove from map
+    m_HandleToIndex.erase(handle);
+
+    // Remove from path registry if needed
+    for(auto itPath = m_PathRegistry.begin(); itPath != m_PathRegistry.end(); ++itPath){
+        if(itPath->second == handle){
+            m_PathRegistry.erase(itPath);
+            break;
+        }
+    }
+
+    // Remove from vector
+    m_Assets.erase(m_Assets.begin() + index);
+
+    // Update indices of remaining assets
+    for(uint32_t i = index; i < m_Assets.size(); ++i){
+        m_HandleToIndex[m_Assets[i]->Handle] = i;
+    }
+}
 
 // void AssetManager::CleanupUnusedAssets(const std::vector<std::unique_ptr<Component>>& components) {}
     

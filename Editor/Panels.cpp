@@ -20,12 +20,90 @@ void ApplyMatrixTo2D(entity* e, const glm::mat4& mat){
 }
 
 
-void TestPanel::Render(){
+void Terminal::Render(){
+    ImGui::Begin("Terminal");
+        // Input line
+        if (ImGui::InputText("Command", inputBuffer, sizeof(inputBuffer),
+                             ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            std::string cmd(inputBuffer);
+            std::fill(std::begin(inputBuffer), std::end(inputBuffer), 0); // clear input
+
+            ExecuteCommand(cmd);
+            scrollToBottom = true;
+        }
+
+        if (ImGui::BeginChild("TerminalOutput", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()), true))
+        {
+            for (const auto& line : outputLines)
+                ImGui::TextUnformatted(line.c_str());
+
+            if (scrollToBottom)
+            {
+                ImGui::SetScrollHereY(1.0f);
+                scrollToBottom = false;
+            }
+        }
+        ImGui::EndChild();
+
+        ImGui::End();
+}
+void Terminal::Update(float dt){};
+
+void AssetPanel::Render(){
     ImGui::Begin(name.c_str());
-    ImGui::Text("This is a test panel!");
+    ImGui::Text("Total assets: %zu", Proj.Assets.m_Assets.size());
+    
+    float padding = 16.0f;
+    float thumbnailSize = 96.0f;
+    float cellSize = thumbnailSize + padding;
+
+    float panelWidth = ImGui::GetContentRegionAvail().x;
+    int columnCount = (int)(panelWidth / cellSize);
+
+    if (columnCount < 1)
+        columnCount = 1;
+
+    ImGui::Columns(columnCount, 0, false);
+
+   for (auto& a : Proj.Assets.m_Assets){
+    if (a->Type == AssetType::Material){
+          
+            auto mat = Proj.Assets.Get<MaterialAsset>(a->Handle);
+            auto tex = mat ? mat->GetTexture().get() : nullptr;
+
+            if (tex && tex->ID != 0){
+ 
+                ImVec2 maxSize(128, 128); 
+                float texWidth  = (float)tex->Width;  
+                float texHeight = (float)tex->Height;
+
+                float scale = std::min(maxSize.x / texWidth, maxSize.y / texHeight);
+
+                ImVec2 previewSize(tex->Width * scale, texHeight * scale);
+                ImGui::PushID(a->Handle);
+ 
+
+                ImGui::Image((ImTextureID)(uintptr_t)tex->ID, previewSize, ImVec2(0,1), ImVec2(1,0));
+                ImGui::TextWrapped("%u", a->Path.c_str()); // or file name
+                if (ImGui::Button("Delete")) {
+                    Proj.Assets.DeleteAsset(a->Handle);
+                    Proj.Assets.DeleteAsset(tex->Handle);
+                    ImGui::PopID();
+                    break; // break to avoid iterator invalidation
+                }
+
+                ImGui::PopID();
+            }
+        ImGui::NextColumn();
+     
+        }
+    }
+    
+    ImGui::Columns(1);
     ImGui::End();
 }
-void TestPanel::Update(float dt){};
+void AssetPanel::Update(float dt){};
 
 void EntityList::Render(){
     ImGui::Begin( name.c_str());
@@ -144,6 +222,7 @@ void Inspector::Render(){
                 if (ImGui::Button("X")) {
                     hasDeleteRequest = true;
                     componentToDelete = compID;
+                        c->OnRemove(Proj.Assets);
                 }
 
                 ImGui::SameLine(0, 5.0f);
@@ -294,8 +373,8 @@ void Viewport::Render(){
     bool DrawGizmo = false;
     if (CurrentEntity == nullptr) DrawGizmo = false;else DrawGizmo = true;
 
-    if (DrawGizmo){
 
+    if (DrawGizmo){
         ImGuizmo::BeginFrame();
     
         ImGuizmo::SetOrthographic(true); 
@@ -315,9 +394,9 @@ void Viewport::Render(){
         ImGuizmo::Enable(true);
 
         ImGuizmo::Manipulate(
-            glm::value_ptr(view),
+            glm::value_ptr(-view),
             glm::value_ptr(proj),
-            ImGuizmo::TRANSLATE,   
+            mode,   
             ImGuizmo::LOCAL,
             glm::value_ptr(transform)
         );
@@ -329,6 +408,18 @@ void Viewport::Render(){
  
     ImGui::SetCursorPos(ImVec2(10, 30)); 
     ImGui::Text("deltaTime: %.6f", deltatime);
+    ImGui::SameLine();
+    if (ImGui::Button("T")) {
+        mode = ImGuizmo::TRANSLATE;
+    }
+     ImGui::SameLine();
+    if (ImGui::Button("R")) {
+        mode = ImGuizmo::ROTATE_Z;
+    }  
+    ImGui::SameLine();
+    if (ImGui::Button("S")) {
+        mode = ImGuizmo::SCALE;
+    }
 
     ImGui::End();
 }

@@ -25,10 +25,11 @@ public:
     };
 
     AssetHandle RegisterAssetWithHandle(const std::shared_ptr<Asset>& asset,AssetHandle forcedHandle);
+    void DeleteAsset(AssetHandle handle);
+    
     AssetHandle GenerateHandle();
  //   void CleanupUnusedAssets(const std::vector<std::unique_ptr<Component>>& components);
 
-private:
     std::vector<std::shared_ptr<Asset>> m_Assets;
     std::unordered_map<AssetHandle, uint32_t> m_HandleToIndex;
     std::unordered_map<std::string, AssetHandle> m_PathRegistry;

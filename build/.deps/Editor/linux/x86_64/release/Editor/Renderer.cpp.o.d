@@ -1,7 +1,4 @@
 {
-    depfiles = "Renderer.o: Editor/Renderer.cpp include/ShaderUtils.h  include/FrameBuffer.h include/Renderer.h DataTypes/project.h  DataTypes/scene.h DataTypes/entity.h DataTypes/components.h  DataTypes/SpriteComponent.h DataTypes/Assets/Asset.h  DataTypes/Assets/MaterialAsset.h DataTypes/Assets/TextureAsset.h  include/stb_image.h imgui/imgui.h imgui/imconfig.h  DataTypes/AssetManager.h include/ImGuiFileDialog.h  include/ImGuiFileDialogConfig.h include/ViewportCamera.h  DataTypes/transformcomponent.h\
-",
-    depfiles_format = "gcc",
     values = {
         "/usr/bin/g++",
         {
@@ -17,7 +14,10 @@
             "-DNDEBUG"
         }
     },
+    depfiles = "Renderer.o: Editor/Renderer.cpp include/ShaderUtils.h  include/FrameBuffer.h include/Renderer.h DataTypes/project.h  DataTypes/scene.h DataTypes/entity.h DataTypes/components.h  DataTypes/SpriteComponent.h DataTypes/Assets/Asset.h  DataTypes/Assets/MaterialAsset.h DataTypes/Assets/TextureAsset.h  include/stb_image.h imgui/imgui.h imgui/imconfig.h  DataTypes/AssetManager.h include/ImGuiFileDialog.h  include/ImGuiFileDialogConfig.h include/ViewportCamera.h  DataTypes/transformcomponent.h\
+",
     files = {
         "Editor/Renderer.cpp"
-    }
+    },
+    depfiles_format = "gcc"
 }

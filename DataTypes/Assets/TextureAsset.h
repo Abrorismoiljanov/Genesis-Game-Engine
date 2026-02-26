@@ -6,10 +6,12 @@
 
 class TextureAsset : public Asset{
 public:
+
     int Width = 0;
     int Height = 0;
     
     bool LoadFromFile(const std::string& path) {
+        Type = AssetType::Texture;
         stbi_set_flip_vertically_on_load(true);
         this->Path = path;   
         this->Type = AssetType::Texture;

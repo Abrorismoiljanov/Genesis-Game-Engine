@@ -43,13 +43,22 @@ json Serialize() const override {
         }
     };
 
+    void OnRemove(AssetManager& assetManager){
+        auto mat = assetManager.Get<MaterialAsset>(materialHandle);
+        std::shared_ptr<TextureAsset> tex;
+        tex = mat->GetTexture();
+        assetManager.DeleteAsset(tex->Handle);
+        assetManager.DeleteAsset(materialHandle);
+    };
+
    void DrawComponentUI(AssetManager& assetManager){
  
         auto mat = assetManager.Get<MaterialAsset>(materialHandle);
         std::string path = mat && mat->GetTexture() ? mat->GetTexture()->Path : "None";
-        TextureAsset* tex = nullptr;
+ 
+        std::shared_ptr<TextureAsset> tex;
         if(mat) {
-            tex = mat->GetTexture().get();
+            tex = mat->GetTexture();
         }
  
         std::string tpath = tex ? tex->Path : "None";
@@ -63,7 +72,8 @@ json Serialize() const override {
             newMat->SetTexture(newTex);
             materialHandle = assetManager.RegisterAsset(newMat);
             mat = newMat;
-            tex = newTex.get();
+            tex = newTex;
+            tex->Type = AssetType::Texture;
         }
 
         ImGui::DragFloat2("Size", &size.x, 0.1f);
@@ -101,7 +111,7 @@ json Serialize() const override {
 
         float scale = std::min(maxSize.x / texWidth, maxSize.y / texHeight);
 
-            ImVec2 previewSize(128, 128); 
+            ImVec2 previewSize(texWidth * scale, texHeight * scale);
             ImGui::Image((ImTextureID)(uintptr_t)tex->ID, previewSize, ImVec2(0,1), ImVec2(1,0));
         }
         ImGui::EndChild();

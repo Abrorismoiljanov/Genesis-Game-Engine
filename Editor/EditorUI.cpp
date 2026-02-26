@@ -25,8 +25,9 @@ void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, 
     ImGui_ImplOpenGL3_Init("#version 330");
 
     RegisterAllComponents();
-    panels.push_back(std::make_unique<TestPanel>("Panel 1"));
-    panels.push_back(std::make_unique<EntityList>("Scene List", Proj, Selection));
+//    panels.push_back(std::make_unique<AssetPanel>("Texture Assets", Proj));
+    panels.push_back(std::make_unique<Terminal>("Terminal", Proj));
+    panels.push_back(std::make_unique<EntityList>("Entity List", Proj, Selection));
     panels.push_back(std::make_unique<Inspector>("Inspector", Proj, Selection));
     panels.push_back(std::make_unique<Viewport>("Viewport", Proj, Selection, renderer));
 
@@ -114,6 +115,9 @@ void EditorUI::RenderMenuBar() {
             ImGui::EndMenu();
         }
         if(ImGui::BeginMenu("Editor")){
+            if (ImGui::MenuItem("Fullscreen")) {
+
+            }
             if (ImGui::MenuItem("Quit")){
                 Run = false;
             }
