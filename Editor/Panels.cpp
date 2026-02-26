@@ -407,7 +407,8 @@ void Viewport::Render(){
     }
  
     ImGui::SetCursorPos(ImVec2(10, 30)); 
-    ImGui::Text("deltaTime: %.6f", deltatime);
+    float fps = (deltatime > 0.0f) ? (1.0f / deltatime) : 0.0f;
+    ImGui::Text("FPS: %.1f", fps);
     ImGui::SameLine();
     if (ImGui::Button("T")) {
         mode = ImGuizmo::TRANSLATE;
@@ -419,6 +420,14 @@ void Viewport::Render(){
     ImGui::SameLine();
     if (ImGui::Button("S")) {
         mode = ImGuizmo::SCALE;
+    }
+
+    ImGui::SameLine();
+    ImVec2 windowSize = ImGui::GetWindowSize();
+    ImGui::SetCursorPosX(windowSize.x - 80); // 80px from left edge
+
+    if (ImGui::Button("Start", ImVec2(70, 20))) {
+        LaunchRuntimeWindow();
     }
 
     ImGui::End();

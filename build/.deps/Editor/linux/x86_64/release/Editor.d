@@ -6,8 +6,7 @@
             "-s",
             "-lSDL2",
             "-lGL",
-            "-lGLEW",
-            "-lassimp"
+            "-lGLEW"
         }
     },
     files = {

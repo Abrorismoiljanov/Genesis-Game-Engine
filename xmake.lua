@@ -8,7 +8,7 @@ target("Editor")
     set_kind("binary")
     add_files("Editor/*.cpp", "./DataTypesDef/*.cpp")
     add_includedirs("include", "DataTypes")
-    add_links("SDL2", "GL", "GLEW", "assimp")
+    add_links("SDL2", "GL", "GLEW")
     add_packages(
     "glm", 
     "nlohmann_json"
@@ -24,11 +24,9 @@ target("Editor")
               "./ImGuiFileDialog/ImGuiFileDialog.cpp")
 
 
- 
-
 target("Runtime")
     set_kind("binary")
-    add_files("Runtime/*.cpp")
+    add_files("Runtime/*.cpp", "DataTypesDef/*.cpp")
     add_includedirs("include", "DataTypes")
     add_links("SDL2", "GL", "GLEW")
     add_packages(

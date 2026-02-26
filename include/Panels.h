@@ -50,10 +50,31 @@ public:
 
     // List of allowed commands (your “command list”)
     std::vector<std::string> commandList = {
-        "run_runtime",
+        "run",
         "clear",
         "help"
     };
+
+    void LaunchRuntimeWindow(std::vector<std::string> outputLines){
+    std::string tempScene = "temp_scene.json";
+    if (!Proj.SaveToFile(tempScene)) {
+        std::cerr << "[Editor] Failed to save project to " << tempScene << std::endl;
+        return;
+    }
+    std::string cmd = "./Runtime " + tempScene;  // Linux/macOS
+
+    std::cout << "[Editor] Launching Runtime window..." << std::endl;
+    outputLines.push_back("[Editor] Launching Runtime window...");
+
+    // Launch asynchronously so Editor stays usable
+    std::thread runtimeThread([cmd]() {
+        int ret = std::system(cmd.c_str());
+        if (ret != 0){
+                std::cout << "Runtime Exited with code" << ret << '\n';
+            }
+    });
+        runtimeThread.detach();
+    }
 
     void ExecuteCommand(const std::string& cmd){
         if (cmd.empty()) return;
@@ -72,11 +93,8 @@ public:
             for (auto& c : commandList)
                 outputLines.push_back("  " + c);
         }
-        else if (cmd == "run_runtime")
-        {
-            // Run Runtime exe (make sure path is correct)
-            int ret = std::system("./Runtime temp_scene.json");
-            outputLines.push_back("Runtime exited with code " + std::to_string(ret));
+        else if (cmd == "run"){
+            LaunchRuntimeWindow(outputLines);
         }
         else
         {
@@ -122,6 +140,26 @@ public:
     
     void Update(float dt) override;
     void Render() override;
+    void LaunchRuntimeWindow(){
+        std::string tempScene = "temp_scene.json";
+    if (!Proj.SaveToFile(tempScene)) {
+        std::cerr << "[Editor] Failed to save project to " << tempScene << std::endl;
+        return;
+    }
+    std::string cmd = "./Runtime " + tempScene;  // Linux/macOS
+
+    std::cout << "[Editor] Launching Runtime window..." << std::endl;
+
+    // Launch asynchronously so Editor stays usable
+    std::thread runtimeThread([cmd]() {
+        int ret = std::system(cmd.c_str());
+        if (ret != 0){
+                std::cout << "Runtime Exited with code" << ret << '\n';
+            }
+    });
+        runtimeThread.detach();
+    }
+
 
     ImGuizmo::OPERATION mode = ImGuizmo::TRANSLATE;
 private:

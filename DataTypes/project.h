@@ -21,9 +21,9 @@ using json = nlohmann::json;
 
 struct ProjectParam{
     std::string name = "Default Project";
-    int WindowHeight = 1920;
-    int WindowWidth = 1080;
-    SDL_WindowFlags WindowParam;
+    int WindowWidth = 800;
+    int WindowHeight = 600;
+    SDL_WindowFlags WindowParam = SDL_WINDOW_OPENGL;
 };
 
 struct project{
