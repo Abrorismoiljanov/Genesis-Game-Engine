@@ -16,17 +16,18 @@ Designed to manage **Scenes**, **Entities**, and **Components** with a flexible 
 - **ImGui-based Editor**  
   - Component inspector with collapsing headers and UI controls.
   - File dialog support for importing meshes.
-
 ---
 
-## Getting Started
+## Screenshots
+![Editor Overview](./docs/Screenshots/Screenshot_20260225_111013.png)
+![Editor Overview](./docs/Screenshots/Screenshot_20260226_131328.png)
+![Editor Overview](./docs/Screenshots/Screenshot_20260226_150413.png)
 
 ### Prerequisites
 
 - C++17 compatible compiler  
 - [SDL2](https://www.libsdl.org/)  
 - [OpenGL](https://www.opengl.org/)  
-- [Assimp](https://www.assimp.org/)  
 - [ImGui](https://github.com/ocornut/imgui)  
 - [xmake](https://xmake.io/#/) (build system)
 
