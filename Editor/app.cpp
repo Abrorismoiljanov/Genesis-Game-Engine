@@ -116,7 +116,7 @@ void app::Render(){
  
     renderer.EndFrame();
 
-    UI.Render();
+    UI.Render(window);
     SDL_GL_SwapWindow(window);
 }
 

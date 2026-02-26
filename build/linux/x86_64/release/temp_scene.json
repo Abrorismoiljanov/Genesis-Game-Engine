@@ -1,92 +1,16 @@
 {
     "project": {
         "activeSceneID": 0,
-        "asset_manifest": [
-            {
-                "handle": 2,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Msdos-1730606937.png",
-                "type": "Material"
-            },
-            {
-                "handle": 1,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Ultrakill_poster.png",
-                "type": "Material"
-            }
-        ],
-        "components": [
-            {
-                "data": {
-                    "materialHandle": 1,
-                    "rotation": 0.0,
-                    "size": [
-                        1920.0,
-                        1080.0
-                    ]
-                },
-                "id": 0,
-                "owner": 0,
-                "type": "Sprite"
-            },
-            {
-                "data": {
-                    "materialHandle": 2,
-                    "rotation": 0.0,
-                    "size": [
-                        1200.0,
-                        1280.0
-                    ]
-                },
-                "id": 1,
-                "owner": 1,
-                "type": "Sprite"
-            }
-        ],
-        "entities": [
-            {
-                "id": 0,
-                "name": "Ultrakill",
-                "transform": {
-                    "position": [
-                        -140.00001525878906,
-                        -114.99992370605469,
-                        0.0
-                    ],
-                    "rotation": -28.7630672454834,
-                    "scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ]
-                }
-            },
-            {
-                "id": 1,
-                "name": "MsDos",
-                "transform": {
-                    "position": [
-                        1670.0,
-                        -2.5000457763671875,
-                        0.0
-                    ],
-                    "rotation": 0.0,
-                    "scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ]
-                }
-            }
-        ],
+        "asset_manifest": [],
+        "components": [],
+        "entities": [],
         "name": "Default Project",
-        "nextComponentID": 2,
-        "nextEntityID": 2,
+        "nextComponentID": 0,
+        "nextEntityID": 0,
         "nextSceneID": 0,
         "scenes": [
             {
-                "EntityIDs": [
-                    0,
-                    1
-                ],
+                "EntityIDs": [],
                 "Scenename": "",
                 "id": 0
             }

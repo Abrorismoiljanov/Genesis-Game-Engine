@@ -4,7 +4,7 @@
         "asset_manifest": [
             {
                 "handle": 1,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Msdos-1730606937.png",
+                "texture_path": "/home/abror/Project/GGE/assets/textures/V1.png",
                 "type": "Material"
             }
         ],
@@ -14,8 +14,8 @@
                     "materialHandle": 1,
                     "rotation": 0.0,
                     "size": [
-                        1200.0,
-                        1280.0
+                        1920.0,
+                        1080.0
                     ]
                 },
                 "id": 0,
@@ -29,11 +29,11 @@
                 "name": "Entity",
                 "transform": {
                     "position": [
-                        233.999755859375,
-                        149.9996337890625,
+                        504.00128173828125,
+                        304.00323486328125,
                         0.0
                     ],
-                    "rotation": 0.0,
+                    "rotation": -152.1909942626953,
                     "scale": [
                         1.0,
                         1.0,
@@ -42,7 +42,7 @@
                 }
             }
         ],
-        "name": "Default Project",
+        "name": "V1",
         "nextComponentID": 1,
         "nextEntityID": 1,
         "nextSceneID": 0,
@@ -56,9 +56,9 @@
             }
         ],
         "window": {
-            "flags": 0,
-            "height": 1920,
-            "width": 1080
+            "flags": 2,
+            "height": 600,
+            "width": 800
         }
     }
 }

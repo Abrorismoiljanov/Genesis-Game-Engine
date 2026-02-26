@@ -3,13 +3,8 @@
         "activeSceneID": 0,
         "asset_manifest": [
             {
-                "handle": 2,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Msdos-1730606937.png",
-                "type": "Material"
-            },
-            {
                 "handle": 1,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Ultrakill_poster.png",
+                "texture_path": "/home/abror/Project/GGE/assets/textures/V1.png",
                 "type": "Material"
             }
         ],
@@ -26,49 +21,19 @@
                 "id": 0,
                 "owner": 0,
                 "type": "Sprite"
-            },
-            {
-                "data": {
-                    "materialHandle": 2,
-                    "rotation": 0.0,
-                    "size": [
-                        1200.0,
-                        1280.0
-                    ]
-                },
-                "id": 1,
-                "owner": 1,
-                "type": "Sprite"
             }
         ],
         "entities": [
             {
                 "id": 0,
-                "name": "Ultrakill",
+                "name": "Entity",
                 "transform": {
                     "position": [
-                        -140.00001525878906,
-                        -114.99992370605469,
+                        504.00128173828125,
+                        304.00323486328125,
                         0.0
                     ],
-                    "rotation": -28.7630672454834,
-                    "scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ]
-                }
-            },
-            {
-                "id": 1,
-                "name": "MsDos",
-                "transform": {
-                    "position": [
-                        1670.0,
-                        -2.5000457763671875,
-                        0.0
-                    ],
-                    "rotation": 0.0,
+                    "rotation": -152.1909942626953,
                     "scale": [
                         1.0,
                         1.0,
@@ -77,15 +42,14 @@
                 }
             }
         ],
-        "name": "Default Project",
-        "nextComponentID": 2,
-        "nextEntityID": 2,
+        "name": "V1",
+        "nextComponentID": 1,
+        "nextEntityID": 1,
         "nextSceneID": 0,
         "scenes": [
             {
                 "EntityIDs": [
-                    0,
-                    1
+                    0
                 ],
                 "Scenename": "",
                 "id": 0

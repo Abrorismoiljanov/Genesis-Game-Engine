@@ -27,6 +27,7 @@ void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, 
     RegisterAllComponents();
 //    panels.push_back(std::make_unique<AssetPanel>("Texture Assets", Proj));
     panels.push_back(std::make_unique<Terminal>("Terminal", Proj));
+    panels.push_back(std::make_unique<ProjectSettingsPanel>(Proj.Param.name.c_str(), Proj));
     panels.push_back(std::make_unique<EntityList>("Entity List", Proj, Selection));
     panels.push_back(std::make_unique<Inspector>("Inspector", Proj, Selection));
     panels.push_back(std::make_unique<Viewport>("Viewport", Proj, Selection, renderer));
@@ -39,7 +40,7 @@ void EditorUI::Update(float deltaTime){
     }
 };
 
-void EditorUI::Render(){
+void EditorUI::Render(SDL_Window* window){
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -47,7 +48,7 @@ void EditorUI::Render(){
 
     ImGui::DockSpaceOverViewport();
 
-    RenderMenuBar();
+    RenderMenuBar(window);
 
     for (auto& panel : panels) {
         panel->Render();
@@ -80,7 +81,7 @@ if (ImGuiFileDialog::Instance()->Display("LoadProjectDlg"))
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 };
 
-void EditorUI::RenderMenuBar() {
+void EditorUI::RenderMenuBar(SDL_Window* window) {
 
     IGFD::FileDialogConfig cfg;
     if (ImGui::BeginMainMenuBar()) {
@@ -114,9 +115,20 @@ void EditorUI::RenderMenuBar() {
             if (ImGui::MenuItem("Project Parameter")) {}
             ImGui::EndMenu();
         }
-        if(ImGui::BeginMenu("Editor")){
-            if (ImGui::MenuItem("Fullscreen")) {
 
+        if(ImGui::BeginMenu("Editor")){
+                Uint32 flags = SDL_GetWindowFlags(window);
+                bool isFullscreen = flags & SDL_WINDOW_FULLSCREEN;
+
+            if (ImGui::MenuItem("Fullscreen", nullptr, isFullscreen)) {
+ 
+                if (isFullscreen) {
+                    SDL_SetWindowFullscreen(window, 0);
+                    SDL_SetWindowSize(window, 1920, 1080); 
+                }
+                else {
+                    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+                }
             }
             if (ImGui::MenuItem("Quit")){
                 Run = false;

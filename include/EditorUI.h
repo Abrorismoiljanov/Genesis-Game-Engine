@@ -10,11 +10,11 @@ public:
  
     void Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer, bool& running);
     void Update(float deltatime);
-    void Render();
+    void Render(SDL_Window* window);
     void AddPanel(std::shared_ptr<Panel> panel) {
         panels.push_back(panel);
     }
-    void RenderMenuBar();
+    void RenderMenuBar(SDL_Window* window);
     EditorUI(project& proj, bool& running);
 
     bool& Run;

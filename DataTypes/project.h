@@ -18,12 +18,17 @@
 #include "fstream"
 
 using json = nlohmann::json;
+struct ResolutionP{
+    int width = 1280;
+    int height = 720;
+};
 
 struct ProjectParam{
     std::string name = "Default Project";
     int WindowWidth = 800;
     int WindowHeight = 600;
-    SDL_WindowFlags WindowParam = SDL_WINDOW_OPENGL;
+    ResolutionP Resolution;
+    Uint32 WindowParam = SDL_WINDOW_OPENGL;
 };
 
 struct project{

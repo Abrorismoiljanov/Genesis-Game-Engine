@@ -23,7 +23,31 @@ protected:
 private:
     bool isVisible = true;
 };
+struct ResolutionPreset {
+    const char* label;
+    int w;
+    int h;
+};
 
+static ResolutionPreset presets[] = {
+    { "800x600 (4:3)", 800, 600 },
+    { "1280x720 (HD)", 1280, 720 },
+    { "1920x1080 (Full HD)", 1920, 1080 },
+    { "2560x1440 (2K)", 2560, 1440 },
+    { "3840x2160 (4K)", 3840, 2160 },
+    { "Custom", 0, 0 }
+};
+
+class ProjectSettingsPanel : public Panel {
+public:
+    ProjectSettingsPanel(const std::string& n, project& proj): Panel(n), Proj(proj) {}
+
+    void Render() override;
+    void Update(float dt) override;
+
+private:
+    project& Proj;
+};
 
 
 class AssetPanel : public Panel {
