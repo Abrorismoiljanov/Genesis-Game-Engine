@@ -16,6 +16,7 @@ public:
     scene* activeScene = nullptr;
 
     void RenderGrid();
+    void RenderAxis();
 
     uint32_t GetFinalImage() const { return m_Framebuffer.GetColorAttachment(); }
 

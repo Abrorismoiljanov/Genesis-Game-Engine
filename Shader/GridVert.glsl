@@ -1,10 +1,10 @@
 #version 330 core
-layout(location = 0) in vec2 aPos;
 
-uniform mat4 u_VP;
-uniform mat4 u_Model;
+layout(location = 0) in vec2 a_Position;
+
+uniform mat4 u_VP; // camera view-projection
 
 void main()
 {
-    gl_Position = u_VP * u_Model * vec4(aPos, 0.0, 1.0);
+    gl_Position = u_VP * vec4(a_Position, 0.0, 1.0);
 }

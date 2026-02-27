@@ -75,6 +75,7 @@ void Renderer::EndFrame(){
 void Renderer::Render(project& Proj, int selectedSceneID){
  
     RenderGrid();
+    RenderAxis();
 
     glUseProgram(DefaultShader);
 
@@ -136,4 +137,112 @@ void Renderer::Render(project& Proj, int selectedSceneID){
         glBindVertexArray(0);
     }
 }
-void Renderer::RenderGrid(){}
+void Renderer::RenderAxis(){
+glUseProgram(GridShader);
+
+    glm::vec2 camPos = m_Camera.Position;
+    float zoom = m_Camera.Zoom;
+
+    // Viewport bounds in world units
+    float halfWidth  = m_Framebuffer.m_Width  / (2.0f * zoom);
+    float halfHeight = m_Framebuffer.m_Height / (2.0f * zoom);
+
+    float left   = camPos.x - halfWidth;
+    float right  = camPos.x + halfWidth;
+    float bottom = camPos.y - halfHeight;
+    float top    = camPos.y + halfHeight;
+
+    // Axis lines vertices
+    float vertices[] = {
+        // X axis
+        left, 0.0f,
+        right, 0.0f,
+
+        // Y axis
+        0.0f, bottom,
+        0.0f, top
+    };
+
+    GLuint axisVBO, axisVAO;
+    glGenVertexArrays(1, &axisVAO);
+    glGenBuffers(1, &axisVBO);
+
+    glBindVertexArray(axisVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, axisVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Set uniform: axes color (red for X, green for Y if you want)
+    glUniformMatrix4fv(glGetUniformLocation(GridShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(m_Camera.GetViewProjection()));
+    
+    // X axis
+    glUniform4f(glGetUniformLocation(GridShader, "u_Color"), 1.0f, 0.0f, 0.0f, 1.0f); 
+    glDrawArrays(GL_LINES, 0, 2);
+
+    // Y axis
+    glUniform4f(glGetUniformLocation(GridShader, "u_Color"), 0.0f, 1.0f, 0.0f, 1.0f);
+    glDrawArrays(GL_LINES, 2, 2);
+
+    glBindVertexArray(0);
+    glDeleteBuffers(1, &axisVBO);
+    glDeleteVertexArrays(1, &axisVAO);
+}
+
+void Renderer::RenderGrid(){
+    glUseProgram(GridShader);
+
+    glm::mat4 viewProj = m_Camera.GetViewProjection();
+    glUniformMatrix4fv(glGetUniformLocation(GridShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(viewProj));
+    glUniform4f(glGetUniformLocation(GridShader, "u_Color"), 0.3f, 0.3f, 0.3f, 1.0f);
+
+    float gridSpacing = 50.0f; 
+    // Get camera info
+    glm::vec2 camPos = m_Camera.Position;
+    float zoom = m_Camera.Zoom;
+
+    // Viewport size in world units
+    float width  = m_Framebuffer.m_Width  / zoom;
+    float height = m_Framebuffer.m_Height / zoom;
+
+    float left   = m_Camera.Position.x - (m_Framebuffer.m_Width  / 2.0f) / m_Camera.Zoom;
+    float right  = m_Camera.Position.x + (m_Framebuffer.m_Width  / 2.0f) / m_Camera.Zoom;
+    float bottom = m_Camera.Position.y - (m_Framebuffer.m_Height / 2.0f) / m_Camera.Zoom;
+    float top    = m_Camera.Position.y + (m_Framebuffer.m_Height / 2.0f) / m_Camera.Zoom;
+ 
+    std::vector<float> vertices;
+
+    float worldSpacing = gridSpacing / m_Camera.Zoom;
+
+for (float x = floor(left / worldSpacing) * worldSpacing; x <= right; x += worldSpacing)
+{
+    vertices.push_back(x); vertices.push_back(bottom);
+    vertices.push_back(x); vertices.push_back(top);
+}
+
+for (float y = floor(bottom / worldSpacing) * worldSpacing; y <= top; y += worldSpacing)
+{
+    vertices.push_back(left); vertices.push_back(y);
+    vertices.push_back(right); vertices.push_back(y);
+}
+
+    // Upload to GPU
+    GLuint gridVBO, gridVAO;
+    glGenVertexArrays(1, &gridVAO);
+    glGenBuffers(1, &gridVBO);
+
+    glBindVertexArray(gridVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, gridVBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_DYNAMIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindVertexArray(gridVAO);
+    glDrawArrays(GL_LINES, 0, (GLsizei)(vertices.size() / 2));
+
+    glBindVertexArray(0);
+    glDeleteBuffers(1, &gridVBO);
+    glDeleteVertexArrays(1, &gridVAO);
+}
