@@ -15,6 +15,9 @@ public:
     ViewportCamera m_Camera;
     scene* activeScene = nullptr;
 
+    bool DrawGrid = true;
+    bool DrawAxis = true;
+
     void RenderGrid();
     void RenderAxis();
 

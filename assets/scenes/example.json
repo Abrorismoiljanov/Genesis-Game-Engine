@@ -1,0 +1,72 @@
+{
+    "project": {
+        "activeSceneID": 0,
+        "asset_manifest": [
+            {
+                "handle": 2,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Dontplayontheendges_text.png",
+                "type": "Material"
+            }
+        ],
+        "components": [
+            {
+                "data": {
+                    "materialHandle": 2,
+                    "rotation": 0.0,
+                    "size": [
+                        1920.0,
+                        1080.0
+                    ]
+                },
+                "id": 1,
+                "owner": 1,
+                "type": "Sprite"
+            }
+        ],
+        "entities": [
+            {
+                "id": 1,
+                "name": "Entity",
+                "transform": {
+                    "position": [
+                        340.0000305175781,
+                        388.88897705078125,
+                        0.0
+                    ],
+                    "rotation": -153.6089324951172,
+                    "scale": [
+                        0.4300000071525574,
+                        0.4300000071525574,
+                        1.0
+                    ]
+                }
+            }
+        ],
+        "name": "Default Project",
+        "nextComponentID": 2,
+        "nextEntityID": 2,
+        "nextSceneID": 2,
+        "scenes": [
+            {
+                "EntityIDs": [
+                    1
+                ],
+                "ID": 0,
+                "Param": {
+                    "BackgroundColor": [
+                        0.12154698371887207,
+                        0.12154698371887207,
+                        0.12154698371887207,
+                        1.0
+                    ]
+                },
+                "Scenename": "scene 0"
+            }
+        ],
+        "window": {
+            "flags": 2,
+            "height": 600,
+            "width": 800
+        }
+    }
+}

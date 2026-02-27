@@ -74,8 +74,12 @@ void Renderer::EndFrame(){
 }
 void Renderer::Render(project& Proj, int selectedSceneID){
  
-    RenderGrid();
-    RenderAxis();
+    if (DrawGrid) {
+        RenderGrid();
+    }
+    if (DrawAxis) {
+        RenderAxis();
+    }
 
     glUseProgram(DefaultShader);
 
