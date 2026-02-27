@@ -84,11 +84,11 @@ if (ImGuiFileDialog::Instance()->Display("LoadProjectDlg"))
 void EditorUI::RenderMenuBar(SDL_Window* window) {
 
     IGFD::FileDialogConfig cfg;
+    cfg.path = "/home/abror/Project/GGE/assets/";
     if (ImGui::BeginMainMenuBar()) {
 
         if (ImGui::BeginMenu("File")) {
 
-            // Save Project
             if (ImGui::MenuItem("Save Project")) {
                 ImGuiFileDialog::Instance()->OpenDialog(
                     "SaveProjectDlg",
@@ -98,7 +98,6 @@ void EditorUI::RenderMenuBar(SDL_Window* window) {
                 );
             }
 
-            // Load Project
             if (ImGui::MenuItem("Load Project")) {
                 ImGuiFileDialog::Instance()->OpenDialog(
                     "LoadProjectDlg",
