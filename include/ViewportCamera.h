@@ -19,11 +19,13 @@ public:
     }
 
     glm::mat4 GetProjectionMatrix() const{
+    float HalfWidth = (float)ViewWidth/2/Zoom;
+    float HalfHeight = (float)ViewHeight/2/Zoom;
         return glm::ortho(
-            0.0f,
-            (float)ViewWidth / Zoom,
-            (float)ViewHeight / Zoom,
-            0.0f,
+            -HalfWidth,
+            HalfWidth,
+            -HalfHeight,
+            HalfHeight,
             -1.0f,
             1.0f);
     }
@@ -39,14 +41,13 @@ public:
 
     void ProcessMousePan(float dx, float dy) {
         Position.x -= dx / Zoom;
-        Position.y -= dy / Zoom;
+        Position.y += dy / Zoom;
     }
 
 
     void ProcessScroll(float scrollDelta, glm::vec2 mouseScreen){
-
         glm::vec2 before = ScreenToWorld(mouseScreen);
-        Zoom += scrollDelta * 0.1f;
+        Zoom += scrollDelta * 0.05f;
         Zoom = std::max(Zoom, 0.1f);
         glm::vec2 after = ScreenToWorld(mouseScreen);
         Position += before - after;
@@ -63,11 +64,9 @@ public:
     }
 
 
-    float Zoom = 0.8f;
+    float Zoom = 1.0f;
     glm::vec2 Position{-1.0f, -1.0f};
     int ViewWidth = 1280;
     int ViewHeight = 1080;
-    int HalfWidth = ViewWidth/2;
-    int HalfHeight = ViewHeight/2;
     float MoveSpeed = 500.0f;
 };

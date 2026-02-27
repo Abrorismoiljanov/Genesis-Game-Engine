@@ -81,6 +81,7 @@ json Serialize() const override {
         std::string btnID = "Load Material##" + std::to_string(ID);
         if (ImGui::Button(btnID.c_str(), ImVec2(0,30))) {
             IGFD::FileDialogConfig cfg;
+            cfg.path = "/home/abror/Project/GGE/assets/";
 
             ImGuiFileDialog::Instance()->OpenDialog(
                 ("Choosef##" + std::to_string(ID)).c_str(),
@@ -112,7 +113,7 @@ json Serialize() const override {
         float scale = std::min(maxSize.x / texWidth, maxSize.y / texHeight);
 
             ImVec2 previewSize(texWidth * scale, texHeight * scale);
-            ImGui::Image((ImTextureID)(uintptr_t)tex->ID, previewSize, ImVec2(0,1), ImVec2(1,0));
+            ImGui::Image((ImTextureID)(uintptr_t)tex->ID, previewSize, ImVec2(0,0), ImVec2(1,1));
         }
         ImGui::EndChild();
 
