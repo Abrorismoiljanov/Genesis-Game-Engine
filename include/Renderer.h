@@ -9,11 +9,11 @@ class Renderer{
 
 public:
     void Init(int w, int h);
-    void BeginFrame();
+    void BeginFrame(project& Proj, int selectedSceneID);
     void Render(project& Proj,int selectedSceneID);
     void EndFrame();
     ViewportCamera m_Camera;
-
+    scene* activeScene = nullptr;
 
     void RenderGrid();
 

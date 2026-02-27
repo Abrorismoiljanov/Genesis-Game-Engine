@@ -59,60 +59,56 @@ struct project{
 
 
         pj["entities"] = json::array();
-    for (const auto& e : EntityList) {
-        json ent;
-        ent["id"] = e.ID;
-        ent["name"] = e.name;
-        ent["transform"] = e.Serialize();
-        pj["entities"].push_back(ent);
-    }
-
-pj["scenes"] = json::array();
-for (const auto& sc : SceneList) {
-    json s;
-    s["id"]        = sc.ID;
-    s["Scenename"] = sc.Scenename;
-    s["EntityIDs"] = sc.EntityIDs;
-    pj["scenes"].push_back(s);
-}
-pj["nextSceneID"] = NextSceneID;
-
-    // Components (you already have this part)
-    pj["components"] = json::array();
-    for (const auto& ptr : ComponentList) {
-        const auto& c = *ptr;
-        json comp;
-        comp["id"] = c.ID;
-        comp["owner"] = c.OwnerEntityID;
-        comp["type"] = c.Getname();
-        comp["data"] = c.Serialize();
-        pj["components"].push_back(comp);
-    }
-
-pj["asset_manifest"] = json::array();
-
-// Collect unique material handles used by sprites
-std::unordered_set<AssetHandle> used_handles;
-for (const auto& ptr : ComponentList) {
-    if (ptr->Getname() == "Sprite") {
-        auto* sprite = static_cast<const SpriteComponent*>(ptr.get());
-        if (sprite->materialHandle != INVALID_ASSET) {
-            used_handles.insert(sprite->materialHandle);
+ 
+        for (const auto& e : EntityList) {
+            json ent;
+            ent["id"] = e.ID;
+            ent["name"] = e.name;
+            ent["transform"] = e.Serialize();
+            pj["entities"].push_back(ent);
         }
-    }
-}
 
-// Save path for each used material
-for (AssetHandle h : used_handles) {
-    auto mat = Assets.Get<MaterialAsset>(h);
-    if (mat && mat->GetTexture()) {
-        json entry;
-        entry["handle"]      = h;
-        entry["type"]        = "Material";
-        entry["texture_path"] = mat->GetTexture()->Path;  // the key field!
-        // optional: entry["material_name"] = mat->Name; etc.
-        pj["asset_manifest"].push_back(entry);
 
+        pj["scenes"] = json::array();
+        for (const auto& sc : SceneList) {
+            pj["scenes"].push_back(sc.Serialize());
+        }
+
+        pj["nextSceneID"] = NextSceneID;
+
+        pj["components"] = json::array();
+        for (const auto& ptr : ComponentList) {
+            const auto& c = *ptr;
+            json comp;
+            comp["id"] = c.ID;
+            comp["owner"] = c.OwnerEntityID;
+            comp["type"] = c.Getname();
+            comp["data"] = c.Serialize();
+        
+            pj["components"].push_back(comp);
+        }
+
+        pj["asset_manifest"] = json::array();
+
+        std::unordered_set<AssetHandle> used_handles;
+        for (const auto& ptr : ComponentList) {
+            if (ptr->Getname() == "Sprite") {
+                auto* sprite = static_cast<const SpriteComponent*>(ptr.get());
+                if (sprite->materialHandle != INVALID_ASSET) {
+                    used_handles.insert(sprite->materialHandle);
+                }
+            }
+        }
+
+
+        for (AssetHandle h : used_handles) {
+            auto mat = Assets.Get<MaterialAsset>(h);
+            if (mat && mat->GetTexture()) {
+                json entry;
+                entry["handle"]      = h;
+                entry["type"]        = "Material";
+                entry["texture_path"] = mat->GetTexture()->Path;  // the key field!
+                pj["asset_manifest"].push_back(entry);
             }
         }
         return j;
@@ -149,11 +145,9 @@ for (AssetHandle h : used_handles) {
  
         if (pj.contains("scenes")) {
             for (const auto& sj : pj["scenes"]) {
-                scene sc;
-                sc.ID        = sj.value("id", 0u);
-                sc.Scenename = sj.value("Scenename", "New Scene");
-                sc.EntityIDs = sj.value("EntityIDs", std::vector<uint32_t>{});
-                SceneList.push_back(sc);
+                scene s;
+                s.Deserialize(sj);
+                SceneList.push_back(s);
             }
         }
         std::cout << "[DEBUG] Loaded " << SceneList.size() << " scenes\n";     

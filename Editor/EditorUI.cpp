@@ -29,6 +29,7 @@ void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, 
 //    panels.push_back(std::make_unique<AssetPanel>("Texture Assets", Proj));
     panels.push_back(std::make_unique<Terminal>("Terminal", Proj));
     panels.push_back(std::make_unique<SceneManagerPanel>("SceneManager", Proj, SelectedScene));
+    panels.push_back(std::make_unique<SceneParamPanel>("SceneParam", Proj, SelectedScene));
     panels.push_back(std::make_unique<ProjectSettingsPanel>(Proj.Param.name.c_str(), Proj));
     panels.push_back(std::make_unique<EntityList>("Entity List", Proj, Selection, SelectedScene));
     panels.push_back(std::make_unique<Inspector>("Inspector", Proj, Selection));

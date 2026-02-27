@@ -33,25 +33,21 @@ public:
 
     void Deserialize(const json& data) {
 
-        // Safe defaults
         transform.position = {0.0f, 0.0f, 0.0f};
         transform.rotation = 0.0f;
         transform.scale    = {1.0f, 1.0f, 1.0f};
 
 
-        // position
         if (data.contains("position") && data["position"].is_array() && data["position"].size() == 3) {
             transform.position.x = data["position"][0].get<float>();
             transform.position.y = data["position"][1].get<float>();
             transform.position.z = data["position"][2].get<float>();
         }
 
-        // rotation
         if (data.contains("rotation")) {
             transform.rotation = data["rotation"].get<float>();
         }
 
-        // scale
         if (data.contains("scale") && data["scale"].is_array() && data["scale"].size() == 3) {
             transform.scale.x = data["scale"][0].get<float>();
             transform.scale.y = data["scale"][1].get<float>();

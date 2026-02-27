@@ -142,8 +142,6 @@ private:
     project& Proj;
 };
 
-
-
 class EntityList : public Panel{
 public:
     EntityList(const std::string& n, project& Proj, SelectedEntity& selection, int& SelectedS):
@@ -154,6 +152,17 @@ public:
 private:
     project& Proj;
     SelectedEntity& selection;
+    int& SelectedScene;
+};
+class SceneParamPanel : public Panel{
+public:
+    SceneParamPanel(const std::string& n, project& Proj, int& SelectedS):
+        Panel(n), Proj(Proj), SelectedScene(SelectedS) {}
+    void Render() override;
+    void Update(float dt) override;
+
+private:
+    project& Proj;
     int& SelectedScene;
 };
 

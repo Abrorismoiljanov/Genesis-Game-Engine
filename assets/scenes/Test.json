@@ -45,14 +45,22 @@
         "name": "Default Project",
         "nextComponentID": 1,
         "nextEntityID": 1,
-        "nextSceneID": 0,
+        "nextSceneID": 1,
         "scenes": [
             {
                 "EntityIDs": [
                     0
                 ],
-                "Scenename": "",
-                "id": 0
+                "ID": 0,
+                "Param": {
+                    "BackgroundColor": [
+                        0.011049747467041016,
+                        0.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "Scenename": ""
             }
         ],
         "window": {
