@@ -10,6 +10,7 @@ EditorUI::EditorUI(project& proj, bool& running): Project(proj), renderer(nullpt
 void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer, bool& running){
 
     running = Run;
+    SelectedScene = 0;
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -27,10 +28,11 @@ void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, 
     RegisterAllComponents();
 //    panels.push_back(std::make_unique<AssetPanel>("Texture Assets", Proj));
     panels.push_back(std::make_unique<Terminal>("Terminal", Proj));
+    panels.push_back(std::make_unique<SceneManagerPanel>("SceneManager", Proj, SelectedScene));
     panels.push_back(std::make_unique<ProjectSettingsPanel>(Proj.Param.name.c_str(), Proj));
-    panels.push_back(std::make_unique<EntityList>("Entity List", Proj, Selection));
+    panels.push_back(std::make_unique<EntityList>("Entity List", Proj, Selection, SelectedScene));
     panels.push_back(std::make_unique<Inspector>("Inspector", Proj, Selection));
-    panels.push_back(std::make_unique<Viewport>("Viewport", Proj, Selection, renderer));
+    panels.push_back(std::make_unique<Viewport>("Viewport", Proj, Selection, renderer, SelectedScene));
 
 };
 

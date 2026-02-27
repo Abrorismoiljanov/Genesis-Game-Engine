@@ -107,63 +107,84 @@ void AssetPanel::Update(float dt){};
 
 void EntityList::Render(){
     ImGui::Begin( name.c_str());
-    if (Proj.SceneList.empty()) {
+ 
+    scene* defaultScene = nullptr;
 
-        Proj.SceneList.emplace_back();
-    
-    } else {
-        auto& defaultScene = Proj.SceneList[0];
-
-        if (ImGui::Button("+", ImVec2(20, 20))) {
-            Proj.AddEntity(defaultScene.ID);
+    for (auto& s : Proj.SceneList) {
+        if (s.ID == SelectedScene) {
+            defaultScene = &s;
+            break;
         }
-        ImGui::SameLine();
+    }
 
+    if (!defaultScene) {
+        ImGui::Text("Please select a scene in SceneManager");
+        ImGui::End();
+        return;
+    }
+
+ 
+    if (defaultScene) {
+
+        ImGui::Text(defaultScene->Scenename.c_str());
+        ImGui::Separator();
+    
+        if (ImGui::Button("+", ImVec2(20, 20))) {
+            Proj.AddEntity(defaultScene->ID);
+        }
+        
+        ImGui::SameLine();
+    
+    
         if (ImGui::Button("X", ImVec2(20, 20))) {
-                Proj.DeleteEntity(selection.EntityID);    
+            Proj.DeleteEntity(selection.EntityID);    
         }
 
         ImGui::Separator();
 
-
-        if (defaultScene.EntityIDs.empty()) {
+        if (defaultScene->EntityIDs.empty()) {
             ImGui::Text("No entities in this scene");
         } else {
-        
-            for (size_t i = 0; i < defaultScene.EntityIDs.size(); ++i) {
-                uint32_t entityID = defaultScene.EntityIDs[i];
+            
+            for (size_t i = 0; i < defaultScene->EntityIDs.size(); ++i) {
+
+                uint32_t entityID = defaultScene->EntityIDs[i];
                 entity* e = Proj.GetEntityByID(entityID);
+ 
                 if (!e) continue;
 
+      
                 ImGui::PushID(entityID);
 
-
+            
                 bool selected = (selection.EntityID == e->ID);
                 if (ImGui::Selectable(e->name.c_str(), selected)) {
+    
                     selection.ClearEntity();
+                
                     selection.EntityID = e->ID;
-
+ 
                 }
 
-    // --- Drag & Drop ---
-    if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
-        ImGui::SetDragDropPayload("ENTITY_PAYLOAD", &i, sizeof(size_t));
-        ImGui::Text("Move %s", e->name.c_str());
-        ImGui::EndDragDropSource();
-    }
+                if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
+                    ImGui::SetDragDropPayload("ENTITY_PAYLOAD", &i, sizeof(size_t));
+                    ImGui::Text("Move %s", e->name.c_str());
+                    ImGui::EndDragDropSource();
+                }
 
-    if (ImGui::BeginDragDropTarget()) {
-        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY_PAYLOAD")) {
-              ImGui::SameLine();
+  
+                if (ImGui::BeginDragDropTarget()) {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY_PAYLOAD")) {
+                        ImGui::SameLine();
 
-            IM_ASSERT(payload->DataSize == sizeof(size_t));
-            size_t srcIndex = *(const size_t*)payload->Data;
-            if (srcIndex != i) {
-                auto& ids = defaultScene.EntityIDs;
-                uint32_t movedID = ids[srcIndex];
-                ids.erase(ids.begin() + srcIndex);
-                ids.insert(ids.begin() + i, movedID);
-    
+                        IM_ASSERT(payload->DataSize == sizeof(size_t));
+                        size_t srcIndex = *(const size_t*)payload->Data;
+ 
+                        if (srcIndex != i) {
+                            auto& ids = defaultScene->EntityIDs;
+                            uint32_t movedID = ids[srcIndex];
+                            ids.erase(ids.begin() + srcIndex);
+                            ids.insert(ids.begin() + i, movedID);
                         }
                     }
                     ImGui::EndDragDropTarget();
@@ -172,7 +193,7 @@ void EntityList::Render(){
             }
         }
     }
-    ImGui::End();
+     ImGui::End();
 }
 
 void EntityList::Update(float dt){};
@@ -296,7 +317,18 @@ void Inspector::Render(){
     }
  
     ImGui::End();   
-}
+};
+    
+bool findinScene(scene* activeScene,  entity* CurrentEntity){
+    if (!activeScene || !CurrentEntity)
+        return false;
+    for (auto& e: activeScene->EntityIDs) {
+        if (e == CurrentEntity->ID) {
+            return true;
+        }
+    } 
+    return false;
+};
 
 void Inspector::Update(float dt){};
 
@@ -304,12 +336,21 @@ void Viewport::Render(){
     
     entity* CurrentEntity = nullptr;
     uint32_t selectedID = selection.EntityID;
+    scene* activeScene = nullptr;
+
+    for (auto& s : Proj.SceneList) {
+        if (s.ID == SelectedScene) {
+            activeScene = &s;
+        }
+    }
 
     for (auto& SelectedE : Proj.EntityList) {
         if (selection.EntityID == SelectedE.ID) {
             CurrentEntity = &SelectedE;
         }
-    } 
+    }; 
+
+
 
     ImGui::Begin("Viewport");
 
@@ -371,8 +412,9 @@ void Viewport::Render(){
     }
 
     bool DrawGizmo = false;
-    if (CurrentEntity == nullptr) DrawGizmo = false;else DrawGizmo = true;
-
+    if (CurrentEntity && activeScene && findinScene(activeScene, CurrentEntity)){
+        DrawGizmo = true;
+    }
 
     if (DrawGizmo){
         ImGuizmo::BeginFrame();

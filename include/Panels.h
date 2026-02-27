@@ -49,6 +49,19 @@ private:
     project& Proj;
 };
 
+class SceneManagerPanel: public Panel {
+public:
+    SceneManagerPanel(const std::string& n, project& proj, int& SelectedS): Panel(n), Proj(proj), SelectedScene(SelectedS) {}
+
+    void Render() override;
+    void Update(float dt) override;
+
+private:
+    project& Proj;
+
+    int& SelectedScene;
+};
+
 
 class AssetPanel : public Panel {
 public:
@@ -133,13 +146,15 @@ private:
 
 class EntityList : public Panel{
 public:
-    EntityList(const std::string& n, project& Proj, SelectedEntity& selection): Panel(n), Proj(Proj), selection(selection) {}
+    EntityList(const std::string& n, project& Proj, SelectedEntity& selection, int& SelectedS):
+        Panel(n), Proj(Proj), selection(selection), SelectedScene(SelectedS) {}
     void Render() override;
     void Update(float dt) override;
 
 private:
     project& Proj;
     SelectedEntity& selection;
+    int& SelectedScene;
 };
 
 class Inspector : public Panel{
@@ -156,14 +171,16 @@ private:
 
 class Viewport: public Panel{
 public:
-    Viewport(const std::string& n, project& Proj, SelectedEntity& selection, Renderer* renderer): 
+    Viewport(const std::string& n, project& Proj, SelectedEntity& selection, Renderer* renderer, int& SelectedScene): 
         Panel(n),
         Proj(Proj),
         selection(selection),
-        m_renderer(renderer) {}
+        m_renderer(renderer),
+        SelectedScene(SelectedScene){}
     
     void Update(float dt) override;
     void Render() override;
+
     void LaunchRuntimeWindow(){
         std::string tempScene = "temp_scene.json";
     if (!Proj.SaveToFile(tempScene)) {
@@ -192,6 +209,7 @@ private:
     float deltatime;
     project& Proj;
     SelectedEntity& selection;
+    int& SelectedScene;
     Renderer* m_renderer;
 };
 

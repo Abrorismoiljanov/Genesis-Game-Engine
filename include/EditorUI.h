@@ -18,9 +18,11 @@ public:
     EditorUI(project& proj, bool& running);
 
     bool& Run;
+    int SelectedScene;
 private:
     project& Project;
     std::vector<std::shared_ptr<Panel>> panels; 
     SelectedEntity Selection;
+
     Renderer* renderer = nullptr;
 };

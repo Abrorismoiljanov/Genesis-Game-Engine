@@ -61,7 +61,7 @@ void Renderer::BeginFrame(){
 void Renderer::EndFrame(){
     m_Framebuffer.UnBind();
 }
-void Renderer::Render(project& Proj){
+void Renderer::Render(project& Proj, int selectedSceneID){
  
     RenderGrid();
 
@@ -77,9 +77,18 @@ void Renderer::Render(project& Proj){
     glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(view));
 
     if (Proj.SceneList.empty()) return;
-    scene& activeScene = Proj.SceneList[0];
 
-    for (uint32_t entityID : activeScene.EntityIDs){
+    // Find scene by ID
+    scene* activeScene = nullptr;
+    for (auto& s : Proj.SceneList) {
+        if (s.ID == selectedSceneID) {
+            activeScene = &s;
+            break;
+        }
+    }
+    if (!activeScene) return;
+
+    for (uint32_t entityID : activeScene->EntityIDs){
    entity* e = Proj.GetEntityByID(entityID);
     if (!e) continue;
 

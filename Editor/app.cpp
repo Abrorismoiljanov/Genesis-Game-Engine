@@ -112,7 +112,7 @@ void app::Render(){
     
     renderer.BeginFrame();
     if (!Project.SceneList.empty())
-        renderer.Render(Project);
+        renderer.Render(Project, UI.SelectedScene);
  
     renderer.EndFrame();
 
