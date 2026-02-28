@@ -477,7 +477,8 @@ void Viewport::Render(){
     }
     float fps = (deltatime > 0.0f) ? (1.0f / deltatime) : 0.0f;
     ImGui::Text("FPS: %.1f", fps);
-   
+    ImGui::Text("Zoom: %.1f", m_renderer->m_Camera.Zoom);
+
     ImGui::End();
 }
 void Viewport::Update(float dt){
