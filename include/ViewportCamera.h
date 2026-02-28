@@ -54,8 +54,18 @@ public:
     }
 
     glm::vec2 ScreenToWorld(glm::vec2 screen) const{
-        float worldX = screen.x / Zoom + Position.x;
-        float worldY = screen.y / Zoom + Position.y;
+        float halfWidth  = (float)ViewWidth  * 0.5f;
+        float halfHeight = (float)ViewHeight * 0.5f;
+
+        float worldHalfWidth  = halfWidth  / Zoom;
+        float worldHalfHeight = halfHeight / Zoom;
+ 
+        float x = screen.x - halfWidth;
+        float y = halfHeight - screen.y; // flip Y if needed
+
+        float worldX = (x / halfWidth) * worldHalfWidth + Position.x;
+        float worldY = (y / halfHeight) * worldHalfHeight + Position.y;
+    
         return { worldX, worldY };
     }
 

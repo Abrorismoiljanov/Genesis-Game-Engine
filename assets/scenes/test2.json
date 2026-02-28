@@ -1,0 +1,121 @@
+{
+    "project": {
+        "activeSceneID": 0,
+        "asset_manifest": [
+            {
+                "handle": 2,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Ultrakill_poster.png",
+                "type": "Material"
+            },
+            {
+                "handle": 1,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Msdos-1730606937.png",
+                "type": "Material"
+            }
+        ],
+        "components": [
+            {
+                "data": {
+                    "materialHandle": 1,
+                    "rotation": 0.0,
+                    "size": [
+                        1200.0,
+                        1280.0
+                    ]
+                },
+                "id": 0,
+                "owner": 0,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "materialHandle": 2,
+                    "rotation": 0.0,
+                    "size": [
+                        1920.0,
+                        1080.0
+                    ]
+                },
+                "id": 1,
+                "owner": 1,
+                "type": "Sprite"
+            }
+        ],
+        "entities": [
+            {
+                "id": 0,
+                "name": "1chi jism",
+                "transform": {
+                    "position": [
+                        25.002883911132813,
+                        332.5036926269531,
+                        0.0
+                    ],
+                    "rotation": -1.762999176979065,
+                    "scale": [
+                        0.25,
+                        0.25,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 1,
+                "name": "rasm",
+                "transform": {
+                    "position": [
+                        723.7785034179688,
+                        393.3337097167969,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        0.3500000238418579,
+                        0.3500000238418579,
+                        1.0
+                    ]
+                }
+            }
+        ],
+        "name": "Default Project",
+        "nextComponentID": 2,
+        "nextEntityID": 2,
+        "nextSceneID": 2,
+        "scenes": [
+            {
+                "EntityIDs": [
+                    0,
+                    1
+                ],
+                "ID": 0,
+                "Param": {
+                    "BackgroundColor": [
+                        0.14364641904830933,
+                        0.14364641904830933,
+                        0.14364641904830933,
+                        1.0
+                    ]
+                },
+                "Scenename": "1chi saxna"
+            },
+            {
+                "EntityIDs": [],
+                "ID": 1,
+                "Param": {
+                    "BackgroundColor": [
+                        0.10000000149011612,
+                        0.10000000149011612,
+                        0.10000000149011612,
+                        1.0
+                    ]
+                },
+                "Scenename": "2chi saxna"
+            }
+        ],
+        "window": {
+            "flags": 2,
+            "height": 600,
+            "width": 800
+        }
+    }
+}
