@@ -36,7 +36,7 @@ void CoreRuntime::Init(std::string projectFile){
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             Project.Param.WindowWidth,
-            Project.Param.WindowWidth,
+            Project.Param.WindowHeight,
             Project.Param.WindowParam);
     }else {
         window = SDL_CreateWindow("No Project Attached", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL);
