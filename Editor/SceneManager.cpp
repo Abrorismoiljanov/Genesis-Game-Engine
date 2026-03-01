@@ -4,7 +4,7 @@ void SceneManagerPanel::Render(){
     if (Proj.SceneList.empty()) {
         scene scene;
         scene.ID = Proj.NextSceneID++;
-        scene.Scenename = "Scene" + std::to_string(scene.ID);
+        scene.Scenename = "Scene " + std::to_string(scene.ID);
         Proj.SceneList.push_back(scene);
     }
     ImGui::Begin( name.c_str());
