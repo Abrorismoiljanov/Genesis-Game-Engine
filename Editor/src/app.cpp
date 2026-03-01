@@ -8,8 +8,6 @@
 #include "../imgui/backends/imgui_impl_sdl2.h"
 #include "imgui_internal.h"
 
-#include "transformcomponent.h"
-
 app::app():
 window(nullptr),
 glContext(nullptr), 

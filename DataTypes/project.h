@@ -1,5 +1,4 @@
 #pragma once
-
 #include "iostream"
 #include "string"
 #include "vector"
@@ -9,8 +8,8 @@
 
 #include "scene.h"
 #include "entity.h"
-#include "components.h"
-#include "SpriteComponent.h"
+#include "Components/components.h"
+#include "Components/SpriteComponent.h"
 #include "AssetManager.h"
 #include "nlohmann/json.hpp"
 #include "Assets/MaterialAsset.h"

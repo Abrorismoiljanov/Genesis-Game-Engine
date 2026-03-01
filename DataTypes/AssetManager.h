@@ -4,7 +4,7 @@
 #include "unordered_map"
 #include "vector"
 #include "Assets/Asset.h"
-#include "components.h"
+#include "Components/components.h"
 
 class AssetManager{
 public:

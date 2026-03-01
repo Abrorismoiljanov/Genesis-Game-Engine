@@ -1,6 +1,6 @@
 #include "GL/glew.h"
 #include "Runtime/include/RuntimeRenderer.h"
-#include "SpriteComponent.h"
+#include "DataTypes/Components/SpriteComponent.h"
 #include "Runtime/include/ShaderUtils.h"
 
 void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window){

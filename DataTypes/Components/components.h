@@ -9,7 +9,8 @@ class AssetManager;
 //Later use
 enum ComponentType{
     none,
-    Sprite
+    Sprite,
+    Camera
 };
 
 class Component {

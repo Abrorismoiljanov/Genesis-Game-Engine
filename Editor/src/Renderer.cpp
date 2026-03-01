@@ -2,7 +2,7 @@
 #include "Editor/include/ShaderUtils.h"
 #include "Editor/include/FrameBuffer.h"
 #include "Editor/include/Renderer.h"
-#include "SpriteComponent.h"
+#include "DataTypes/Components/SpriteComponent.h"
 
 void Renderer::Init(int w, int h){
 
