@@ -472,7 +472,7 @@ void Viewport::Render(){
     ImGui::Checkbox("Axis", &m_renderer->DrawAxis);
     
     ImGui::SameLine();
-    if (ImGui::Button("Start", ImVec2(70, 20))) {
+    if (ImGui::ArrowButton("##play",ImGuiDir_Right)) {
         LaunchRuntimeWindow();
     }
     float fps = (deltatime > 0.0f) ? (1.0f / deltatime) : 0.0f;

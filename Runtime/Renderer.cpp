@@ -1,12 +1,9 @@
-#define GLM_ENABLE_EXPERIMENTAL
 #include "GL/glew.h"
 #include "ShaderUtils.h"
 #include "FrameBuffer.h"
 #include "RuntimeRenderer.h"
 #include "transformcomponent.h"
 #include "SpriteComponent.h"
-#include "glm/gtx/string_cast.hpp"
-
 
 void RuntimeRenderer::Init(int w, int h){
 
@@ -14,10 +11,7 @@ void RuntimeRenderer::Init(int w, int h){
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     DefaultShader = CompileShader("/home/abror/Project/GGE/Shader/VSH.glsl","/home/abror/Project/GGE/Shader/FSH.glsl");
-    
-    Width = w;
-    Height = h;
-
+ 
     float vertices[] = {
         -0.5f, -0.5f,  0.0f, 0.0f,
          0.5f, -0.5f,  1.0f, 0.0f,
@@ -50,34 +44,47 @@ void RuntimeRenderer::Init(int w, int h){
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
-
 }
 
-void RuntimeRenderer::BeginFrame(){
+void RuntimeRenderer::BeginFrame(project& Proj, int selectedSceneID){
+ 
+    for (auto& s : Proj.SceneList) {
+        if (s.ID == selectedSceneID) {
+            activeScene = &s;
+            break;
+        }
+    }
+    if (!activeScene) return;
 
-    glViewport(0, 0, Width, Height); 
-    glClearColor(1.0f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glViewport(0, 0, 1920, 1080); 
+    glClearColor(activeScene->Param.BackgroundColor.r, 
+                 activeScene->Param.BackgroundColor.g,
+                 activeScene->Param.BackgroundColor.b,
+                 activeScene->Param.BackgroundColor.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
-void RuntimeRenderer::EndFrame(){
+void RuntimeRenderer::EndFrame(SDL_Window* window){
+    SDL_GL_SwapWindow(window);
 }
-void RuntimeRenderer::Render(project& Proj){
+void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
+
     glUseProgram(DefaultShader);
 
+    float scale = m_Camera.Zoom; 
 
-    glm::mat4 view = glm::mat4(1.0f); // if you don’t want camera movement
-    glm::mat4 projection = glm::ortho(0.f, (float)Proj.Param.Resolution.width, (float)Proj.Param.Resolution.height, 0.0f, -1.f, 1.f);
+    m_Camera.Position.x = round(m_Camera.Position.x * scale) / scale;
+    m_Camera.Position.y = round(m_Camera.Position.y * scale) / scale;
 
-    glm::mat4 vp = projection * view;
+    glm::mat4 view = m_Camera.GetViewProjection();
 
-    glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(vp));
-
+    glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(view));
 
     if (Proj.SceneList.empty()) return;
-    scene& activeScene = Proj.SceneList[0];
 
-    for (uint32_t entityID : activeScene.EntityIDs){
+
+
+    for (uint32_t entityID : activeScene->EntityIDs){
    entity* e = Proj.GetEntityByID(entityID);
     if (!e) continue;
 
@@ -107,8 +114,8 @@ void RuntimeRenderer::Render(project& Proj){
         if (!tex || tex->ID == 0) continue;
 
         glm::mat4 model(1.0f);
-        model = glm::translate(glm::mat4(1.0f), glm::vec3(pos, 0.0f));
-        model = glm::rotate(model, glm::radians(rot), glm::vec3(0, 0, 1));
+        model = glm::translate(model, glm::vec3(pos, 0.0f));
+        model = glm::rotate(model, glm::radians(rot), glm::vec3(0,0,1));
         model = glm::scale(model, glm::vec3(scale * sprite->size, 1.0f));
 
         glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));

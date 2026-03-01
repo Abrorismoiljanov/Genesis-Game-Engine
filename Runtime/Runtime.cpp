@@ -65,10 +65,9 @@ void CoreRuntime::Run(){
                 running = false;
             }
         }
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-     
-        SDL_GL_SwapWindow(window);
+        renderer.BeginFrame(Project, Project.activeSceneID);
+        renderer.Render(Project, Project.activeSceneID);
+        renderer.EndFrame(window);
     }
 }
 

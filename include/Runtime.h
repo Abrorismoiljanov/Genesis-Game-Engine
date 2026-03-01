@@ -1,4 +1,5 @@
 #include "project.h"
+#include "RuntimeRenderer.h"
 
 class CoreRuntime{
 private:
@@ -7,6 +8,7 @@ private:
     bool running;
     project Project;
     SDL_Event event;
+    RuntimeRenderer renderer;
 
 public:
     CoreRuntime();

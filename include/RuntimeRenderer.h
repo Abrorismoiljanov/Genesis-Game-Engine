@@ -9,16 +9,14 @@ class RuntimeRenderer{
 
 public:
     void Init(int w, int h);
-    void BeginFrame();
-    void Render(project& Proj);
-    void EndFrame();
+    void BeginFrame(project& Proj, int selectedSceneID);
+    void Render(project& Proj,int selectedSceneID);
+    void EndFrame(SDL_Window* window);
     ViewportCamera m_Camera;
+    scene* activeScene = nullptr;
 
 private:
-    int Width;
-    int Height;
     GLuint DefaultShader;
-
 
     GLuint QuadVAO = 0;
     GLuint QuadVBO = 0;
