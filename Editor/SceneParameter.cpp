@@ -2,40 +2,42 @@
 
 void SceneParamPanel::Render(){
 
-    scene* defaultScene = nullptr;
+    scene* defaultScene = Proj.GetSceneByID(SelectedScene);
 
-    for (auto& s : Proj.SceneList) {
-        if (s.ID == SelectedScene) {
-            defaultScene = &s;
-        }
-    }
-    char buffer[128];  
-    strncpy(buffer, defaultScene->Scenename.c_str(), sizeof(buffer));
-    buffer[sizeof(buffer)-1] = '\0'; // ensure null-termination
+    bool ValidScene = (defaultScene != nullptr);
 
     ImGui::Begin("Scene Parameter");
-   if (defaultScene != nullptr) {
-    ImGui::Text(defaultScene->Scenename.c_str());
-   }
-    ImGui::Separator();      
-    ImGui::Text("Scene Name");
-    ImGui::SameLine();
-    float w = ImGui::GetContentRegionAvail().x;    
- 
-        
-    ImGui::PushItemWidth(w);
-    if(ImGui::InputText("####", buffer, sizeof(buffer))){
-        defaultScene->Scenename = buffer;
+    if (!ValidScene) {
+        ImGui::Text("Please Select a Scene");
     }
+ 
+    if (ValidScene) {
+        char buffer[128];  
+        strncpy(buffer, defaultScene->Scenename.c_str(), sizeof(buffer));
+        buffer[sizeof(buffer)-1] = '\0';
 
-    ImGui::PopItemWidth();
-    ImGui::Separator();
+        if (defaultScene != nullptr) {
+            ImGui::Text(defaultScene->Scenename.c_str());
+        }
+        ImGui::Separator();      
+        ImGui::Text("Scene Name");
+        ImGui::SameLine();
+        float w = ImGui::GetContentRegionAvail().x;    
+ 
+        ImGui::PushItemWidth(w);
+        if(ImGui::InputText("####", buffer, sizeof(buffer))){
+            defaultScene->Scenename = buffer;
+        }
 
-    ImGui::Text("Background Color");
-    ImGui::SameLine();
-    ImGui::ColorEdit4("", glm::value_ptr(defaultScene->Param.BackgroundColor), ImGuiColorEditFlags_DisplayRGB |
-                      ImGuiColorEditFlags_AlphaBar |
-                      ImGuiColorEditFlags_NoInputs);
+        ImGui::PopItemWidth();
+        ImGui::Separator();
+
+        ImGui::Text("Background Color");
+        ImGui::SameLine();
+        ImGui::ColorEdit4("", glm::value_ptr(defaultScene->Param.BackgroundColor), ImGuiColorEditFlags_DisplayRGB |
+                          ImGuiColorEditFlags_AlphaBar |
+                          ImGuiColorEditFlags_NoInputs);
+    }
     ImGui::End();
 };
 

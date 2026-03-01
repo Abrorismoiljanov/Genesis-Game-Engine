@@ -252,6 +252,11 @@ if (pj.contains("asset_manifest")) {
         Deserialize(j);
         return true;
     }
+    scene* GetSceneByID(int id) {
+        auto it = std::find_if(SceneList.begin(), SceneList.end(),
+                           [id](const scene& s){ return s.ID == id; });
+        return (it != SceneList.end()) ? &(*it) : nullptr;
+    }
 
     entity* GetEntityByID(uint32_t id) {
         for (auto& e : EntityList)
@@ -318,9 +323,12 @@ if (pj.contains("asset_manifest")) {
         }
         return raw;
     }
-void DeleteComponent(uint32_t compID) {
 
-    // 1. Find component
+
+    void DeleteComponent(uint32_t compID) {
+
+    
+        // 1. Find component
     Component* comp = GetComponentByID(compID);
     if (!comp) return;
 
@@ -347,7 +355,6 @@ void DeleteComponent(uint32_t compID) {
         );
     }
 }
-
 
     Component* GetComponentByID(uint32_t id) {
         for (auto& c : ComponentList)
