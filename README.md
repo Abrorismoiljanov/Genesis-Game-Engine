@@ -36,5 +36,5 @@ Designed to manage **Scenes**, **Entities**, and **Components** with a flexible 
 Clone the repository:
 
 ```bash
-git clone git@github.com:username/MyGameEditor.git
+git clone https://github.com/Abrorismoiljanov/Genesis-Game-Engine
 cd GGE
