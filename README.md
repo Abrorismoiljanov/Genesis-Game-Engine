@@ -1,21 +1,20 @@
 # MyGameEditor
 
-A lightweight C++ game engine editor built with SDL2, OpenGL, ImGui, and Assimp.  
+A lightweight C++ game engine editor built with SDL2, OpenGL, ImGui, and stb_image.  
 Designed to manage **Scenes**, **Entities**, and **Components** with a flexible editor UI.
 
 ---
 
 ## Features
-
-- **Entity-Component System**  
-  - Add, remove, and reorder components.
-  - Inspect and modify components in the editor.
+-**Entity Component System**
+  - you can control the behavior of Entities via components it owns.
+  - Every Component will be shown in Inspector and you can tweak with it there.
 - **Scene Management**  
   - Multiple scenes support.
-  - Drag-and-drop entity ordering.
+  - you can tweak Scene settings in Scene Parameter Panel.
 - **ImGui-based Editor**  
-  - Component inspector with collapsing headers and UI controls.
-  - File dialog support for importing meshes.
+  - I used ImGui for UI
+  - Flexible UI thanks to imGui and everyone who have done work around it
 ---
 
 ## Screenshots
@@ -29,6 +28,7 @@ Designed to manage **Scenes**, **Entities**, and **Components** with a flexible 
 - [SDL2](https://www.libsdl.org/)  
 - [OpenGL](https://www.opengl.org/)  
 - [ImGui](https://github.com/ocornut/imgui)  
+- [Stb_image](https://github.com/nothings/stb)  
 - [xmake](https://xmake.io/#/) (build system)
 
 ### Build
