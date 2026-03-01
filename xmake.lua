@@ -6,8 +6,8 @@ add_rules("mode.debug", "mode.release")
 
 target("Editor")
     set_kind("binary")
-    add_files("Editor/*.cpp", "./DataTypesDef/*.cpp")
-    add_includedirs("include", "DataTypes")
+    add_files("Editor/src/*.cpp", "./DataTypesDef/*.cpp")
+    add_includedirs(".", "DataTypes",  {public = true})
     add_links("SDL2", "GL", "GLEW")
     add_packages(
     "glm", 
@@ -26,8 +26,8 @@ target("Editor")
 
 target("Runtime")
     set_kind("binary")
-    add_files("Runtime/*.cpp", "DataTypesDef/*.cpp")
-    add_includedirs("include", "DataTypes")
+    add_files("Runtime/src/*.cpp", "DataTypesDef/*.cpp")
+    add_includedirs(".", "DataTypes",{public = true})
     add_links("SDL2", "GL", "GLEW")
     add_packages(
     "glm", 

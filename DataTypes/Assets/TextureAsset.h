@@ -1,7 +1,7 @@
 #pragma once
 #include "Asset.h"
 #include "GL/glew.h"
-#include "stb_image.h"
+#include "DataTypes/stb_image.h"
 #include "vector"
 
 class TextureAsset : public Asset{

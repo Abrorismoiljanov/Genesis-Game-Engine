@@ -1,10 +1,10 @@
 #pragma once
 #include "components.h"
 #include "Assets/Asset.h"
-#include "Assets/MaterialAsset.h"
+#include "DataTypes/Assets/MaterialAsset.h"
 #include "imgui.h"
 #include "AssetManager.h"
-#include "ImGuiFileDialog.h"
+#include "ImGuiFileDialog/ImGuiFileDialog.h"
 #include "glm/glm.hpp"
 
 struct SpriteComponent : public Component {
