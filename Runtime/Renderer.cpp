@@ -5,7 +5,32 @@
 #include "transformcomponent.h"
 #include "SpriteComponent.h"
 
-void RuntimeRenderer::Init(int w, int h){
+void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window){
+
+    int fbW, fbH;
+    SDL_GL_GetDrawableSize(window, &fbW, &fbH);
+ 
+    int vpW, vpH;
+    int vpX, vpY;
+
+    float targetAspect = Proj.Param.Resolution.width / Proj.Param.WindowHeight;
+    float windowAspect = (float)fbW / (float)fbH;
+ 
+
+    if (windowAspect > targetAspect) {
+ 
+        vpH = fbH;
+        vpW = (int)(fbH * targetAspect);
+        vpX = (fbW - vpW) / 2;
+        vpY = 0;
+    }else {
+        vpW = fbW;
+        vpH = (int)(fbW / targetAspect);
+        vpX = 0;
+        vpY = (fbH - vpH) / 2;
+    }
+
+    glViewport(vpX, vpY, vpW, vpH);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -44,31 +69,44 @@ void RuntimeRenderer::Init(int w, int h){
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
+
+    for (auto& comp_ptr : Proj.ComponentList) {
+        if (comp_ptr->Getname() != "Sprite") continue;
+        SpriteComponent* sprite = static_cast<SpriteComponent*>(comp_ptr.get());
+        auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
+        if (!mat) continue;
+        TextureAsset* tex = mat->GetTexture().get();
+        if (!tex) continue;
+
+        if (tex->ID == 0) { 
+            tex->LoadFromFile(tex->Path);
+            tex->UploadToGPU();
+        }
+    }
 }
 
 void RuntimeRenderer::BeginFrame(project& Proj, int selectedSceneID){
  
-    for (auto& s : Proj.SceneList) {
-        if (s.ID == selectedSceneID) {
-            activeScene = &s;
-            break;
-        }
-    }
+    activeScene = Proj.GetSceneByID(selectedSceneID);
     if (!activeScene) return;
 
-    glViewport(0, 0, 1920, 1080); 
     glClearColor(activeScene->Param.BackgroundColor.r, 
                  activeScene->Param.BackgroundColor.g,
                  activeScene->Param.BackgroundColor.b,
                  activeScene->Param.BackgroundColor.a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glClear(GL_COLOR_BUFFER_BIT);
 
 }
 void RuntimeRenderer::EndFrame(SDL_Window* window){
     SDL_GL_SwapWindow(window);
 }
 void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
+    if (!activeScene)
+        activeScene = Proj.GetSceneByID(selectedSceneID);
 
+    if (!activeScene)
+        return;
     glUseProgram(DefaultShader);
 
     float scale = m_Camera.Zoom; 
@@ -85,9 +123,8 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
 
 
     for (uint32_t entityID : activeScene->EntityIDs){
-   entity* e = Proj.GetEntityByID(entityID);
+        entity* e = Proj.GetEntityByID(entityID);
     if (!e) continue;
-
 
 
     glm::vec2 pos = e ? e->transform.position : glm::vec2(0.0f);
@@ -96,21 +133,21 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
 
     // Get SpriteComponent by ID
     SpriteComponent* sprite = nullptr;
-    for (uint32_t compID : e->ComponentIDs) {
-        Component* c = Proj.GetComponentByID(compID);
-        if (!c) continue;
-
-        if (c->Getname() == "Sprite") {
-            sprite = static_cast<SpriteComponent*>(c);
-            break;
+        for (uint32_t compID : e->ComponentIDs) {
+            Component* c = Proj.GetComponentByID(compID);
+            if (!c) continue;
+       
+            if (c->Getname() == "Sprite") {
+                sprite = static_cast<SpriteComponent*>(c);
+                break;
+            }
         }
-    }
-    if (!sprite) continue;
+        if (!sprite) continue;
 
         auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
-
         if (!mat) continue;
         TextureAsset* tex = mat->GetTexture().get();
+
         if (!tex || tex->ID == 0) continue;
 
         glm::mat4 model(1.0f);
@@ -122,6 +159,7 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, tex->ID);
+
         glUniform1i(glGetUniformLocation(DefaultShader, "u_Texture"), 0);
 
         glBindVertexArray(QuadVAO);

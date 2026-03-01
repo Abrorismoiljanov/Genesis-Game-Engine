@@ -8,7 +8,6 @@ void CoreRuntime::Init(std::string projectFile){
     
     running = true;
 
-    // Load project if path is given
     if (!projectFile.empty())
     {
         if (!Project.LoadFromFile(projectFile))
@@ -41,8 +40,6 @@ void CoreRuntime::Init(std::string projectFile){
     }else {
         window = SDL_CreateWindow("No Project Attached", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL);
     }
-    glContext = SDL_GL_CreateContext(window);
-
     if (!window){
         std::cout << "window creation failed" << '\n';
     }
@@ -56,6 +53,7 @@ void CoreRuntime::Init(std::string projectFile){
     if (glewInit() != GLEW_OK) {
          std::cout << "GLEW init failed\n";
     }
+    renderer.Init(Project.Param.WindowWidth, Project.Param.WindowHeight, Project, window);
 }
 
 void CoreRuntime::Run(){

@@ -8,7 +8,7 @@
 class RuntimeRenderer{
 
 public:
-    void Init(int w, int h);
+    void Init(int w, int h, project& Proj, SDL_Window* window);
     void BeginFrame(project& Proj, int selectedSceneID);
     void Render(project& Proj,int selectedSceneID);
     void EndFrame(SDL_Window* window);
