@@ -3,6 +3,7 @@
 #include "Editor/include/FrameBuffer.h"
 #include "Editor/include/Renderer.h"
 #include "DataTypes/Components/SpriteComponent.h"
+#include "DataTypes/Components/CameraComponent.h"
 
 void Renderer::Init(int w, int h){
 
@@ -105,19 +106,44 @@ void Renderer::Render(project& Proj, int selectedSceneID){
     float rot = e ? e->transform.rotation : 0.0f;
     glm::vec2 scale = e ? e->transform.scale : glm::vec2(1.0f);
 
-    // Get SpriteComponent by ID
-    SpriteComponent* sprite = nullptr;
-    for (uint32_t compID : e->ComponentIDs) {
-        Component* c = Proj.GetComponentByID(compID);
-        if (!c) continue;
 
-        if (c->Getname() == "Sprite") {
-            sprite = static_cast<SpriteComponent*>(c);
-            break;
+        SpriteComponent* sprite = nullptr;
+        CameraComponent* cam = nullptr;
+ 
+        for (uint32_t compID : e->ComponentIDs) {
+            Component* c = Proj.GetComponentByID(compID);
+            if (!c) continue;
+            if (c->Getname() == "Sprite") {
+                sprite = static_cast<SpriteComponent*>(c);
+            }
+            if (c->Getname() == "Camera") {
+                cam = static_cast<CameraComponent*>(c);
+            }
         }
-    }
-    if (!sprite) continue;
+        if (!sprite) continue;
 
+        float halfWidth  = (m_Framebuffer.m_Width  / cam->Zoom) * 0.5f;
+        float halfHeight = (m_Framebuffer.m_Height / cam->Zoom) * 0.5f;
+
+    float left   = pos.x - halfWidth;
+    float right  = pos.x + halfWidth;
+    float bottom = pos.y - halfHeight;
+    float top    = pos.y + halfHeight;
+
+    float vertices[] = {
+        left,  bottom,
+        right, bottom,
+
+        right, bottom,
+        right, top,
+
+        right, top,
+        left,  top,
+
+        left,  top,
+        left,  bottom
+    };
+    
         auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
 
         if (!mat) continue;
@@ -140,6 +166,7 @@ void Renderer::Render(project& Proj, int selectedSceneID){
         glBindVertexArray(0);
     }
 }
+
 void Renderer::RenderAxis(){
 glUseProgram(GridShader);
 

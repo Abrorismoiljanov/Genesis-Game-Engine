@@ -3,13 +3,13 @@
 #include "vector"
 #include "cstdint"
 #include "glm/glm.hpp"
+#include "entity.h"
 
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
 
 struct SceneParam{
     glm::vec4 BackgroundColor = {0.1f, 0.1f, 0.1f, 1.0f};
-
  
     json Serialize() const {
         json j;
@@ -36,13 +36,15 @@ class scene{
     uint32_t ID = 0;
     std::vector<uint32_t> EntityIDs;
     SceneParam Param;
- 
+    int Camera;
+
     json Serialize() const {
         json j;
         j["ID"] = ID;
         j["Scenename"] = Scenename;
         j["EntityIDs"] = EntityIDs;
         j["Param"] = Param.Serialize();
+        j["Camera"] = Camera;
         return j;
     }
 
@@ -50,8 +52,10 @@ class scene{
         ID = j.value("ID", 0u);
         Scenename = j.value("Scenename", std::string("Scene"));
         EntityIDs = j.value("EntityIDs", std::vector<uint32_t>{});
-
-    
+        Camera = j.value("Camera", -1);
+        if (std::find(EntityIDs.begin(), EntityIDs.end(), Camera) == EntityIDs.end())
+            Camera = -1;
+ 
         if (j.contains("Param"))
             Param.Deserialize(j["Param"]);
     } 
