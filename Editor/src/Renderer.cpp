@@ -220,6 +220,7 @@ void Renderer::RenderCameraGizmos(project& Proj){
             glGetUniformLocation(GridShader, "u_Color"),
             0.5f, 0.5f, 1.0f, 1.0f
         );
+ 
         glLineWidth(3.0f);
         glDrawArrays(GL_LINES, 0, 8);
         glLineWidth(1.0f);
