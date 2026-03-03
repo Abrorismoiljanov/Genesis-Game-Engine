@@ -20,7 +20,8 @@ public:
 
     void RenderGrid();
     void RenderAxis();
-
+    void RenderCameraGizmos(project& Proj);
+    
     uint32_t GetFinalImage() const { return m_Framebuffer.GetColorAttachment(); }
 
 private:

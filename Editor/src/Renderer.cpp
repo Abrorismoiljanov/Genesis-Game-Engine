@@ -101,10 +101,10 @@ void Renderer::Render(project& Proj, int selectedSceneID){
     if (!e) continue;
 
 
-
-    glm::vec2 pos = e ? e->transform.position : glm::vec2(0.0f);
-    float rot = e ? e->transform.rotation : 0.0f;
-    glm::vec2 scale = e ? e->transform.scale : glm::vec2(1.0f);
+ 
+        glm::vec2 pos = e ? e->transform.position : glm::vec2(0.0f);
+        float rot = e ? e->transform.rotation : 0.0f;
+        glm::vec2 scale = e ? e->transform.scale : glm::vec2(1.0f);
 
 
         SpriteComponent* sprite = nullptr;
@@ -116,34 +116,9 @@ void Renderer::Render(project& Proj, int selectedSceneID){
             if (c->Getname() == "Sprite") {
                 sprite = static_cast<SpriteComponent*>(c);
             }
-            if (c->Getname() == "Camera") {
-                cam = static_cast<CameraComponent*>(c);
-            }
         }
         if (!sprite) continue;
 
-        float halfWidth  = (m_Framebuffer.m_Width  / cam->Zoom) * 0.5f;
-        float halfHeight = (m_Framebuffer.m_Height / cam->Zoom) * 0.5f;
-
-    float left   = pos.x - halfWidth;
-    float right  = pos.x + halfWidth;
-    float bottom = pos.y - halfHeight;
-    float top    = pos.y + halfHeight;
-
-    float vertices[] = {
-        left,  bottom,
-        right, bottom,
-
-        right, bottom,
-        right, top,
-
-        right, top,
-        left,  top,
-
-        left,  top,
-        left,  bottom
-    };
-    
         auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
 
         if (!mat) continue;
@@ -164,6 +139,92 @@ void Renderer::Render(project& Proj, int selectedSceneID){
         glBindVertexArray(QuadVAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+    }
+    RenderCameraGizmos(Proj);
+}
+
+void Renderer::RenderCameraGizmos(project& Proj){
+    glUseProgram(GridShader);
+
+    glm::mat4 vp = m_Camera.GetViewProjection();
+    glUniformMatrix4fv(
+        glGetUniformLocation(GridShader, "u_VP"),
+        1, GL_FALSE,
+        glm::value_ptr(vp)
+    );
+
+    float aspect = (float)Proj.Param.Resolution.width / Proj.Param.Resolution.height;
+
+    float worldHeight = 1.0f / m_Camera.Zoom; // or whatever 1 pixel = 1 unit mapping
+    float worldWidth  = worldHeight * aspect;
+
+    for (uint32_t entityID : activeScene->EntityIDs)
+    {
+        entity* e = Proj.GetEntityByID(entityID);
+        if (!e) continue;
+
+        CameraComponent* cam = nullptr;
+
+        for (uint32_t compID : e->ComponentIDs)
+        {
+            Component* c = Proj.GetComponentByID(compID);
+            if (c && c->Getname() == "Camera")
+                cam = static_cast<CameraComponent*>(c);
+        }
+
+        if (!cam) continue;
+
+        float halfHeight = Proj.Param.Resolution.height * 0.5f / cam->Zoom;
+        float halfWidth  = halfHeight * aspect;
+
+        glm::vec2 pos = e->transform.position;
+        float rot = e->transform.rotation;
+
+        glm::mat4 model(1.0f);
+        model = glm::translate(model, glm::vec3(pos, 0.0f));
+        model = glm::rotate(model, glm::radians(rot), glm::vec3(0,0,1));
+
+        glm::vec4 corners[4] = {
+            model * glm::vec4(-halfWidth, -halfHeight, 0, 1),
+            model * glm::vec4( halfWidth, -halfHeight, 0, 1),
+            model * glm::vec4( halfWidth,  halfHeight, 0, 1),
+            model * glm::vec4(-halfWidth,  halfHeight, 0, 1)
+        };
+
+        float vertices[] = {
+            corners[0].x, corners[0].y,
+            corners[1].x, corners[1].y,
+
+            corners[1].x, corners[1].y,
+            corners[2].x, corners[2].y,
+
+            corners[2].x, corners[2].y,
+            corners[3].x, corners[3].y,
+
+            corners[3].x, corners[3].y,
+            corners[0].x, corners[0].y,
+        };
+
+        GLuint vbo, vao;
+        glGenVertexArrays(1, &vao);
+        glGenBuffers(1, &vbo);
+
+        glBindVertexArray(vao);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        glUniform4f(
+            glGetUniformLocation(GridShader, "u_Color"),
+            0.5f, 0.5f, 1.0f, 1.0f
+        );
+        glLineWidth(3.0f);
+        glDrawArrays(GL_LINES, 0, 8);
+        glLineWidth(1.0f);
+        glDeleteBuffers(1, &vbo);
+        glDeleteVertexArrays(1, &vao);
     }
 }
 

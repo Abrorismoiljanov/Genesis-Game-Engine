@@ -49,9 +49,6 @@ void entity::DrawInfoUI(){
         ImGui::SameLine();
         ImGui::DragFloat("###8", &transform.scale.y, 0.1);
         ImGui::PopItemWidth();
-        ImGui::Separator();
-
-
         ImGui::Dummy(ImVec2(0.0f, 10.0f));
         ImGui::Separator();
     };
