@@ -3,15 +3,25 @@
         "activeSceneID": 0,
         "asset_manifest": [
             {
-                "handle": 2,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Dontplayontheendges_text.png",
+                "handle": 1,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/V1.png",
                 "type": "Material"
             }
         ],
         "components": [
             {
                 "data": {
-                    "materialHandle": 2,
+                    "Zoom": 1.0,
+                    "far": 1.0,
+                    "near": -1.0
+                },
+                "id": 0,
+                "owner": 0,
+                "type": "Camera"
+            },
+            {
+                "data": {
+                    "materialHandle": 1,
                     "rotation": 0.0,
                     "size": [
                         1920.0,
@@ -25,18 +35,35 @@
         ],
         "entities": [
             {
+                "id": 0,
+                "name": "Camera",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
                 "id": 1,
                 "name": "Entity",
                 "transform": {
                     "position": [
-                        340.0000305175781,
-                        388.88897705078125,
+                        0.0,
+                        0.0,
                         0.0
                     ],
-                    "rotation": -153.6089324951172,
+                    "rotation": 0.0,
                     "scale": [
-                        0.4300000071525574,
-                        0.4300000071525574,
+                        0.6599999666213989,
+                        0.6599999666213989,
                         1.0
                     ]
                 }
@@ -45,22 +72,24 @@
         "name": "Default Project",
         "nextComponentID": 2,
         "nextEntityID": 2,
-        "nextSceneID": 2,
+        "nextSceneID": 1,
         "scenes": [
             {
+                "Camera": 0,
                 "EntityIDs": [
+                    0,
                     1
                 ],
                 "ID": 0,
                 "Param": {
                     "BackgroundColor": [
-                        0.12154698371887207,
-                        0.12154698371887207,
-                        0.12154698371887207,
+                        0.10000000149011612,
+                        0.10000000149011612,
+                        0.10000000149011612,
                         1.0
                     ]
                 },
-                "Scenename": "scene 0"
+                "Scenename": "Scene 0"
             }
         ],
         "window": {

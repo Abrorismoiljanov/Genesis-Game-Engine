@@ -5,30 +5,7 @@
 
 void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window){
 
-    int fbW, fbH;
-    SDL_GL_GetDrawableSize(window, &fbW, &fbH);
- 
-    int vpW, vpH;
-    int vpX, vpY;
-
-    float targetAspect = Proj.Param.Resolution.width / Proj.Param.WindowHeight;
-    float windowAspect = (float)fbW / (float)fbH;
- 
-
-    if (windowAspect > targetAspect) {
- 
-        vpH = fbH;
-        vpW = (int)(fbH * targetAspect);
-        vpX = (fbW - vpW) / 2;
-        vpY = 0;
-    }else {
-        vpW = fbW;
-        vpH = (int)(fbW / targetAspect);
-        vpX = 0;
-        vpY = (fbH - vpH) / 2;
-    }
-
-    glViewport(vpX, vpY, vpW, vpH);
+    glViewport(0, 0, w, h);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -94,7 +71,26 @@ void RuntimeRenderer::BeginFrame(project& Proj, int selectedSceneID){
                  activeScene->Param.BackgroundColor.a);
     
     glClear(GL_COLOR_BUFFER_BIT);
+ 
+    if (Proj.GetEntityByID(activeScene->Camera)) {
+        m_CameraEntity = Proj.GetEntityByID(activeScene->Camera);
+        m_CameraComponent = nullptr;
 
+        if (m_CameraEntity) {
+            for (uint32_t cid : m_CameraEntity->ComponentIDs) {
+                Component* c = Proj.GetComponentByID(cid);
+                if (!c) continue;
+
+                if (c->Getname() == "Camera") {
+                    m_CameraComponent = static_cast<CameraComponent*>(c);
+                    break;
+                }
+            }
+        }
+    } else {
+        m_CameraEntity = nullptr;
+        m_CameraComponent = nullptr;
+    }
 }
 void RuntimeRenderer::EndFrame(SDL_Window* window){
     SDL_GL_SwapWindow(window);
@@ -107,10 +103,15 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
         return;
     glUseProgram(DefaultShader);
 
-    float scale = m_Camera.Zoom; 
-
-    m_Camera.Position.x = round(m_Camera.Position.x * scale) / scale;
-    m_Camera.Position.y = round(m_Camera.Position.y * scale) / scale;
+    
+    if (m_CameraEntity != nullptr){
+        scale = m_Camera.Zoom;
+        camPos.x = m_CameraEntity->transform.position.x;
+        camPos.y = m_CameraEntity->transform.position.y;
+  
+        m_Camera.Position.x = round(m_CameraEntity->transform.position.x * scale) / scale;
+        m_Camera.Position.y = round(m_CameraEntity->transform.position.y * scale) / scale;
+    }
 
     glm::mat4 view = m_Camera.GetViewProjection();
 
@@ -129,7 +130,7 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
     float rot = e ? e->transform.rotation : 0.0f;
     glm::vec2 scale = e ? e->transform.scale : glm::vec2(1.0f);
 
-    // Get SpriteComponent by ID
+    // Get S0teComponent by ID
     SpriteComponent* sprite = nullptr;
         for (uint32_t compID : e->ComponentIDs) {
             Component* c = Proj.GetComponentByID(compID);

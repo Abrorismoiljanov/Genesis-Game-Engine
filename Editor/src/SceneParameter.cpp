@@ -1,5 +1,4 @@
 #include "Editor/include/Panels.h"
-#include "DataTypes/Components/CameraComponent.h"
 #include "DataTypes/entity.h"
 
 void SceneParamPanel::Render(){

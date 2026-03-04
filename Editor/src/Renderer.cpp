@@ -3,7 +3,6 @@
 #include "Editor/include/FrameBuffer.h"
 #include "Editor/include/Renderer.h"
 #include "DataTypes/Components/SpriteComponent.h"
-#include "DataTypes/Components/CameraComponent.h"
 
 void Renderer::Init(int w, int h){
 

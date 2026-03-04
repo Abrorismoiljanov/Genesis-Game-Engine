@@ -10,6 +10,7 @@
 #include "entity.h"
 #include "Components/components.h"
 #include "Components/SpriteComponent.h"
+#include "Components/CameraComponent.h"
 #include "AssetManager.h"
 #include "nlohmann/json.hpp"
 #include "Assets/MaterialAsset.h"
@@ -164,7 +165,9 @@ struct project{
             if (type == "Sprite") {
                 comp = std::make_unique<SpriteComponent>();
             }
-            // add more types here later
+            if (type == "Camera") {
+                comp = std::make_unique<CameraComponent>();
+            }
 
             if (!comp) {
                 // unknown type → skip or log

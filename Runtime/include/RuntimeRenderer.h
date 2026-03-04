@@ -13,7 +13,12 @@ public:
     void EndFrame(SDL_Window* window);
     ViewportCamera m_Camera;
     scene* activeScene = nullptr;
+    entity* m_CameraEntity = nullptr;
+    CameraComponent* m_CameraComponent = nullptr;
 
+    float scale = 1.0f;
+    glm::vec2 camPos = {0.0f, 0.0f};
+    
 private:
     GLuint DefaultShader;
 
