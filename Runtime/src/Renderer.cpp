@@ -5,6 +5,7 @@
 
 void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window){
 
+    SDL_GL_GetDrawableSize(window, &Proj.Param.Resolution.width, &Proj.Param.Resolution.height);
     glViewport(0, 0, w, h);
 
     glEnable(GL_BLEND);
@@ -58,6 +59,7 @@ void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window){
             tex->UploadToGPU();
         }
     }
+    m_Camera.SetViewportSize(Proj.Param.Resolution.width, Proj.Param.Resolution.height);
 }
 
 void RuntimeRenderer::BeginFrame(project& Proj, int selectedSceneID){
@@ -105,7 +107,8 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
 
     
     if (m_CameraEntity != nullptr){
-        scale = m_Camera.Zoom;
+        scale = m_CameraComponent->Zoom;
+        m_Camera.Zoom = m_CameraComponent->Zoom;
         camPos.x = m_CameraEntity->transform.position.x;
         camPos.y = m_CameraEntity->transform.position.y;
   

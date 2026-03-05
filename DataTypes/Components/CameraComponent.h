@@ -4,8 +4,8 @@
 class CameraComponent: public Component{    
 public:
     float Zoom = 1.0f;
-    float near = -1.0f;
-    float far = 1.0f;
+    float near = 1.0f;
+    float far = -1.0f;
 
     json Serialize() const {
         json j;
@@ -18,17 +18,17 @@ public:
     void Deserialize(const json& data) {
 
         Zoom = 1.0f;
-        near = -1.0f;
-        far = 1.0f;
+        near = 1.0f;
+        far = -1.0f;
 
         if (data.contains("Zoom")) {
             Zoom = data["Zoom"].get<float>();
         }
         if (data.contains("far")) {
-            Zoom = data["far"].get<float>();
+            far = data["far"].get<float>();
         }
         if (data.contains("near")) {
-            Zoom = data["near"].get<float>();
+            near = data["near"].get<float>();
         }
 
     };
