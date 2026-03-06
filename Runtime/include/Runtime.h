@@ -1,18 +1,29 @@
+#pragma once
 #include "DataTypes/project.h"
 #include "RuntimeRenderer.h"
+
+#include "atomic"
+#include "thread"
 
 class CoreRuntime{
 private:
     SDL_Window* window;
     SDL_GLContext glContext;
-    bool running;
     project Project;
     SDL_Event event;
     RuntimeRenderer renderer;
 
+    std::atomic<bool> running{false};
+
+    std::thread runtimeThread;
+    std::mutex mtx;            
+
 public:
     CoreRuntime();
-    void Init(std::string projectFile);
-    void Run();
+    void Start(const project& Proj);
+    void Stop();
+    void Pause();
+    void RunLoop();     
+    bool isRunning();
     ~CoreRuntime();
 };

@@ -6,7 +6,9 @@ add_rules("mode.debug", "mode.release")
 
 target("Editor")
     set_kind("binary")
-    add_files("Editor/src/*.cpp", "./DataTypesDef/*.cpp")
+    add_files("Editor/src/*.cpp", 
+    "Runtime/src/*.cpp",
+    "./DataTypesDef/*.cpp")
     add_includedirs(".", "DataTypes",  {public = true})
     add_links("SDL2", "GL", "GLEW")
     add_packages(
@@ -23,28 +25,6 @@ target("Editor")
               "./imgui/backends/imgui_impl_opengl3.cpp",
               "./ImGuiFileDialog/ImGuiFileDialog.cpp")
 
-
-target("Runtime")
-    set_kind("binary")
-    add_files("Runtime/src/*.cpp", "DataTypesDef/*.cpp")
-    add_includedirs(".", "DataTypes",{public = true})
-    add_links("SDL2", "GL", "GLEW")
-    add_packages(
-    "glm", 
-    "nlohmann_json"
-)
- 
-
-    add_includedirs("./imgui", "./imgui/backends/")
-    add_files("./imgui/imgui.cpp",
-              "./imgui/imgui_draw.cpp",
-              "./imgui/imgui_widgets.cpp",
-              "./imgui/imgui_tables.cpp",
-              "./imgui/backends/imgui_impl_sdl2.cpp",
-              "./imgui/backends/imgui_impl_opengl3.cpp",
-              "./ImGuiFileDialog/ImGuiFileDialog.cpp")
-
-    -- Link SDL2 and OpenGL
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io

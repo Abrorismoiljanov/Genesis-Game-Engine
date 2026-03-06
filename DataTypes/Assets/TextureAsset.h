@@ -7,6 +7,9 @@
 class TextureAsset : public Asset{
 public:
 
+    int width = 0, height = 0;
+    std::vector<unsigned char> pixels;
+
     int Width = 0;
     int Height = 0;
     
@@ -24,21 +27,4 @@ public:
         stbi_image_free(data);
         return true;
     }
-
-    
-
-    void UploadToGPU() {
-        glGenTextures(1, &ID);
-        glBindTexture(GL_TEXTURE_2D, ID);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glBindTexture(GL_TEXTURE_2D, 0);
-
-        pixels.clear(); 
-    }
-
-    GLuint ID = 0;
-    int width = 0, height = 0;
-    std::vector<unsigned char> pixels;
 };

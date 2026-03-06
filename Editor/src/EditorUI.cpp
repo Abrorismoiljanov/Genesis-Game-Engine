@@ -4,10 +4,14 @@
 #include "SDL2/SDL.h"
 #include "Editor/include/ComponentRegisterList.h"
 #include "ImGuiFileDialog/ImGuiFileDialog.h"
+#include "Editor/include/IconsFontAwesome6.h"
+#include "Editor/include/Themes.h"
 
 EditorUI::EditorUI(project& proj, bool& running): Project(proj), renderer(nullptr), Run(running){}
 
-void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer, bool& running){
+void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer, bool& running, CoreRuntime* runtime){
+
+    Runtime = runtime;
 
     running = Run;
     SelectedScene = 0;
@@ -15,6 +19,30 @@ void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+    float fontSize = 16.0f;
+
+    io.Fonts->AddFontFromFileTTF(
+        "/home/abror/Project/GGE/assets/fonts/JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Medium.ttf",
+        fontSize
+    );
+
+    ImFontConfig config;
+    config.MergeMode = true;
+    config.PixelSnapH = true;
+
+    static const ImWchar icon_ranges[] ={
+        ICON_MIN_FA,
+        ICON_MAX_FA,
+        0
+    };
+
+    io.Fonts->AddFontFromFileTTF(
+        "/home/abror/Project/GGE/assets/fonts/fontawesome-free-7.2.0-desktop/otfs/Font Awesome 7 Free-Solid-900.otf",
+        fontSize,
+        &config,
+        icon_ranges
+    );
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     // Optional style tweaks
@@ -22,18 +50,18 @@ void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, 
     ImGui::GetStyle().WindowRounding = 6.0f;
     ImGui::GetStyle().FrameRounding = 4.0f;
 
+
     ImGui_ImplSDL2_InitForOpenGL(window, glContext);
     ImGui_ImplOpenGL3_Init("#version 330");
 
     RegisterAllComponents();
-//    panels.push_back(std::make_unique<AssetPanel>("Texture Assets", Proj));
-    panels.push_back(std::make_unique<Terminal>("Terminal", Proj));
+    panels.push_back(std::make_unique<Terminal>("Terminal",Proj));
     panels.push_back(std::make_unique<SceneManagerPanel>("SceneManager", Proj, SelectedScene));
     panels.push_back(std::make_unique<SceneParamPanel>("SceneParam", Proj, SelectedScene));
     panels.push_back(std::make_unique<ProjectSettingsPanel>(Proj.Param.name.c_str(), Proj));
     panels.push_back(std::make_unique<EntityList>("Entity List", Proj, Selection, SelectedScene));
-    panels.push_back(std::make_unique<Inspector>("Inspector", Proj, Selection));
-    panels.push_back(std::make_unique<Viewport>("Viewport", Proj, Selection, renderer, SelectedScene));
+    panels.push_back(std::make_unique<Inspector>("Inspector", Proj, Selection, renderer));
+    panels.push_back(std::make_unique<Viewport>("Viewport", Proj, Selection, renderer, SelectedScene, *runtime));
 
 };
 
@@ -114,7 +142,38 @@ void EditorUI::RenderMenuBar(SDL_Window* window) {
         }
 
         if (ImGui::BeginMenu("Edit")) {
-            if (ImGui::MenuItem("Project Parameter")) {}
+
+            if (ImGui::BeginMenu("Themes")) {  // <-- this is now a submenu, not MenuItem
+                struct ThemeOption {
+                    const char* name;
+                    void (*apply)();
+                };
+
+                // List of themes
+                static ThemeOption themes[] = {
+                    { "Dark", [](){ ImGui::StyleColorsDark(); } },
+                    { "Light", [](){ ImGui::StyleColorsLight(); } },
+                    { "Classic", [](){ ImGui::StyleColorsClassic(); } },
+                    { "Nord", [](){ ApplyNordTheme(); } },         
+                    { "Catppuccin Mocha", [](){ ApplyCatppuccinMocha(); } },
+                    { "Gruvbox Dark", [](){ ApplyGruvboxDark(); } },
+                    { "Ayu Dark", [](){ ApplyAyuDark(); } },
+                };
+
+                static int currentTheme = 0; // track selected theme
+
+                for (int i = 0; i < IM_ARRAYSIZE(themes); i++) {
+                    bool selected = (currentTheme == i);
+            
+                    // Display checkmark icon for current theme
+                    if (ImGui::MenuItem(themes[i].name, nullptr, selected)) {
+                        currentTheme = i;
+                        themes[i].apply(); // apply selected theme
+                    }
+                }
+
+                    ImGui::EndMenu();
+            }
             ImGui::EndMenu();
         }
 
@@ -142,3 +201,5 @@ void EditorUI::RenderMenuBar(SDL_Window* window) {
 
     }
 }
+
+

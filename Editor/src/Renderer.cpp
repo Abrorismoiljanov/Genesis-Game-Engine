@@ -1,5 +1,5 @@
 #include "GL/glew.h"
-#include "Editor/include/ShaderUtils.h"
+#include "DataTypes/outside/ShaderUtils.h"
 #include "Editor/include/FrameBuffer.h"
 #include "Editor/include/Renderer.h"
 #include "DataTypes/Components/SpriteComponent.h"
@@ -67,11 +67,46 @@ void Renderer::BeginFrame(project& Proj, int selectedSceneID){
                  activeScene->Param.BackgroundColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+ 
+    for (auto& comp_ptr : Proj.ComponentList) {
+        if (comp_ptr->Getname() != "Sprite") continue;
+        SpriteComponent* sprite = static_cast<SpriteComponent*>(comp_ptr.get());
+        std::cout << sprite->Getname() << " was Loaded" << '\n';
+
+        auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
+        if (!mat) continue;
+        std::cout << mat->GetTexture()->Path << " was Loaded" << '\n';
+
+        TextureAsset* tex = mat->GetTexture().get();
+
+        if (editorTextureIDs.find(tex) == editorTextureIDs.end()) {
+            if (!tex->LoadFromFile(tex->Path)) {
+                std::cout << "FAILED to load texture: " << tex->Path << "\n";
+                continue;
+            }
+
+            GLuint texID;
+            glGenTextures(1, &texID);
+            glBindTexture(GL_TEXTURE_2D, texID);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->width, tex->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tex->pixels.data());
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            editorTextureIDs[tex] = texID;
+
+            tex->pixels.clear();
+        }
+    }
 }
 void Renderer::EndFrame(){
     m_Framebuffer.UnBind();
 }
 void Renderer::Render(project& Proj, int selectedSceneID){
+
+    for (auto& [texPtr, texID] : editorTextureIDs) {
+        std::cout << "[Renderer] Texture ptr: " << texPtr << " ID: " << texID << "\n";
+    }
  
     if (DrawGrid) {
         RenderGrid();
@@ -122,8 +157,10 @@ void Renderer::Render(project& Proj, int selectedSceneID){
 
         if (!mat) continue;
         TextureAsset* tex = mat->GetTexture().get();
-        if (!tex || tex->ID == 0) continue;
+        if (!tex) continue;
 
+        GLuint texID = editorTextureIDs[tex];
+ 
         glm::mat4 model(1.0f);
         model = glm::translate(model, glm::vec3(pos, 0.0f));
         model = glm::rotate(model, glm::radians(rot), glm::vec3(0,0,1));
@@ -132,7 +169,7 @@ void Renderer::Render(project& Proj, int selectedSceneID){
         glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, tex->ID);
+        glBindTexture(GL_TEXTURE_2D, texID);
         glUniform1i(glGetUniformLocation(DefaultShader, "u_Texture"), 0);
 
         glBindVertexArray(QuadVAO);
@@ -336,4 +373,40 @@ for (float y = floor(bottom / worldSpacing) * worldSpacing; y <= top; y += world
     glBindVertexArray(0);
     glDeleteBuffers(1, &gridVBO);
     glDeleteVertexArrays(1, &gridVAO);
+}
+GLuint Renderer::UploadTextureToGPU(TextureAsset* tex) {
+    if (!tex) return 0;
+ 
+    auto it = editorTextureIDs.find(tex);
+    if (it != editorTextureIDs.end() && it->second != 0) {
+        glDeleteTextures(1, &it->second); 
+    }
+
+    if (!tex->pixels.size() && !tex->LoadFromFile(tex->Path)) {
+        return 0;
+    }
+
+
+    GLuint texID;
+    glGenTextures(1, &texID);
+    glBindTexture(GL_TEXTURE_2D, texID);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->Width, tex->Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tex->pixels.data());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    editorTextureIDs[tex] = texID;
+
+    tex->pixels.clear();
+
+    return texID;
+}
+ImTextureID Renderer::GetPreviewTextureID(TextureAsset* tex) {
+    if (!tex) return 0;
+
+    auto it = editorTextureIDs.find(tex);
+    if (it != editorTextureIDs.end())
+        return (ImTextureID)(uintptr_t)it->second;
+
+    return 0;
 }

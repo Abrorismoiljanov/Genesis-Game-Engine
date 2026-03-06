@@ -52,7 +52,7 @@ bool app::Init(){
     lastTime = SDL_GetPerformanceCounter();
 
 
-    UI.Init(window, glContext, Project, &renderer, running);
+    UI.Init(window, glContext, Project, &renderer, running, &runtime);
     renderer.Init(1920, 1080);
 
     return true;

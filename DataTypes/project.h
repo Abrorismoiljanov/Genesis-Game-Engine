@@ -45,6 +45,9 @@ struct project{
     uint32_t NextEntityID = 0;
     uint32_t NextSceneID = 0;
 
+    project Clone() const;
+
+
   json Serialize() const {
         json j;
         json& pj = j["project"];
@@ -193,7 +196,6 @@ struct project{
         }
     }
 
-    // 7. Optional: safety – make sure Next* counters are at least max+1
     for (const auto& e : EntityList) {
         NextEntityID = std::max(NextEntityID, e.ID + 1);
     }
@@ -221,9 +223,7 @@ if (pj.contains("asset_manifest")) {
         new_tex->LoadFromFile(texture_path);
 
 
-        new_tex->UploadToGPU();  // or whatever method you use to prepare for rendering
 
-     
                 auto new_mat = std::make_shared<MaterialAsset>();
                 new_mat->SetTexture(new_tex);
 

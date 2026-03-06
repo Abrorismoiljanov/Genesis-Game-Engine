@@ -2,6 +2,9 @@
 #include <cstdint>
 #include <string>
 #include "nlohmann/json.hpp"
+#include "GL/glew.h"
+#include "DataTypes/Assets/TextureAsset.h"
+#include "imgui.h"
 
 using json = nlohmann::json;
 
@@ -21,7 +24,9 @@ public:
     virtual ~Component() = 0;
     virtual std::string Getname() const = 0;
 
-    virtual void DrawComponentUI(AssetManager& AssetManager) = 0;
+    virtual void DrawComponentUI(AssetManager& AssetManager,
+                                 std::function<GLuint(TextureAsset*)> UploadTextureToGPU,
+                                 std::function<ImTextureID(TextureAsset*)> GetPreviewTextureID) = 0;
     virtual json Serialize() const = 0;
     virtual void Deserialize(const json& data) = 0;
     virtual void OnRemove(AssetManager& AssetManager) = 0;

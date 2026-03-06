@@ -18,6 +18,10 @@ public:
     bool DrawGrid = true;
     bool DrawAxis = true;
 
+    std::unordered_map<TextureAsset*, GLuint> editorTextureIDs;
+    GLuint UploadTextureToGPU(TextureAsset* tex); 
+    ImTextureID GetPreviewTextureID(TextureAsset* tex);
+
     void RenderGrid();
     void RenderAxis();
     void RenderCameraGizmos(project& Proj);

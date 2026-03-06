@@ -2,26 +2,15 @@
 
 CoreRuntime::CoreRuntime(){}
 
-void CoreRuntime::Init(std::string projectFile){
-    
-    running = true;
+void CoreRuntime::Start(const project& Proj){
+    Project = Proj.Clone();
+    runtimeThread = std::thread(&CoreRuntime::RunLoop, this);
+}
 
-    if (!projectFile.empty())
-    {
-        if (!Project.LoadFromFile(projectFile))
-        {
-            std::cerr << "[Runtime] Failed to load project: " << projectFile << std::endl;
-            Project.valid = false;
-        }
-        else
-        {
-            Project.valid = true;
-        }
-    }
-    else
-    {
-        Project.valid = false;
-    }
+void CoreRuntime::RunLoop(){
+    Project.valid = true;
+
+    running = true;
  
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cout << "SDL init failed" << '\n';
@@ -52,9 +41,7 @@ void CoreRuntime::Init(std::string projectFile){
          std::cout << "GLEW init failed\n";
     }
     renderer.Init(Project.Param.WindowWidth, Project.Param.WindowHeight, Project, window);
-}
 
-void CoreRuntime::Run(){
     while (running) {
         while (SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT) {
@@ -64,7 +51,23 @@ void CoreRuntime::Run(){
         renderer.BeginFrame(Project, Project.activeSceneID);
         renderer.Render(Project, Project.activeSceneID);
         renderer.EndFrame(window);
-    }
-}
 
-CoreRuntime::~CoreRuntime(){};
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+
+    SDL_GL_DeleteContext(glContext);
+    SDL_DestroyWindow(window);
+};
+void CoreRuntime::Stop(){
+    running = false;
+    if(runtimeThread.joinable())
+        runtimeThread.join(); 
+};
+
+bool CoreRuntime::isRunning(){
+    return running;
+};
+
+CoreRuntime::~CoreRuntime(){
+    Stop();
+};

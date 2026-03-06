@@ -4,6 +4,8 @@
 #include "Renderer.h"
 #include "SelectedEntity.h"
 #include "ImGuizmo.h"
+#include "Runtime/include/Runtime.h"
+#include "IconsFontAwesome6.h"
 
 class Panel{
 public:
@@ -63,17 +65,6 @@ private:
 };
 
 
-class AssetPanel : public Panel {
-public:
-    AssetPanel(const std::string& n, project& proj): Panel(n), Proj(proj) {}
-
-    void Render() override;
-    void Update(float dt) override;
-
-private:
-    project& Proj;
-};
-
 class Terminal : public Panel {
 public:
     Terminal(const std::string& n, project& proj): Panel(n), Proj(proj) {}
@@ -81,9 +72,9 @@ public:
     void Render() override;
     void Update(float dt) override;
 
-    std::vector<std::string> outputLines; // terminal output buffer
-    char inputBuffer[256] = "";           // current input line
-    bool scrollToBottom = false;          // auto-scroll flag
+    std::vector<std::string> outputLines; 
+    char inputBuffer[256] = "";          
+    bool scrollToBottom = false;        
 
     // List of allowed commands (your “command list”)
     std::vector<std::string> commandList = {
@@ -92,52 +83,6 @@ public:
         "help"
     };
 
-    void LaunchRuntimeWindow(std::vector<std::string> outputLines){
-    std::string tempScene = "temp_scene.json";
-    if (!Proj.SaveToFile(tempScene)) {
-        std::cerr << "[Editor] Failed to save project to " << tempScene << std::endl;
-        return;
-    }
-    std::string cmd = "./Runtime " + tempScene;  // Linux/macOS
-
-    std::cout << "[Editor] Launching Runtime window..." << std::endl;
-    outputLines.push_back("[Editor] Launching Runtime window...");
-
-    // Launch asynchronously so Editor stays usable
-    std::thread runtimeThread([cmd]() {
-        int ret = std::system(cmd.c_str());
-        if (ret != 0){
-                std::cout << "Runtime Exited with code" << ret << '\n';
-            }
-    });
-        runtimeThread.detach();
-    }
-
-    void ExecuteCommand(const std::string& cmd){
-        if (cmd.empty()) return;
-
-        // Echo command in terminal
-        outputLines.push_back("> " + cmd);
-
-        // Basic command handling
-        if (cmd == "clear")
-        {
-            outputLines.clear();
-        }
-        else if (cmd == "help")
-        {
-            outputLines.push_back("Available commands:");
-            for (auto& c : commandList)
-                outputLines.push_back("  " + c);
-        }
-        else if (cmd == "run"){
-            LaunchRuntimeWindow(outputLines);
-        }
-        else
-        {
-            outputLines.push_back("Unknown command: " + cmd);
-        }
-    }
 private:
     project& Proj;
 };
@@ -168,7 +113,8 @@ private:
 
 class Inspector : public Panel{
 public:
-    Inspector(const std::string& n, project& Proj, SelectedEntity& selection):  Panel(n), Proj(Proj), selection(selection) {}
+    Inspector(const std::string& n, project& Proj, SelectedEntity& selection, Renderer* renderer):
+        Panel(n), Proj(Proj), selection(selection), m_renderer(renderer) {}
     void DrawAddComponentMenu(entity* CurrentEntity, project& Proj);
     void Render() override;
     void Update(float dt) override;
@@ -176,39 +122,22 @@ public:
 private:
     project& Proj;
     SelectedEntity& selection;
+    Renderer* m_renderer;
 };
 
 class Viewport: public Panel{
 public:
-    Viewport(const std::string& n, project& Proj, SelectedEntity& selection, Renderer* renderer, int& SelectedScene): 
+    Viewport(const std::string& n, project& Proj, SelectedEntity& selection, Renderer* renderer, int& SelectedScene, CoreRuntime& runtime): 
         Panel(n),
         Proj(Proj),
         selection(selection),
         m_renderer(renderer),
-        SelectedScene(SelectedScene){}
+        SelectedScene(SelectedScene),
+        Runtime(runtime){}
     
+
     void Update(float dt) override;
     void Render() override;
-
-    void LaunchRuntimeWindow(){
-        std::string tempScene = "temp_scene.json";
-    if (!Proj.SaveToFile(tempScene)) {
-        std::cerr << "[Editor] Failed to save project to " << tempScene << std::endl;
-        return;
-    }
-    std::string cmd = "./Runtime " + tempScene;  // Linux/macOS
-
-    std::cout << "[Editor] Launching Runtime window..." << std::endl;
-
-    // Launch asynchronously so Editor stays usable
-    std::thread runtimeThread([cmd]() {
-        int ret = std::system(cmd.c_str());
-        if (ret != 0){
-                std::cout << "Runtime Exited with code" << ret << '\n';
-            }
-    });
-        runtimeThread.detach();
-    }
 
 
     ImGuizmo::OPERATION mode = ImGuizmo::TRANSLATE;
@@ -219,6 +148,7 @@ private:
     project& Proj;
     SelectedEntity& selection;
     int& SelectedScene;
+    CoreRuntime& Runtime;
     Renderer* m_renderer;
 };
 

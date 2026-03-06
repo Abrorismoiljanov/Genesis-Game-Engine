@@ -33,6 +33,8 @@ public:
 
     };
     
+
+
     void OnRemove(AssetManager& AssetManager){};
 
 
@@ -40,7 +42,9 @@ public:
         return "Camera";
     };
     
-    void DrawComponentUI(AssetManager& AssetManager){
+    void DrawComponentUI(AssetManager& AssetManager,         
+                         std::function<GLuint(TextureAsset*)> UploadTextureToGPU,
+                         std::function<ImTextureID(TextureAsset*)> GetPreviewTextureID){
         ImGui::PushID(ID);
         ImGui::Text("Zoom");
         ImGui::DragFloat("##x", &Zoom, 0.1f, 0.01f, 20.0f);

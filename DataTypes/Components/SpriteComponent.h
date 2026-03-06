@@ -8,9 +8,9 @@
 #include "glm/glm.hpp"
 
 struct SpriteComponent : public Component {
-    AssetHandle materialHandle = INVALID_ASSET; // reference to a MaterialAsset
-    glm::vec2 size = {1.0f, 1.0f};              // width/height
-    float rotation = 0.0f;                      // rotation in degrees
+    AssetHandle materialHandle = INVALID_ASSET;
+    glm::vec2 size = {1.0f, 1.0f};              
+    float rotation = 0.0f;                  
 
     std::string Getname() const override{
         return "Sprite";
@@ -51,7 +51,10 @@ json Serialize() const override {
         assetManager.DeleteAsset(materialHandle);
     };
 
-   void DrawComponentUI(AssetManager& assetManager){
+
+   void DrawComponentUI(AssetManager& assetManager,  
+                        std::function<GLuint(TextureAsset*)> UploadTextureToGPU,
+                        std::function<ImTextureID(TextureAsset*)> GetPreviewTextureID){
  
         auto mat = assetManager.Get<MaterialAsset>(materialHandle);
         std::string path = mat && mat->GetTexture() ? mat->GetTexture()->Path : "None";
@@ -97,28 +100,32 @@ json Serialize() const override {
             if (ImGuiFileDialog::Instance()->IsOk()){
                 path = ImGuiFileDialog::Instance()->GetFilePathName();
                 mat->GetTexture()->LoadFromFile(path);
-                mat->GetTexture()->UploadToGPU();
+              
+                if (UploadTextureToGPU) {
+                    UploadTextureToGPU(tex.get());
+                }
+
                 size = {tex->Width, tex->Height};
             }
             ImGuiFileDialog::Instance()->Close();
         }
    
-        ImGui::BeginChild("MeshPathBox", ImVec2(0, 150), true); // true = frame 
-        if(tex && tex->ID) {
-        
-        ImVec2 maxSize(128, 128); 
-        float texWidth  = (float)tex->Width;  
-        float texHeight = (float)tex->Height;
+        ImGui::BeginChild("TexturePathBox", ImVec2(0, 150), true); // true = frame 
+        if(tex && GetPreviewTextureID) {
+            ImTextureID previewID = GetPreviewTextureID(tex.get());
+            if (previewID) {
+                ImVec2 maxSize(128, 128); 
+                float texWidth  = (float)tex->Width;  
+                float texHeight = (float)tex->Height;
 
-        float scale = std::min(maxSize.x / texWidth, maxSize.y / texHeight);
+                float scale = std::min(maxSize.x / texWidth, maxSize.y / texHeight);
 
-            ImVec2 previewSize(texWidth * scale, texHeight * scale);
-            ImGui::Image((ImTextureID)(uintptr_t)tex->ID, previewSize, ImVec2(0,0), ImVec2(1,1));
+                ImVec2 previewSize(texWidth * scale, texHeight * scale);
+                ImGui::Image(previewID, previewSize, ImVec2(0,0), ImVec2(1,1));
+            }
         }
         ImGui::EndChild();
 
         ImGui::Separator();
     }
-
-
 };

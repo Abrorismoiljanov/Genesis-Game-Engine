@@ -1,7 +1,7 @@
 #include "GL/glew.h"
 #include "Runtime/include/RuntimeRenderer.h"
 #include "DataTypes/Components/SpriteComponent.h"
-#include "Runtime/include/ShaderUtils.h"
+#include "DataTypes/outside/ShaderUtils.h"
 
 void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window){
 
@@ -45,18 +45,43 @@ void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window){
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
+    for (auto& [tex, id] : runtimeTextureIDs) {
+        if (id != 0) {
+            glDeleteTextures(1, &id); // optional, in case context is still valid
+        }
+    }
+
+    runtimeTextureIDs.clear(); // clear old mappings
 
     for (auto& comp_ptr : Proj.ComponentList) {
         if (comp_ptr->Getname() != "Sprite") continue;
         SpriteComponent* sprite = static_cast<SpriteComponent*>(comp_ptr.get());
+        std::cout << sprite->Getname() << " was Loaded" << '\n';
+
         auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
         if (!mat) continue;
-        TextureAsset* tex = mat->GetTexture().get();
-        if (!tex) continue;
+        std::cout << mat->GetTexture()->Path << " was Loaded" << '\n';
 
-        if (tex->ID == 0) { 
-            tex->LoadFromFile(tex->Path);
-            tex->UploadToGPU();
+        TextureAsset* tex = mat->GetTexture().get();
+
+        if (runtimeTextureIDs.find(tex) == runtimeTextureIDs.end()) {
+            if (!tex->LoadFromFile(tex->Path)) {
+                std::cout << "FAILED to load texture: " << tex->Path << "\n";
+                continue;
+            }
+
+            GLuint texID;
+            glGenTextures(1, &texID);
+            glBindTexture(GL_TEXTURE_2D, texID);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->width, tex->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tex->pixels.data());
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            runtimeTextureIDs[tex] = texID;
+
+            tex->pixels.clear();
+
         }
     }
     m_Camera.SetViewportSize(Proj.Param.Resolution.width, Proj.Param.Resolution.height);
@@ -133,7 +158,6 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
     float rot = e ? e->transform.rotation : 0.0f;
     glm::vec2 scale = e ? e->transform.scale : glm::vec2(1.0f);
 
-    // Get S0teComponent by ID
     SpriteComponent* sprite = nullptr;
         for (uint32_t compID : e->ComponentIDs) {
             Component* c = Proj.GetComponentByID(compID);
@@ -149,8 +173,8 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
         auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
         if (!mat) continue;
         TextureAsset* tex = mat->GetTexture().get();
-
-        if (!tex || tex->ID == 0) continue;
+        if (!tex) continue;
+        GLuint texID = runtimeTextureIDs[tex];
 
         glm::mat4 model(1.0f);
         model = glm::translate(model, glm::vec3(pos, 0.0f));
@@ -159,8 +183,7 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
 
         glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, tex->ID);
+        glBindTexture(GL_TEXTURE_2D, texID);
 
         glUniform1i(glGetUniformLocation(DefaultShader, "u_Texture"), 0);
 

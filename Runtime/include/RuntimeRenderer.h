@@ -2,7 +2,7 @@
 #include "DataTypes/project.h"
 #include "scene.h"
 #include "GL/glew.h"
-#include "ViewportCamera.h"
+#include "Camera.h"
 
 class RuntimeRenderer{
 
@@ -11,11 +11,13 @@ public:
     void BeginFrame(project& Proj, int selectedSceneID);
     void Render(project& Proj,int selectedSceneID);
     void EndFrame(SDL_Window* window);
-    ViewportCamera m_Camera;
+    GCamera m_Camera;
     scene* activeScene = nullptr;
     entity* m_CameraEntity = nullptr;
     CameraComponent* m_CameraComponent = nullptr;
 
+    std::unordered_map<TextureAsset*, GLuint> runtimeTextureIDs;
+ 
     float scale = 1.0f;
     glm::vec2 camPos = {0.0f, 0.0f};
     

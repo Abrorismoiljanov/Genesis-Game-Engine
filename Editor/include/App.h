@@ -2,6 +2,7 @@
 #include "project.h"
 #include "EditorUI.h"
 #include "Renderer.h"
+#include "Runtime/include/Runtime.h"
 
 class app{
 private:
@@ -15,6 +16,7 @@ private:
     project Project;
     EditorUI UI;
     Renderer renderer;
+    CoreRuntime runtime;
 
     Uint64 lastTime = 0;   
     float deltaTime = 0.0f; 
