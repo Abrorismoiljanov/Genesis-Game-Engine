@@ -326,7 +326,9 @@ void Renderer::RenderGrid(){
     glUniformMatrix4fv(glGetUniformLocation(GridShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(viewProj));
     glUniform4f(glGetUniformLocation(GridShader, "u_Color"), 0.3f, 0.3f, 0.3f, 1.0f);
 
-    float gridSpacing = 50.0f; 
+    float pixelsPerUnit = 100.0f;
+
+    float gridSpacing = pixelsPerUnit / m_Camera.Zoom; 
     // Get camera info
     glm::vec2 camPos = m_Camera.Position;
     float zoom = m_Camera.Zoom;
@@ -342,19 +344,17 @@ void Renderer::RenderGrid(){
  
     std::vector<float> vertices;
 
-    float worldSpacing = gridSpacing / m_Camera.Zoom;
+    float worldSpacing = 100.0f;
 
-for (float x = floor(left / worldSpacing) * worldSpacing; x <= right; x += worldSpacing)
-{
-    vertices.push_back(x); vertices.push_back(bottom);
-    vertices.push_back(x); vertices.push_back(top);
-}
+    for (float x = floor(left / worldSpacing) * worldSpacing; x <= right; x += worldSpacing){
+        vertices.push_back(x); vertices.push_back(bottom);
+        vertices.push_back(x); vertices.push_back(top);
+    }
 
-for (float y = floor(bottom / worldSpacing) * worldSpacing; y <= top; y += worldSpacing)
-{
-    vertices.push_back(left); vertices.push_back(y);
-    vertices.push_back(right); vertices.push_back(y);
-}
+    for (float y = floor(bottom / worldSpacing) * worldSpacing; y <= top; y += worldSpacing){
+        vertices.push_back(left); vertices.push_back(y);
+        vertices.push_back(right); vertices.push_back(y);
+    }
 
     // Upload to GPU
     GLuint gridVBO, gridVAO;
@@ -375,6 +375,7 @@ for (float y = floor(bottom / worldSpacing) * worldSpacing; y <= top; y += world
     glDeleteBuffers(1, &gridVBO);
     glDeleteVertexArrays(1, &gridVAO);
 }
+
 GLuint Renderer::UploadTextureToGPU(TextureAsset* tex) {
     if (!tex) return 0;
  

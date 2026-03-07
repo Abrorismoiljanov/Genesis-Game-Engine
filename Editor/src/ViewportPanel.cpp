@@ -164,7 +164,7 @@ void Viewport::Render(){
 
         ImGui::SameLine();
         ImVec2 windowSize = ImGui::GetWindowSize();
-        ImGui::SetCursorPosX(windowSize.x - 200);
+        ImGui::SetCursorPosX(windowSize.x - 220);
 
         ImGui::Checkbox("Grid", &m_renderer->DrawGrid);
 
