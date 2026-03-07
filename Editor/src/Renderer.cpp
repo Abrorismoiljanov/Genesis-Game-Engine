@@ -191,7 +191,7 @@ void Renderer::RenderCameraGizmos(project& Proj){
 
     float aspect = (float)Proj.Param.Resolution.width / Proj.Param.Resolution.height;
 
-    float worldHeight = 1.0f / m_Camera.Zoom; // or whatever 1 pixel = 1 unit mapping
+    float worldHeight = 1.0f / m_Camera.Zoom; 
     float worldWidth  = worldHeight * aspect;
 
     for (uint32_t entityID : activeScene->EntityIDs)
@@ -302,7 +302,7 @@ glUseProgram(GridShader);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // Set uniform: axes color (red for X, green for Y if you want)
+    glLineWidth(2.0f); 
     glUniformMatrix4fv(glGetUniformLocation(GridShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(m_Camera.GetViewProjection()));
     
     // X axis
@@ -313,6 +313,7 @@ glUseProgram(GridShader);
     glUniform4f(glGetUniformLocation(GridShader, "u_Color"), 0.0f, 1.0f, 0.0f, 1.0f);
     glDrawArrays(GL_LINES, 2, 2);
 
+    glLineWidth(1.0f);  
     glBindVertexArray(0);
     glDeleteBuffers(1, &axisVBO);
     glDeleteVertexArrays(1, &axisVAO);
