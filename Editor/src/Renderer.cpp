@@ -69,13 +69,12 @@ void Renderer::BeginFrame(project& Proj, int selectedSceneID){
 
  
     for (auto& comp_ptr : Proj.ComponentList) {
+        
         if (comp_ptr->Getname() != "Sprite") continue;
         SpriteComponent* sprite = static_cast<SpriteComponent*>(comp_ptr.get());
-        std::cout << sprite->Getname() << " was Loaded" << '\n';
-
+        
         auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
         if (!mat) continue;
-        std::cout << mat->GetTexture()->Path << " was Loaded" << '\n';
 
         TextureAsset* tex = mat->GetTexture().get();
 
