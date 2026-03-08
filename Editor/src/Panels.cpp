@@ -132,14 +132,14 @@ void Inspector::Render(){
                 ImGui::Dummy(ImVec2(1, 1));
                 ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
                 
-                float totalButtonWidth = 60.0f; // 2 buttons × 20 width
+                float totalButtonWidth = 80.0f; 
                 float spacing = 4.0f;
                 float posX = ImGui::GetWindowContentRegionMax().x - totalButtonWidth - spacing;
                 ImGui::SameLine(posX);
 
                 bool requestDelete = false;
 
-                if (ImGui::Button("X")) {
+                if (ImGui::Button(ICON_FA_TRASH)) {
                     hasDeleteRequest = true;
                     componentToDelete = compID;
                         c->OnRemove(Proj.Assets);

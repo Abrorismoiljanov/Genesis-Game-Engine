@@ -6,10 +6,9 @@ enum class AssetType : uint16_t
 {
     None = 0,
     Texture,
-    Mesh,
+    Script,
     Shader,
     Material,
-    Model
 };
  
 using AssetHandle = uint64_t;
