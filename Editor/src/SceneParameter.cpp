@@ -48,16 +48,32 @@ void SceneParamPanel::Render(){
 
     if (defaultScene->Camera != -1) {
         entity* camEntity = Proj.GetEntityByID(defaultScene->Camera);
-        if (camEntity)
+        bool camValid = false;
+        if (camEntity) {
+            for (auto& cID : camEntity->ComponentIDs) {
+                auto* c = Proj.GetComponentByID(cID);
+                if (c && c->Getname() == "Camera") {
+                    camValid = true;
+                    break;
+                }
+            }
+        }
+        if (!camValid) {
+            defaultScene->Camera = -1;
+            previewName = "None";
+        } else {
             previewName = camEntity->name.c_str();
+        }
     }
     if (ImGui::BeginCombo("##", previewName)) {
         for (auto& eID: defaultScene->EntityIDs) {
             entity* Entity = Proj.GetEntityByID(eID);
             bool hasCamera = false;
             if (!Entity) continue;
+
             for (auto& cID: Entity->ComponentIDs) {
                 auto* c = Proj.GetComponentByID(cID);
+                if (!c) continue;
                 if (c->Getname() == "Camera") {
                     hasCamera = true;
                 }

@@ -105,7 +105,6 @@ void Renderer::EndFrame(){
 void Renderer::Render(project& Proj, int selectedSceneID){
 
     for (auto& [texPtr, texID] : editorTextureIDs) {
-        std::cout << "[Renderer] Texture ptr: " << texPtr << " ID: " << texID << "\n";
     }
  
     if (DrawGrid) {

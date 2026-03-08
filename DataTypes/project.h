@@ -268,8 +268,8 @@ if (pj.contains("asset_manifest")) {
 
     void AddEntity(uint32_t SceneID){
         auto e = entity();
-        e.name = "Entity";
         e.ID = NextEntityID++;
+        e.name = "Entity " + std::to_string(e.ID);
         for (auto& scene: SceneList) {
             if (scene.ID == SceneID) {
                 scene.EntityIDs.push_back(e.ID);
