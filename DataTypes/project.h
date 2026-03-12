@@ -11,6 +11,7 @@
 #include "Components/components.h"
 #include "Components/SpriteComponent.h"
 #include "Components/CameraComponent.h"
+#include "Components/ScriptComponent.h"
 #include "AssetManager.h"
 #include "nlohmann/json.hpp"
 #include "Assets/MaterialAsset.h"
@@ -101,16 +102,33 @@ struct project{
                     used_handles.insert(sprite->materialHandle);
                 }
             }
+            if (ptr->Getname() == "Script") {
+                auto* sc = static_cast<const ScriptComponent*>(ptr.get());
+                std::cout << "Comp for Script created" << '\n';
+                if (sc->scriptHandle != INVALID_ASSET) {
+                    used_handles.insert(sc->scriptHandle);
+                    std::cout << "script handles were added to used_handles" << '\n';
+                }
+            }
         }
 
-
         for (AssetHandle h : used_handles) {
-            auto mat = Assets.Get<MaterialAsset>(h);
-            if (mat && mat->GetTexture()) {
+            if (auto mat = Assets.Get<MaterialAsset>(h)) {
+                if (auto tex = mat->GetTexture()) {
+                    json entry;
+                    entry["handle"] = h;
+                    entry["type"] = "Material";
+                    entry["texture_path"] = tex->Path;
+                    pj["asset_manifest"].push_back(entry);
+                }
+            } 
+        }
+        for (AssetHandle h : used_handles) {
+            if (auto script = Assets.Get<ScriptAsset>(h)) {
                 json entry;
-                entry["handle"]      = h;
-                entry["type"]        = "Material";
-                entry["texture_path"] = mat->GetTexture()->Path;  // the key field!
+                entry["handle"] = h;
+                entry["type"] = "Script";
+                entry["path"] = script->Path;
                 pj["asset_manifest"].push_back(entry);
             }
         }
@@ -139,13 +157,11 @@ struct project{
                 e.ID   = ej.value("id", 0u);
                 e.name = ej.value("name", "Entity");
                 if (ej.contains("transform")) {
-                    e.Deserialize(ej["transform"]);   // <-- load transform
+                    e.Deserialize(ej["transform"]);   
                 }
                 EntityList.push_back(e);
             }
         }
-        std::cout << "[DEBUG] Loaded " << EntityList.size() << " entities\n";
- 
         if (pj.contains("scenes")) {
             for (const auto& sj : pj["scenes"]) {
                 scene s;
@@ -153,88 +169,87 @@ struct project{
                 SceneList.push_back(s);
             }
         }
-        std::cout << "[DEBUG] Loaded " << SceneList.size() << " scenes\n";     
 
 
         if (pj.contains("components")) {
         for (const auto& cj : pj["components"]) {
-            std::string type   = cj.value("type", "");
-            uint32_t id        = cj.value("id",   0u);
-            uint32_t owner     = cj.value("owner", 0u);
-            json data          = cj["data"];
+            std::string type = cj.value("type", "");
+            uint32_t id = cj.value("id",   0u);
+            uint32_t owner = cj.value("owner", 0u);
+            json data = cj.value("data", json::object());
 
             std::unique_ptr<Component> comp = nullptr;
 
-            if (type == "Sprite") {
-                comp = std::make_unique<SpriteComponent>();
-            }
-            if (type == "Camera") {
-                comp = std::make_unique<CameraComponent>();
-            }
+                if (type == "Sprite") {
+                    comp = std::make_unique<SpriteComponent>();
+                }
+                if (type == "Camera") {
+                    comp = std::make_unique<CameraComponent>();
+                }
+ 
+                if (type == "Script") {
+                    comp = std::make_unique<ScriptComponent>();
+                }
 
-            if (!comp) {
-                // unknown type → skip or log
-                continue;
+                if (!comp) {
+                    continue;
+                }
+            
+                comp->ID = id;
+                comp->OwnerEntityID = owner;
+                comp->Deserialize(data);
+
+                ComponentList.push_back(std::move(comp));
             }
-
-            comp->ID            = id;
-            comp->OwnerEntityID = owner;
-            comp->Deserialize(data);   // calls the derived version you implemented
-
-            ComponentList.push_back(std::move(comp));
         }
-    }
-
-    // 6. Rebuild links: entity.ComponentIDs ← from all loaded components
-    for (auto& e : EntityList) {
-        e.ComponentIDs.clear();
-    }
-
-    for (const auto& comp_ptr : ComponentList) {
-        if (entity* owner = GetEntityByID(comp_ptr->OwnerEntityID)) {
-            owner->ComponentIDs.push_back(comp_ptr->ID);
-        }
-    }
-
-    for (const auto& e : EntityList) {
-        NextEntityID = std::max(NextEntityID, e.ID + 1);
-    }
-    for (const auto& c : ComponentList) {
-        NextComponentID = std::max(NextComponentID, c->ID + 1);
-    }
-    for (const auto& s : SceneList) {
-        NextSceneID = std::max(NextSceneID, s.ID + 1);
-    }
-
-if (pj.contains("asset_manifest")) {
-    std::cout << "[DEBUG] Found asset_manifest with " << pj["asset_manifest"].size() << " entries\n";
-
-    for (const auto& entry : pj["asset_manifest"]) {
-        std::string type = entry.value("type", "");
-        AssetHandle saved_handle = entry.value("handle", INVALID_ASSET);
-        std::string texture_path = entry.value("texture_path", "");
-
-        if (type != "Material" || texture_path.empty() || saved_handle == INVALID_ASSET) {
-            std::cout << "[DEBUG] Skipping invalid asset entry\n";
-            continue;
+  
+        for (auto& e : EntityList) {
+            e.ComponentIDs.clear();
         }
 
-        auto new_tex = std::make_shared<TextureAsset>();
-        new_tex->LoadFromFile(texture_path);
-
-
-
-                auto new_mat = std::make_shared<MaterialAsset>();
-                new_mat->SetTexture(new_tex);
-
-                Assets.RegisterAssetWithHandle(new_mat, saved_handle);
+        for (const auto& comp_ptr : ComponentList) {
+            if (entity* owner = GetEntityByID(comp_ptr->OwnerEntityID)) {
+                owner->ComponentIDs.push_back(comp_ptr->ID);
             }
+        }
 
-        } else {
-        std::cout << "[DEBUG] No asset_manifest found — no materials reloaded\n";
-    }
-    }
+        for (const auto& e : EntityList) {
+            NextEntityID = std::max(NextEntityID, e.ID + 1);
+        }
+        for (const auto& c : ComponentList) {
+            NextComponentID = std::max(NextComponentID, c->ID + 1);
+        }
+        for (const auto& s : SceneList) {
+            NextSceneID = std::max(NextSceneID, s.ID + 1);
+        }
 
+        if (pj.contains("asset_manifest")) {
+ 
+            for (const auto& entry : pj["asset_manifest"]) {
+                std::string type = entry.value("type", "");
+                AssetHandle saved_handle = entry.value("handle", INVALID_ASSET);
+                std::string texture_path = entry.value("texture_path", "");
+
+                if (type == "Material" && !texture_path.empty() || saved_handle != INVALID_ASSET) {
+ 
+                    auto new_tex = std::make_shared<TextureAsset>();
+                    new_tex->LoadFromFile(texture_path);
+
+                    auto new_mat = std::make_shared<MaterialAsset>();
+                    new_mat->SetTexture(new_tex);
+
+                    Assets.RegisterAssetWithHandle(new_mat, saved_handle);
+                }
+
+                std::string path = entry.value("path", "");
+                if (type == "Script" && saved_handle != INVALID_ASSET && !path.empty()) {
+                    auto script = std::make_shared<ScriptAsset>();
+                    script->Path = path;
+                    Assets.RegisterAssetWithHandle(script, saved_handle);
+                }
+            }
+        }
+    }
 
     bool SaveToFile(const std::string& path) const {
         std::ofstream file(path);

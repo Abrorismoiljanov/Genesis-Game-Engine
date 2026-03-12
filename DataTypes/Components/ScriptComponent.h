@@ -1,3 +1,4 @@
+#pragma once
 #include "components.h"
 #include "ImGuiFileDialog/ImGuiFileDialog.h"
 #include "DataTypes/Assets/ScriptAsset.h"

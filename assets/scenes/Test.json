@@ -4,8 +4,13 @@
         "asset_manifest": [
             {
                 "handle": 1,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Msdos-1730606937.png",
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Donut.png",
                 "type": "Material"
+            },
+            {
+                "handle": 2,
+                "path": "/home/abror/Project/GGE/assets/scripts/test.lua",
+                "type": "Script"
             }
         ],
         "components": [
@@ -14,23 +19,31 @@
                     "materialHandle": 1,
                     "rotation": 0.0,
                     "size": [
-                        1200.0,
-                        1280.0
+                        1920.0,
+                        1080.0
                     ]
                 },
                 "id": 0,
                 "owner": 0,
                 "type": "Sprite"
+            },
+            {
+                "data": {
+                    "scriptHandle": 2
+                },
+                "id": 1,
+                "owner": 0,
+                "type": "Script"
             }
         ],
         "entities": [
             {
                 "id": 0,
-                "name": "Entity",
+                "name": "Entity 0",
                 "transform": {
                     "position": [
-                        -1249.9898681640625,
-                        120.00839233398438,
+                        -25.714263916015625,
+                        117.1429443359375,
                         0.0
                     ],
                     "rotation": 0.0,
@@ -43,24 +56,25 @@
             }
         ],
         "name": "Default Project",
-        "nextComponentID": 1,
+        "nextComponentID": 2,
         "nextEntityID": 1,
         "nextSceneID": 1,
         "scenes": [
             {
+                "Camera": -1,
                 "EntityIDs": [
                     0
                 ],
                 "ID": 0,
                 "Param": {
                     "BackgroundColor": [
-                        0.011049747467041016,
-                        0.0,
-                        1.0,
+                        0.10000000149011612,
+                        0.10000000149011612,
+                        0.10000000149011612,
                         1.0
                     ]
                 },
-                "Scenename": ""
+                "Scenename": "Scene 0"
             }
         ],
         "window": {

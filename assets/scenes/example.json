@@ -4,39 +4,24 @@
         "asset_manifest": [
             {
                 "handle": 1,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/V1.png",
-                "type": "Material"
+                "path": "/home/abror/Project/GGE/assets/scripts/test.lua",
+                "type": "Script"
             }
         ],
         "components": [
             {
                 "data": {
-                    "Zoom": 1.0,
-                    "far": 1.0,
-                    "near": -1.0
+                    "scriptHandle": 1
                 },
                 "id": 0,
                 "owner": 0,
-                "type": "Camera"
-            },
-            {
-                "data": {
-                    "materialHandle": 1,
-                    "rotation": 0.0,
-                    "size": [
-                        1920.0,
-                        1080.0
-                    ]
-                },
-                "id": 1,
-                "owner": 1,
-                "type": "Sprite"
+                "type": "Script"
             }
         ],
         "entities": [
             {
                 "id": 0,
-                "name": "Camera",
+                "name": "Entity 0",
                 "transform": {
                     "position": [
                         0.0,
@@ -47,38 +32,20 @@
                     "scale": [
                         1.0,
                         1.0,
-                        1.0
-                    ]
-                }
-            },
-            {
-                "id": 1,
-                "name": "Entity",
-                "transform": {
-                    "position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "rotation": 0.0,
-                    "scale": [
-                        0.6599999666213989,
-                        0.6599999666213989,
                         1.0
                     ]
                 }
             }
         ],
         "name": "Default Project",
-        "nextComponentID": 2,
-        "nextEntityID": 2,
+        "nextComponentID": 1,
+        "nextEntityID": 1,
         "nextSceneID": 1,
         "scenes": [
             {
-                "Camera": 0,
+                "Camera": -1,
                 "EntityIDs": [
-                    0,
-                    1
+                    0
                 ],
                 "ID": 0,
                 "Param": {

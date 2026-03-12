@@ -80,7 +80,6 @@ void Renderer::BeginFrame(project& Proj, int selectedSceneID){
 
         if (editorTextureIDs.find(tex) == editorTextureIDs.end()) {
             if (!tex->LoadFromFile(tex->Path)) {
-                std::cout << "FAILED to load texture: " << tex->Path << "\n";
                 continue;
             }
 
@@ -129,11 +128,10 @@ void Renderer::Render(project& Proj, int selectedSceneID){
 
 
     for (uint32_t entityID : activeScene->EntityIDs){
-   entity* e = Proj.GetEntityByID(entityID);
-    if (!e) continue;
+        entity* e = Proj.GetEntityByID(entityID);
+        if (!e) continue;
 
 
- 
         glm::vec2 pos = e ? e->transform.position : glm::vec2(0.0f);
         float rot = e ? e->transform.rotation : 0.0f;
         glm::vec2 scale = e ? e->transform.scale : glm::vec2(1.0f);
