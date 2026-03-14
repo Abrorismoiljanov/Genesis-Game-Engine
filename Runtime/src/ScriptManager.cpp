@@ -27,7 +27,7 @@ void ScriptManager::Initialize() {
     lua["Log"] = [](const std::string& msg){ std::cout << "[Lua] " << msg << "\n"; };
 }
 
-void ScriptManager::RunScript(uint32_t entityID) {
+void ScriptManager::InitScripts(uint32_t entityID) {
         
     entity* e = Proj->GetEntityByID(entityID);
         

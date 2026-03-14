@@ -14,7 +14,7 @@ public:
 
     void Initialize();   
     void Update(float dt);    
-    void RunScript(uint32_t entityID); 
+    void InitScripts(uint32_t entityID); 
 
     void Reset() {
         EntityEnvs.clear();

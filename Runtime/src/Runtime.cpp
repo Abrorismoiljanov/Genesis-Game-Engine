@@ -58,8 +58,9 @@ void CoreRuntime::RunLoop(){
 
  
         for (auto& eID: Project.EntityList) {
-            Smanager.RunScript(eID.ID);
+            Smanager.InitScripts(eID.ID);
         }
+
         renderer.Render(Project, Project.activeSceneID);
         renderer.EndFrame(window);
 
