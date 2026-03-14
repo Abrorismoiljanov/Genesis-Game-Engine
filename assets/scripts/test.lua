@@ -1,2 +1,2 @@
-self.transform.rotation = self.transform.rotation + 1
+self.transform.rotation = self.transform.rotation + 0.8
 
