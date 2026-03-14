@@ -1,17 +1,2 @@
-local script = {}
+self.transform.rotation = self.transform.rotation + 1
 
-                    function script.OnCreate(entity)
-
-                    end
-
-                    function script.OnUpdate(entity, dt)
-
-                    end
-
-                    function script.OnDestroy(entity)
-
-                    end
-
-                    return script
-
-                

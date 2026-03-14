@@ -1,6 +1,7 @@
 #pragma once
 #include "DataTypes/project.h"
 #include "RuntimeRenderer.h"
+#include "ScriptManager.h"
 
 #include "atomic"
 #include "thread"
@@ -12,6 +13,7 @@ private:
     project Project;
     SDL_Event event;
     RuntimeRenderer renderer;
+    ScriptManager Smanager;
 
     std::atomic<bool> running{false};
 

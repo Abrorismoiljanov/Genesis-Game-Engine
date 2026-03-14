@@ -4,6 +4,11 @@ CoreRuntime::CoreRuntime(){}
 
 void CoreRuntime::Start(const project& Proj){
     Project = Proj.Clone();
+
+    Smanager.Reset();
+    Smanager.Proj = &Project;
+    Smanager.Initialize();
+
     runtimeThread = std::thread(&CoreRuntime::RunLoop, this);
 }
 
@@ -48,7 +53,13 @@ void CoreRuntime::RunLoop(){
                 running = false;
             }
         }
+
         renderer.BeginFrame(Project, Project.activeSceneID);
+
+ 
+        for (auto& eID: Project.EntityList) {
+            Smanager.RunScript(eID.ID);
+        }
         renderer.Render(Project, Project.activeSceneID);
         renderer.EndFrame(window);
 

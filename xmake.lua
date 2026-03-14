@@ -3,20 +3,26 @@ set_version("0.1.0")
 
 add_rules("mode.debug", "mode.release")
 
-
 target("Editor")
     set_kind("binary")
-    add_files("Editor/src/*.cpp", 
-    "Runtime/src/*.cpp",
-    "./DataTypesDef/*.cpp")
-    add_includedirs(".", "DataTypes",  {public = true})
-    add_links("SDL2", "GL", "GLEW")
-    add_packages(
-    "glm", 
-    "nlohmann_json"
-)
-    add_includedirs("./imgui", "./imgui/backends/", "./DataTypesDef")
-    add_files("./imgui/imgui.cpp",
+
+    add_files(
+        "Editor/src/*.cpp",
+        "Runtime/src/*.cpp",
+        "DataTypesDef/*.cpp",
+        "vendor/lua/src/*.c"
+    )
+    add_links("SDL2", "GLEW", "GL")
+    add_includedirs(
+        ".",
+        "DataTypes",
+        "DataTypesDef",
+        "sol",
+        "vendor/lua/src",
+        "./imgui",
+        "./imgui/backends"
+    )
+add_files("./imgui/imgui.cpp",
               "./imgui/ImGuizmo.cpp",
               "./imgui/imgui_draw.cpp",
               "./imgui/imgui_widgets.cpp",

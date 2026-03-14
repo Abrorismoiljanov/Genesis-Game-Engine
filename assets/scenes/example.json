@@ -4,6 +4,11 @@
         "asset_manifest": [
             {
                 "handle": 1,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/V1.png",
+                "type": "Material"
+            },
+            {
+                "handle": 2,
                 "path": "/home/abror/Project/GGE/assets/scripts/test.lua",
                 "type": "Script"
             }
@@ -11,11 +16,24 @@
         "components": [
             {
                 "data": {
-                    "scriptHandle": 1
+                    "scriptHandle": 2
                 },
                 "id": 0,
                 "owner": 0,
                 "type": "Script"
+            },
+            {
+                "data": {
+                    "materialHandle": 1,
+                    "rotation": 0.0,
+                    "size": [
+                        1920.0,
+                        1080.0
+                    ]
+                },
+                "id": 1,
+                "owner": 0,
+                "type": "Sprite"
             }
         ],
         "entities": [
@@ -38,7 +56,7 @@
             }
         ],
         "name": "Default Project",
-        "nextComponentID": 1,
+        "nextComponentID": 2,
         "nextEntityID": 1,
         "nextSceneID": 1,
         "scenes": [
