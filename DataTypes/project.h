@@ -60,7 +60,8 @@ struct project{
         pj["activeSceneID"] = activeSceneID;
         pj["nextEntityID"] = NextEntityID;
         pj["nextComponentID"] = NextComponentID;
-
+        pj["Resolution"]["width"] = Param.Resolution.width;
+        pj["Resolution"]["height"] = Param.Resolution.height;
 
         pj["entities"] = json::array();
  
@@ -142,6 +143,8 @@ struct project{
         Param.WindowWidth = pj.at("window").at("width").get<int>();
         Param.WindowHeight = pj.at("window").at("height").get<int>();
         Param.WindowParam = static_cast<SDL_WindowFlags>(pj.at("window").at("flags").get<uint32_t>());
+        Param.Resolution.width = pj.at("Resolution").at("width").get<int>();
+        Param.Resolution.height = pj.at("Resolution").at("height").get<int>();
 
         activeSceneID = pj.at("activeSceneID").get<uint32_t>();
         NextEntityID = pj.at("nextEntityID").get<uint32_t>();

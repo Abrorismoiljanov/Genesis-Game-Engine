@@ -1,2 +1,3 @@
-self.transform.rotation = self.transform.rotation + 0.8
+
+self.transform.position.y = self.transform.position.y - 1
 
