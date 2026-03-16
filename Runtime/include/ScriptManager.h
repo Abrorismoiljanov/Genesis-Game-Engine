@@ -10,14 +10,13 @@ public:
     sol::state lua;
     project* Proj;
 
-    std::unordered_map<uint32_t, sol::environment> EntityEnvs;
 
     void Initialize();   
-    void Update(float dt);    
+    void Update(uint32_t entityID, float dt);    
     void InitScripts(uint32_t entityID); 
-
+    void ClearScripts();
+ 
     void Reset() {
-        EntityEnvs.clear();
         lua = sol::state{};
     }
 };

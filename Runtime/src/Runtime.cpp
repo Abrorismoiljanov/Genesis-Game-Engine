@@ -47,6 +47,12 @@ void CoreRuntime::RunLoop(){
     }
     renderer.Init(Project.Param.WindowWidth, Project.Param.WindowHeight, Project, window);
 
+    for (auto& eID : Project.EntityList) {
+        Smanager.InitScripts(eID.ID);
+    }
+
+    float dt = 0.0016f;
+
     while (running) {
         while (SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT) {
@@ -58,7 +64,7 @@ void CoreRuntime::RunLoop(){
 
  
         for (auto& eID: Project.EntityList) {
-            Smanager.InitScripts(eID.ID);
+            Smanager.Update(eID.ID, dt);
         }
 
         renderer.Render(Project, Project.activeSceneID);
@@ -67,6 +73,7 @@ void CoreRuntime::RunLoop(){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
+    Smanager.ClearScripts();
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
 };

@@ -1,3 +1,9 @@
+local script = {}
 
-self.transform.position.y = self.transform.position.y - 1
+function script:OnUpdate(dt)
+    local entity = self.self_entity
+    entity.transform.rotation = entity.transform.rotation + 1
+end
 
+
+return script
