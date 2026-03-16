@@ -25,6 +25,7 @@ public:
     void Start(const project& Proj);
     void Stop();
     void Pause();
+    void RequestQuit();
     void RunLoop();     
     bool isRunning();
     ~CoreRuntime();

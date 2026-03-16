@@ -51,12 +51,20 @@ void CoreRuntime::RunLoop(){
         Smanager.InitScripts(eID.ID);
     }
 
-    float dt = 0.0016f;
-
+    auto frameStart = std::chrono::high_resolution_clock::now();
+    auto last = std::chrono::high_resolution_clock::now();
+ 
     while (running) {
+  
+        auto now = std::chrono::high_resolution_clock::now();
+        float dt = std::chrono::duration<float>(now - last).count();
+        last = now;   
+
         while (SDL_PollEvent(&event)) {
-            if(event.type == SDL_QUIT) {
-                running = false;
+            if (event.type == SDL_WINDOWEVENT) {
+                if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
+                    RequestQuit();
+                }
             }
         }
 
@@ -70,12 +78,23 @@ void CoreRuntime::RunLoop(){
         renderer.Render(Project, Project.activeSceneID);
         renderer.EndFrame(window);
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        const float targetFrameTime = 1.0f / 60.0f;
+
+
+        auto frameEnd = std::chrono::high_resolution_clock::now();
+        float frameTime = std::chrono::duration<float>(frameEnd - frameStart).count();
+
+        if (frameTime < targetFrameTime) {
+            std::this_thread::sleep_for(
+                std::chrono::duration<float>(targetFrameTime - frameTime)
+            );
+        }
     }
 
     Smanager.ClearScripts();
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
+
 };
 void CoreRuntime::Stop(){
     running = false;
@@ -84,7 +103,11 @@ void CoreRuntime::Stop(){
 };
 
 bool CoreRuntime::isRunning(){
-    return running;
+    return running.load();
+};
+
+void CoreRuntime::RequestQuit(){
+    running = false;
 };
 
 CoreRuntime::~CoreRuntime(){

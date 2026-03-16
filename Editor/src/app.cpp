@@ -102,6 +102,9 @@ void app::PollEvent(bool& running){
 
 void app::Update(){
     UI.Update(deltaTime);
+    if (!runtime.isRunning()) {
+        runtime.Stop();
+    }
 }
 
 void app::Render(){
