@@ -3,6 +3,7 @@
 #include "EditorUI.h"
 #include "Renderer.h"
 #include "Runtime/include/Runtime.h"
+#include "DataTypes/Input.h"
 
 class app{
 private:
@@ -17,6 +18,7 @@ private:
     EditorUI UI;
     Renderer renderer;
     CoreRuntime runtime;
+    Input InputManager;
 
     Uint64 lastTime = 0;   
     float deltaTime = 0.0f; 

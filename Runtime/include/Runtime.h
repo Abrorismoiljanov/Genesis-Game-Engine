@@ -2,6 +2,7 @@
 #include "DataTypes/project.h"
 #include "RuntimeRenderer.h"
 #include "ScriptManager.h"
+#include "DataTypes/Input.h"
 
 #include "atomic"
 #include "thread"
@@ -10,8 +11,8 @@ class CoreRuntime{
 private:
     SDL_Window* window;
     SDL_GLContext glContext;
+    Input* input = nullptr;
     project Project;
-    SDL_Event event;
     RuntimeRenderer renderer;
     ScriptManager Smanager;
 
@@ -28,5 +29,7 @@ public:
     void RequestQuit();
     void RunLoop();     
     bool isRunning();
+    void SetInput(Input* in);
+ 
     ~CoreRuntime();
 };

@@ -60,11 +60,9 @@ void CoreRuntime::RunLoop(){
         float dt = std::chrono::duration<float>(now - last).count();
         last = now;   
 
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_WINDOWEVENT) {
-                if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
-                    RequestQuit();
-                }
+        if (input) {
+            if (input->IsKeyDown(SDL_SCANCODE_ESCAPE)) {
+                RequestQuit();
             }
         }
 
@@ -113,3 +111,6 @@ void CoreRuntime::RequestQuit(){
 CoreRuntime::~CoreRuntime(){
     Stop();
 };
+void CoreRuntime::SetInput(Input* in) {
+    input = in;
+}

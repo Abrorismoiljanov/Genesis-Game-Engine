@@ -74,7 +74,7 @@
         "entities": [
             {
                 "id": 0,
-                "name": "Entity 0",
+                "name": "V1",
                 "transform": {
                     "position": [
                         -223.61143493652344,
@@ -91,7 +91,7 @@
             },
             {
                 "id": 1,
-                "name": "Entity 1",
+                "name": "MsDOS",
                 "transform": {
                     "position": [
                         168.5718994140625,

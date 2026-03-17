@@ -52,6 +52,7 @@ bool app::Init(){
     lastTime = SDL_GetPerformanceCounter();
 
 
+    runtime.SetInput(&InputManager);
     UI.Init(window, glContext, Project, &renderer, running, &runtime);
     renderer.Init(1920, 1080);
 
@@ -67,6 +68,9 @@ void app::Run(){
         Uint64 currentTime = SDL_GetPerformanceCounter();
         deltaTime = (currentTime - lastTime) / (float)SDL_GetPerformanceFrequency();
         lastTime = currentTime;
+
+        InputManager.Update();
+
         Update();
         Render();
     }
@@ -77,26 +81,11 @@ void app::PollEvent(bool& running){
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL2_ProcessEvent(&event);
 
-        switch (event.type) {
-            case SDL_QUIT:
+        InputManager.ProcessEvent(event);
+
+        if (event.type == SDL_QUIT) {
             running = false;
-            break;
-
-            case SDL_KEYDOWN:
-            if (!ImGui::GetIO().WantCaptureKeyboard) {
-            
-                }
-            break;
-            
-            case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEBUTTONUP:
-            case SDL_MOUSEMOTION:
-            if (!ImGui::GetIO().WantCaptureMouse) {
-            
-            }
-            break;
-        }
-
+        }   
     }
 };
 
