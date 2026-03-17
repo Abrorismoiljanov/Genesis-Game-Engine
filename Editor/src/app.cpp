@@ -69,10 +69,9 @@ void app::Run(){
         deltaTime = (currentTime - lastTime) / (float)SDL_GetPerformanceFrequency();
         lastTime = currentTime;
 
-        InputManager.Update();
-
         Update();
         Render();
+        InputManager.Update();
     }
 }
 

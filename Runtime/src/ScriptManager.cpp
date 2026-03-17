@@ -4,6 +4,8 @@
 void ScriptManager::Initialize() {
     lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::package);
 
+    Input*& runtimeInput = input;
+
     lua.new_usertype<glm::vec3>("Vec3",
                                 "x", &glm::vec3::x,
                                 "y", &glm::vec3::y,
@@ -25,6 +27,25 @@ void ScriptManager::Initialize() {
  
  
     lua["Log"] = [](const std::string& msg){ std::cout << "[Lua] " << msg << "\n"; };
+
+    lua["Input"] = lua.create_table();
+    
+    lua["KEY_SPACE"] = SDL_SCANCODE_SPACE;
+    lua["KEY_A"] = SDL_SCANCODE_A;
+    lua["KEY_D"] = SDL_SCANCODE_D;
+    lua["KEY_W"] = SDL_SCANCODE_W;
+    lua["KEY_S"] = SDL_SCANCODE_S;
+
+
+    lua["Input"]["IsKeyDown"] = [runtimeInput](int key) -> bool {
+        return runtimeInput && runtimeInput->IsKeyDown(key);
+    };
+    lua["Input"]["IsKeyPressed"] = [runtimeInput](int key) -> bool {
+        return runtimeInput && runtimeInput->IsKeyPressed(key);
+    };
+    lua["Input"]["IsKeyReleased"] = [runtimeInput](int key) -> bool {
+        return runtimeInput && runtimeInput->IsKeyReleased(key);
+    };
 }
 
 void ScriptManager::InitScripts(uint32_t entityID) {
@@ -98,7 +119,7 @@ void ScriptManager::Update(uint32_t entityID, float dt) {
         ScriptComponent* sc = static_cast<ScriptComponent*>(c);
 
         if (sc->onUpdate.valid()) {
-            sol::protected_function_result res = sc->onUpdate(sc->table, dt);  
+            sol::protected_function_result res = sc->onUpdate(sc->table, e, dt);  
             if (!res.valid()) {
                 sol::error err = res;
                 std::cout << err.what() << std::endl;
@@ -125,3 +146,4 @@ void ScriptManager::ClearScripts() {
         }
     }
 }
+

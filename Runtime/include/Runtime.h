@@ -11,7 +11,7 @@ class CoreRuntime{
 private:
     SDL_Window* window;
     SDL_GLContext glContext;
-    Input* input = nullptr;
+    Input* RInput = nullptr;
     project Project;
     RuntimeRenderer renderer;
     ScriptManager Smanager;

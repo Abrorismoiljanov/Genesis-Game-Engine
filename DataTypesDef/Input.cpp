@@ -34,11 +34,9 @@ bool Input::IsKeyDown(int key) {
 }
 
 bool Input::IsKeyPressed(int key) {
-    if (key < 0 || key >= SDL_NUM_SCANCODES) return false;
     return keys[key] && !prevKeys[key];
 }
 
 bool Input::IsKeyReleased(int key) {
-    if (key < 0 || key >= SDL_NUM_SCANCODES) return false;
     return !keys[key] && prevKeys[key];
 }

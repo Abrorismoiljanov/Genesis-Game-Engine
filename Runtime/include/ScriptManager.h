@@ -4,12 +4,13 @@
 #include <unordered_map>
 #include "sol/sol.hpp"
 #include "project.h"
+#include "DataTypes/Input.h"
 
 class ScriptManager{
 public:    
     sol::state lua;
     project* Proj;
-
+    Input* input = nullptr; 
 
     void Initialize();   
     void Update(uint32_t entityID, float dt);    

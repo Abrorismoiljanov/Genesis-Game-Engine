@@ -60,11 +60,12 @@ void CoreRuntime::RunLoop(){
         float dt = std::chrono::duration<float>(now - last).count();
         last = now;   
 
-        if (input) {
-            if (input->IsKeyDown(SDL_SCANCODE_ESCAPE)) {
+        if (RInput) {
+            if (RInput->IsKeyPressed(SDL_SCANCODE_ESCAPE)) {
                 RequestQuit();
             }
         }
+        RInput->Update();
 
         renderer.BeginFrame(Project, Project.activeSceneID);
 
@@ -112,5 +113,6 @@ CoreRuntime::~CoreRuntime(){
     Stop();
 };
 void CoreRuntime::SetInput(Input* in) {
-    input = in;
+    RInput = in;
+    Smanager.input = in;
 }
