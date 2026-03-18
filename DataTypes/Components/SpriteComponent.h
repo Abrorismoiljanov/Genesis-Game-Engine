@@ -11,6 +11,8 @@ struct SpriteComponent : public Component {
     AssetHandle materialHandle = INVALID_ASSET;
     glm::vec2 size = {1.0f, 1.0f};              
     float rotation = 0.0f;                  
+    IGFD::FileDialogConfig cfg;
+
 
     std::string Getname() const override{
         return "Sprite";
@@ -83,9 +85,7 @@ json Serialize() const override {
 
         std::string btnID = "Load Material##" + std::to_string(ID);
         if (ImGui::Button(btnID.c_str(), ImVec2(0,30))) {
-            IGFD::FileDialogConfig cfg;
-            cfg.path = "/home/abror/Project/GGE/assets/";
-
+ 
             ImGuiFileDialog::Instance()->OpenDialog(
                 ("Choosef##" + std::to_string(ID)).c_str(),
                 "Choose File",

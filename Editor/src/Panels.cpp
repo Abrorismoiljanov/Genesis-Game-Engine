@@ -39,11 +39,11 @@ void EntityList::Render(){
             Proj.DeleteEntity(selection.EntityID);    
         }
 
-        ImGui::Separator();
 
         if (defaultScene->EntityIDs.empty()) {
             ImGui::Text("No entities in this scene");
         } else {
+            ImGui::BeginChild("ChildID", ImVec2(0, 0), true);
             
             for (size_t i = 0; i < defaultScene->EntityIDs.size(); ++i) {
 
@@ -90,6 +90,7 @@ void EntityList::Render(){
                 }
                 ImGui::PopID();
             }
+            ImGui::EndChild();
         }
     }
      ImGui::End();
