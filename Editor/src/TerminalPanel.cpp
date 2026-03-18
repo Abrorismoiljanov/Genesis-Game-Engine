@@ -2,10 +2,31 @@
 
 void Terminal::Render(){
     ImGui::Begin("Terminal");
-    for (auto& l : Log->Get()) {
-        ImVec4 color = ImVec4(0.8f, 0.8f, 0.8f, 1.0f);
-        if (l.level == LogLevel::Warning) color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
-        else if (l.level == LogLevel::Error) color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
+ 
+    if (ImGui::Button("Clear")){
+        Log->Clear();
+    };
+
+    ImGui::PopStyleVar();
+    ImGui::Separator();
+
+
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+
+    ImGui::BeginChild("LogRegion", ImVec2(0, 0), true); 
+    std::vector<LogEntry> logs = Log->GetSnapshot();
+
+    for (auto& l : logs) {
+
+        ImVec4 color;
+
+        switch (l.level) {
+            case LogLevel::Info:    color = ImVec4(1,1,1,1); break;
+            case LogLevel::Warning: color = ImVec4(1,1,0,1); break;
+            case LogLevel::Error:   color = ImVec4(1,0.3f,0.3f,1); break;
+        }
 
         ImGui::TextColored(color, "[%s] %s",
             Log->LogSystemToString(l.system),
@@ -15,6 +36,8 @@ void Terminal::Render(){
     if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
         ImGui::SetScrollHereY(1.0f);
 
+    ImGui::EndChild();
+    ImGui::PopStyleColor();
     ImGui::End();
 }
 void Terminal::Update(float dt){};

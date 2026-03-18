@@ -33,7 +33,7 @@ public:
     const char* LogSystemToString(LogSystem sys);
     std::vector<LogEntry> GetSnapshot() const;
     const std::vector<LogEntry>& Get() const;
-
+    void Clear();
 private:
     static constexpr size_t MAX_LOGS = 1000;
     std::vector<LogEntry> logs;

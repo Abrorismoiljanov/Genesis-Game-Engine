@@ -22,7 +22,7 @@ void Logger::Error(LogSystem sys, const std::string& msg) {
 
 std::vector<LogEntry> Logger::GetSnapshot() const {
     std::lock_guard<std::mutex> lock(mutex);
-    return logs; // safe copy for UI
+    return logs;
 }
 
 const char* Logger::LogSystemToString(LogSystem sys) {
@@ -38,3 +38,6 @@ const char* Logger::LogSystemToString(LogSystem sys) {
 const std::vector<LogEntry>& Logger::Get() const {
     return logs; 
 }
+void Logger::Clear(){
+    logs.clear();
+};
