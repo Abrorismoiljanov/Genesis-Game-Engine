@@ -17,6 +17,8 @@ void Terminal::Render(){
 
     ImGui::BeginChild("LogRegion", ImVec2(0, 0), true); 
     std::vector<LogEntry> logs = Log->GetSnapshot();
+    ImGui::PushFont(myFont);
+
 
     for (auto& l : logs) {
 
@@ -36,6 +38,8 @@ void Terminal::Render(){
     if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
         ImGui::SetScrollHereY(1.0f);
 
+
+    ImGui::PopFont();
     ImGui::EndChild();
     ImGui::PopStyleColor();
     ImGui::End();

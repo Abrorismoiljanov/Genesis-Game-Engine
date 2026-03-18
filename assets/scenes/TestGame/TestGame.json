@@ -1,0 +1,244 @@
+{
+    "project": {
+        "Resolution": {
+            "height": 1080,
+            "width": 1920
+        },
+        "activeSceneID": 0,
+        "asset_manifest": [
+            {
+                "handle": 6,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/TestGame/Water.png",
+                "type": "Material"
+            },
+            {
+                "handle": 5,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/TestGame/Water.png",
+                "type": "Material"
+            },
+            {
+                "handle": 3,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/TestGame/player.png",
+                "type": "Material"
+            },
+            {
+                "handle": 2,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/TestGame/BigChunk.png",
+                "type": "Material"
+            },
+            {
+                "handle": 1,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/TestGame/BigChunk.png",
+                "type": "Material"
+            },
+            {
+                "handle": 4,
+                "path": "/home/abror/Project/GGE/assets/scripts/TestGame/Player.lua",
+                "type": "Script"
+            }
+        ],
+        "components": [
+            {
+                "data": {
+                    "materialHandle": 1,
+                    "rotation": 0.0,
+                    "size": [
+                        128.0,
+                        128.0
+                    ]
+                },
+                "id": 0,
+                "owner": 0,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "materialHandle": 2,
+                    "rotation": 0.0,
+                    "size": [
+                        128.0,
+                        128.0
+                    ]
+                },
+                "id": 1,
+                "owner": 1,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "materialHandle": 3,
+                    "rotation": 0.0,
+                    "size": [
+                        16.0,
+                        16.0
+                    ]
+                },
+                "id": 3,
+                "owner": 3,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "scriptHandle": 4
+                },
+                "id": 4,
+                "owner": 3,
+                "type": "Script"
+            },
+            {
+                "data": {
+                    "Zoom": 6.099999904632568,
+                    "far": -1.0,
+                    "near": 1.0
+                },
+                "id": 5,
+                "owner": 3,
+                "type": "Camera"
+            },
+            {
+                "data": {
+                    "materialHandle": 5,
+                    "rotation": 0.0,
+                    "size": [
+                        128.0,
+                        128.0
+                    ]
+                },
+                "id": 6,
+                "owner": 4,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "materialHandle": 6,
+                    "rotation": 0.0,
+                    "size": [
+                        128.0,
+                        128.0
+                    ]
+                },
+                "id": 7,
+                "owner": 5,
+                "type": "Sprite"
+            }
+        ],
+        "entities": [
+            {
+                "id": 0,
+                "name": "Map_Tile_1",
+                "transform": {
+                    "position": [
+                        -2.61905574798584,
+                        21.428585052490234,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        2.0,
+                        2.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 1,
+                "name": "Map_Tile_2",
+                "transform": {
+                    "position": [
+                        252.6832275390625,
+                        21.463581085205078,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        2.0,
+                        2.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 3,
+                "name": "Player",
+                "transform": {
+                    "position": [
+                        164.3748321533203,
+                        28.124813079833984,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 4,
+                "name": "Water",
+                "transform": {
+                    "position": [
+                        -3.04510498046875,
+                        -178.03407287597656,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        2.0,
+                        2.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 5,
+                "name": "Water_2",
+                "transform": {
+                    "position": [
+                        250.7152557373047,
+                        -177.93943786621094,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        2.0,
+                        2.0,
+                        1.0
+                    ]
+                }
+            }
+        ],
+        "name": "Default Project",
+        "nextComponentID": 8,
+        "nextEntityID": 6,
+        "nextSceneID": 1,
+        "scenes": [
+            {
+                "Camera": 3,
+                "EntityIDs": [
+                    5,
+                    4,
+                    0,
+                    1,
+                    3
+                ],
+                "ID": 0,
+                "Param": {
+                    "BackgroundColor": [
+                        0.0,
+                        0.3033177852630615,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "Scenename": "Scene 0"
+            }
+        ],
+        "window": {
+            "flags": 3,
+            "height": 1080,
+            "width": 1920
+        }
+    }
+}

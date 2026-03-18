@@ -49,7 +49,7 @@ void ScriptManager::InitScripts(uint32_t entityID) {
             continue;
         }
         if (result.get_type() != sol::type::table) {
-            std::cout << "[ScriptManager] Lua script must return a table\n";
+            Log->Error(LogSystem::Script, "Lua script must return a table");
             continue;
         }
 
