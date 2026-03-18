@@ -6,16 +6,17 @@
 
 #include "atomic"
 #include "thread"
+#include "Editor/include/Logger.h"
 
 class CoreRuntime{
 private:
     SDL_Window* window;
     SDL_GLContext glContext;
-    Input* RInput = nullptr;
     project Project;
     RuntimeRenderer renderer;
     ScriptManager Smanager;
-
+    Input* RInput = nullptr;
+    Logger* Log = nullptr;
     std::atomic<bool> running{false};
 
     std::thread runtimeThread;
@@ -30,6 +31,7 @@ public:
     void RunLoop();     
     bool isRunning();
     void SetInput(Input* in);
+    void SetLog(Logger* log);
  
     ~CoreRuntime();
 };

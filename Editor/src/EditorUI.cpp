@@ -9,7 +9,13 @@
 
 EditorUI::EditorUI(project& proj, bool& running): Project(proj), renderer(nullptr), Run(running){}
 
-void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer, bool& running, CoreRuntime* runtime){
+void EditorUI::Init(SDL_Window* window,
+                    SDL_GLContext glContext,
+                    project& Proj,
+                    Renderer* renderer, 
+                    bool& running,
+                    CoreRuntime* runtime,
+                    Logger* Log){
 
     Runtime = runtime;
 
@@ -55,7 +61,7 @@ void EditorUI::Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, 
     ImGui_ImplOpenGL3_Init("#version 330");
 
     RegisterAllComponents();
-    panels.push_back(std::make_unique<Terminal>("Terminal",Proj));
+    panels.push_back(std::make_unique<Terminal>("Terminal", Proj, Log));
     panels.push_back(std::make_unique<SceneManagerPanel>("SceneManager", Proj, SelectedScene));
     panels.push_back(std::make_unique<SceneParamPanel>("SceneParam", Proj, SelectedScene));
     panels.push_back(std::make_unique<ProjectSettingsPanel>(Proj.Param.name.c_str(), Proj));

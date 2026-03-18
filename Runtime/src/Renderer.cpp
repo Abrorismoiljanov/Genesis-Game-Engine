@@ -3,7 +3,7 @@
 #include "DataTypes/Components/SpriteComponent.h"
 #include "DataTypes/outside/ShaderUtils.h"
 
-void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window){
+void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window, Logger* Log){
 
     SDL_GL_GetDrawableSize(window, &Proj.Param.Resolution.width, &Proj.Param.Resolution.height);
     glViewport(0, 0, w, h);
@@ -47,26 +47,28 @@ void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window){
     glBindVertexArray(0);
     for (auto& [tex, id] : runtimeTextureIDs) {
         if (id != 0) {
-            glDeleteTextures(1, &id); // optional, in case context is still valid
+            glDeleteTextures(1, &id);
         }
     }
 
-    runtimeTextureIDs.clear(); // clear old mappings
-
+    runtimeTextureIDs.clear(); 
     for (auto& comp_ptr : Proj.ComponentList) {
         if (comp_ptr->Getname() != "Sprite") continue;
         SpriteComponent* sprite = static_cast<SpriteComponent*>(comp_ptr.get());
-        std::cout << sprite->Getname() << " was Loaded" << '\n';
+        std::string msg = sprite->Getname() + " was Loaded";
+        Log->Info(LogSystem::Renderer, msg);
 
         auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
         if (!mat) continue;
-        std::cout << mat->GetTexture()->Path << " was Loaded" << '\n';
+        msg =  mat->GetTexture()->Path + " was Loaded";
+        Log->Info(LogSystem::Renderer, msg);
 
         TextureAsset* tex = mat->GetTexture().get();
 
         if (runtimeTextureIDs.find(tex) == runtimeTextureIDs.end()) {
             if (!tex->LoadFromFile(tex->Path)) {
-                std::cout << "FAILED to load texture: " << tex->Path << "\n";
+                msg =  "Failed to Load texture" + tex->Path;
+                Log->Error(LogSystem::Renderer, msg);
                 continue;
             }
 

@@ -19,7 +19,6 @@ function script:OnUpdate(entity, dt)
         if entity.transform.scale.x > 0 then
             entity.transform.scale.x = -entity.transform.scale.x
         end
-
         
         entity.transform.position.x = entity.transform.position.x - speed * dt
     end

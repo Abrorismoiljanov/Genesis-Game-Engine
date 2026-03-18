@@ -3,11 +3,12 @@
 #include "scene.h"
 #include "GL/glew.h"
 #include "Camera.h"
+#include "Editor/include/Logger.h"
 
 class RuntimeRenderer{
 
 public:
-    void Init(int w, int h, project& Proj, SDL_Window* window);
+    void Init(int w, int h, project& Proj, SDL_Window* window, Logger* Log);
     void BeginFrame(project& Proj, int selectedSceneID);
     void Render(project& Proj,int selectedSceneID);
     void EndFrame(SDL_Window* window);

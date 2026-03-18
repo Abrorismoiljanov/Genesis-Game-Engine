@@ -1,6 +1,7 @@
 #include "Runtime/include/ScriptManager.h"
 #include "DataTypes/Assets/ScriptAsset.h"
 #include "sol/sol.hpp"
+
 void ScriptManager::Initialize() {
     lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::package);
 
@@ -26,7 +27,11 @@ void ScriptManager::Initialize() {
                              );
  
  
-    lua["Log"] = [](const std::string& msg){ std::cout << "[Lua] " << msg << "\n"; };
+    lua["Log"] = [this](const std::string& msg){ 
+        if (Log) {
+            Log->Info(LogSystem::Script, msg); 
+        }
+    };
 
     lua["Input"] = lua.create_table();
     
@@ -119,10 +124,27 @@ void ScriptManager::Update(uint32_t entityID, float dt) {
         ScriptComponent* sc = static_cast<ScriptComponent*>(c);
 
         if (sc->onUpdate.valid()) {
-            sol::protected_function_result res = sc->onUpdate(sc->table, e, dt);  
-            if (!res.valid()) {
-                sol::error err = res;
-                std::cout << err.what() << std::endl;
+            try {
+                sol::protected_function pf = sc->onUpdate;
+                sol::protected_function_result res = pf(sc->table, e, dt);
+
+                if (!res.valid()) {
+                    sol::error err = res;
+                    if (Log)
+                        Log->Error(LogSystem::Script, err.what());
+                }
+            }
+            catch (const sol::error& e) {
+                if (Log)
+                    Log->Error(LogSystem::Script, std::string("Lua runtime exception: ") + e.what());
+            }
+            catch (const std::exception& e) {
+                if (Log)
+                    Log->Error(LogSystem::Script, std::string("C++ exception in Lua call: ") + e.what());
+            }
+            catch (...) {
+                if (Log)
+                    Log->Error(LogSystem::Script, "Unknown exception in Lua call");
             }
         }
     }

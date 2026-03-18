@@ -4,10 +4,12 @@ CoreRuntime::CoreRuntime(){}
 
 void CoreRuntime::Start(const project& Proj){
     Project = Proj.Clone();
-
     Smanager.Reset();
     Smanager.Proj = &Project;
+    Smanager.Log = Log;
     Smanager.Initialize();
+
+    Log->Info(LogSystem::Engine, "Game Started");
 
     runtimeThread = std::thread(&CoreRuntime::RunLoop, this);
 }
@@ -45,7 +47,7 @@ void CoreRuntime::RunLoop(){
     if (glewInit() != GLEW_OK) {
          std::cout << "GLEW init failed\n";
     }
-    renderer.Init(Project.Param.WindowWidth, Project.Param.WindowHeight, Project, window);
+    renderer.Init(Project.Param.WindowWidth, Project.Param.WindowHeight, Project, window, Log);
 
     for (auto& eID : Project.EntityList) {
         Smanager.InitScripts(eID.ID);
@@ -115,4 +117,8 @@ CoreRuntime::~CoreRuntime(){
 void CoreRuntime::SetInput(Input* in) {
     RInput = in;
     Smanager.input = in;
+}
+
+void CoreRuntime::SetLog(Logger* log){
+    Log = log;
 }

@@ -53,7 +53,8 @@ bool app::Init(){
 
 
     runtime.SetInput(&InputManager);
-    UI.Init(window, glContext, Project, &renderer, running, &runtime);
+    runtime.SetLog(&Log);
+    UI.Init(window, glContext, Project, &renderer, running, &runtime, &Log);
     renderer.Init(1920, 1080);
 
     return true;

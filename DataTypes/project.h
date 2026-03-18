@@ -105,10 +105,8 @@ struct project{
             }
             if (ptr->Getname() == "Script") {
                 auto* sc = static_cast<const ScriptComponent*>(ptr.get());
-                std::cout << "Comp for Script created" << '\n';
                 if (sc->scriptHandle != INVALID_ASSET) {
                     used_handles.insert(sc->scriptHandle);
-                    std::cout << "script handles were added to used_handles" << '\n';
                 }
             }
         }

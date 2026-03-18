@@ -2,8 +2,10 @@
 #include "project.h"
 #include "EditorUI.h"
 #include "Renderer.h"
+#include "Logger.h"
 #include "Runtime/include/Runtime.h"
 #include "DataTypes/Input.h"
+
 
 class app{
 private:
@@ -19,6 +21,7 @@ private:
     Renderer renderer;
     CoreRuntime runtime;
     Input InputManager;
+    Logger Log;
 
     Uint64 lastTime = 0;   
     float deltaTime = 0.0f; 

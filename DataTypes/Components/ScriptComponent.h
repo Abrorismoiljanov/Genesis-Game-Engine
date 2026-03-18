@@ -98,21 +98,16 @@ public:
 
 file << 
 R"(local script = {}
-                    
-function script.OnCreate(entity)
 
+
+function script:OnCreate(entity, dt)
 end
 
-function script.OnUpdate(entity, dt)
-
+function script:OnUpdate(entity, dt)
 end
 
-function script.OnDestroy(entity)
 
-end
-
-return script
-)";
+return script)";
 
                 file.close();
  

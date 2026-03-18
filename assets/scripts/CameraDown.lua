@@ -1,7 +1,10 @@
 local script = {}
 
+
+function script:OnCreate(entity, dt)
+end
+
 function script:OnUpdate(entity, dt)
-    entity.transform.rotation = entity.transform.rotation - 1
 end
 
 

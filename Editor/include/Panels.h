@@ -67,21 +67,12 @@ private:
 
 class Terminal : public Panel {
 public:
-    Terminal(const std::string& n, project& proj): Panel(n), Proj(proj) {}
+    Terminal(const std::string& n, project& proj, Logger* logger): Panel(n), Proj(proj), Log(logger) {}
 
     void Render() override;
     void Update(float dt) override;
-
-    std::vector<std::string> outputLines; 
-    char inputBuffer[256] = "";          
-    bool scrollToBottom = false;        
-
-    // List of allowed commands (your “command list”)
-    std::vector<std::string> commandList = {
-        "run",
-        "clear",
-        "help"
-    };
+ 
+    Logger* Log = nullptr;
 
 private:
     project& Proj;

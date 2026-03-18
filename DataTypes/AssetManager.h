@@ -23,10 +23,6 @@ public:
         auto asset = m_Assets[index];
 
         std::shared_ptr<T> casted = std::dynamic_pointer_cast<T>(asset);
-        if (!casted) {
-            std::cerr << "AssetManager: Handle " << handle << " is not a " 
-                << typeid(T).name() << "\n";
-        }
         return casted;
     }
         
