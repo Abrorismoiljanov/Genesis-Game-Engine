@@ -19,6 +19,10 @@ public:
     void InitScripts(uint32_t entityID); 
     void ClearScripts();
  
+    void RegisterTypes();
+    void RegisterGlobals();
+    void RegisterInput();
+
     void Reset() {
         lua = sol::state{};
     }

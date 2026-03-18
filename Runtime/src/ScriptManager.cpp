@@ -5,52 +5,9 @@
 void ScriptManager::Initialize() {
     lua.open_libraries(sol::lib::base, sol::lib::math, sol::lib::package);
 
-    Input*& runtimeInput = input;
-
-    lua.new_usertype<glm::vec3>("Vec3",
-                                "x", &glm::vec3::x,
-                                "y", &glm::vec3::y,
-                                "z", &glm::vec3::z
-                                );
-
-    lua.new_usertype<TransformData>("TransformData",
-                                    "position", sol::property([](TransformData& t) -> glm::vec3& { return t.position; }),
-                                    "rotation", &TransformData::rotation,
-                                    "scale", sol::property([](TransformData& t) -> glm::vec3& { return t.scale; })
-                                    );
-
-
-    lua.new_usertype<entity>("Entity",
-                             "name", &entity::name,
-                             "ID", &entity::ID,
-                             "transform", &entity::transform
-                             );
- 
- 
-    lua["Log"] = [this](const std::string& msg){ 
-        if (Log) {
-            Log->Info(LogSystem::Script, msg); 
-        }
-    };
-
-    lua["Input"] = lua.create_table();
-    
-    lua["KEY_SPACE"] = SDL_SCANCODE_SPACE;
-    lua["KEY_A"] = SDL_SCANCODE_A;
-    lua["KEY_D"] = SDL_SCANCODE_D;
-    lua["KEY_W"] = SDL_SCANCODE_W;
-    lua["KEY_S"] = SDL_SCANCODE_S;
-
-
-    lua["Input"]["IsKeyDown"] = [runtimeInput](int key) -> bool {
-        return runtimeInput && runtimeInput->IsKeyDown(key);
-    };
-    lua["Input"]["IsKeyPressed"] = [runtimeInput](int key) -> bool {
-        return runtimeInput && runtimeInput->IsKeyPressed(key);
-    };
-    lua["Input"]["IsKeyReleased"] = [runtimeInput](int key) -> bool {
-        return runtimeInput && runtimeInput->IsKeyReleased(key);
-    };
+    RegisterTypes();
+    RegisterGlobals();
+    RegisterInput();
 }
 
 void ScriptManager::InitScripts(uint32_t entityID) {
