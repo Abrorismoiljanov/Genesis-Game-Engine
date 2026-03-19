@@ -17,6 +17,8 @@ public:
     entity* m_CameraEntity = nullptr;
     CameraComponent* m_CameraComponent = nullptr;
 
+    void RenderColliders(project& Proj);
+ 
     std::unordered_map<TextureAsset*, GLuint> runtimeTextureIDs;
  
     float scale = 1.0f;
@@ -24,6 +26,7 @@ public:
     
 private:
     GLuint DefaultShader;
+    GLuint DebugShader;
 
     GLuint QuadVAO = 0;
     GLuint QuadVBO = 0;

@@ -164,7 +164,7 @@ void Viewport::Render(){
 
         ImGui::SameLine();
         ImVec2 windowSize = ImGui::GetWindowSize();
-        ImGui::SetCursorPosX(windowSize.x - 220);
+        ImGui::SetCursorPosX(windowSize.x - 300);
 
         ImGui::Checkbox("Grid", &m_renderer->DrawGrid);
 
@@ -172,6 +172,10 @@ void Viewport::Render(){
         
         ImGui::Checkbox("Axis", &m_renderer->DrawAxis);
     
+        ImGui::SameLine();
+        
+        ImGui::Checkbox("Collider", &m_renderer->DrawCollider);
+        
         ImGui::SameLine();
 
         const char* label = Runtime.isRunning() ? ICON_FA_STOP " Stop" : ICON_FA_PLAY " Start";

@@ -7,6 +7,11 @@
         "activeSceneID": 0,
         "asset_manifest": [
             {
+                "handle": 7,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/default.png",
+                "type": "Material"
+            },
+            {
                 "handle": 6,
                 "texture_path": "/home/abror/Project/GGE/assets/textures/TestGame/Water.png",
                 "type": "Material"
@@ -119,27 +124,8 @@
             {
                 "data": {
                     "halfSize": [
-                        0.5,
-                        0.5
-                    ],
-                    "isStatic": false,
-                    "isTrigger": false,
-                    "layer": 1,
-                    "mask": 1,
-                    "offset": [
-                        0.0,
-                        0.0
-                    ]
-                },
-                "id": 8,
-                "owner": 0,
-                "type": "Collision"
-            },
-            {
-                "data": {
-                    "halfSize": [
-                        0.5,
-                        0.5
+                        8.0,
+                        8.0
                     ],
                     "isStatic": false,
                     "isTrigger": false,
@@ -152,6 +138,37 @@
                 },
                 "id": 9,
                 "owner": 3,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "materialHandle": 7,
+                    "size": [
+                        16.0,
+                        16.0
+                    ]
+                },
+                "id": 10,
+                "owner": 6,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        8.0,
+                        8.0
+                    ],
+                    "isStatic": false,
+                    "isTrigger": false,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ]
+                },
+                "id": 11,
+                "owner": 6,
                 "type": "Collision"
             }
         ],
@@ -195,8 +212,8 @@
                 "name": "Player",
                 "transform": {
                     "position": [
-                        104.90115356445313,
-                        60.756412506103516,
+                        226.97039794921875,
+                        5.584251403808594,
                         0.0
                     ],
                     "rotation": 0.0,
@@ -240,11 +257,28 @@
                         1.0
                     ]
                 }
+            },
+            {
+                "id": 6,
+                "name": "Box",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
             }
         ],
         "name": "Default Project",
-        "nextComponentID": 10,
-        "nextEntityID": 6,
+        "nextComponentID": 12,
+        "nextEntityID": 7,
         "nextSceneID": 1,
         "scenes": [
             {
@@ -254,7 +288,8 @@
                     4,
                     0,
                     1,
-                    3
+                    3,
+                    6
                 ],
                 "ID": 0,
                 "Param": {

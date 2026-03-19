@@ -31,6 +31,7 @@ struct ProjectParam{
     int WindowHeight = 600;
     ResolutionP Resolution;
     Uint32 WindowParam = SDL_WINDOW_OPENGL;
+    bool Debug = true;
 };
 
 struct project{
@@ -63,6 +64,7 @@ struct project{
         pj["nextComponentID"] = NextComponentID;
         pj["Resolution"]["width"] = Param.Resolution.width;
         pj["Resolution"]["height"] = Param.Resolution.height;
+        pj["DebugMode"] = Param.Debug;
 
         pj["entities"] = json::array();
  
@@ -145,9 +147,17 @@ struct project{
         Param.Resolution.width = pj.at("Resolution").at("width").get<int>();
         Param.Resolution.height = pj.at("Resolution").at("height").get<int>();
 
+        try {
+            Param.Debug = pj.at("DebugMode").get<bool>();
+        } catch (const nlohmann::json::exception&) {
+            Param.Debug = true;
+        }
+
+
         activeSceneID = pj.at("activeSceneID").get<uint32_t>();
         NextEntityID = pj.at("nextEntityID").get<uint32_t>();
         NextComponentID = pj.at("nextComponentID").get<uint32_t>();
+
 
         SceneList.clear();
         EntityList.clear();

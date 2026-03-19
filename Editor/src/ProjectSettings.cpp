@@ -21,6 +21,10 @@ void ProjectSettingsPanel::Render(){
             Proj.Param.name = std::string(nameBuffer);
         }
 
+        ImGui::Text("DebugMode");
+        ImGui::SameLine();
+        ImGui::Checkbox("##D", &Proj.Param.Debug);
+
         ImGui::Text("Starter Scene");
         ImGui::SameLine();
 
