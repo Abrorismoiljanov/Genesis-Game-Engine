@@ -12,6 +12,7 @@
 #include "Components/SpriteComponent.h"
 #include "Components/CameraComponent.h"
 #include "Components/ScriptComponent.h"
+#include "Components/CollisionComponent.h"
 #include "AssetManager.h"
 #include "nlohmann/json.hpp"
 #include "Assets/MaterialAsset.h"
@@ -187,9 +188,11 @@ struct project{
                 if (type == "Camera") {
                     comp = std::make_unique<CameraComponent>();
                 }
- 
                 if (type == "Script") {
                     comp = std::make_unique<ScriptComponent>();
+                }
+                if (type == "Collision") {
+                    comp = std::make_unique<CollisionComponent>();
                 }
 
                 if (!comp) {

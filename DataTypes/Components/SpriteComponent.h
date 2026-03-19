@@ -10,7 +10,6 @@
 struct SpriteComponent : public Component {
     AssetHandle materialHandle = INVALID_ASSET;
     glm::vec2 size = {1.0f, 1.0f};              
-    float rotation = 0.0f;                  
     IGFD::FileDialogConfig cfg;
 
 
@@ -22,14 +21,12 @@ json Serialize() const override {
         json j;
         j["materialHandle"] = materialHandle;
         j["size"]           = {size.x, size.y};
-        j["rotation"]       = rotation;
         return j;
     }
 
     void Deserialize(const json& data) override {
         materialHandle = INVALID_ASSET;
         size = {1.0f, 1.0f};
-        rotation = 0.0f;
 
         if (data.contains("materialHandle")) {
             materialHandle = data["materialHandle"].get<AssetHandle>();
@@ -40,9 +37,6 @@ json Serialize() const override {
             size.y = data["size"][1].get<float>();
         }
 
-        if (data.contains("rotation")) {
-            rotation = data["rotation"].get<float>();
-        }
     };
 
     void OnRemove(AssetManager& assetManager){

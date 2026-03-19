@@ -8,6 +8,7 @@ void CoreRuntime::Start(const project& Proj){
     Smanager.Proj = &Project;
     Smanager.Log = Log;
     Smanager.Initialize();
+    CollisionManager.Init(Log, &Project);
 
     Log->Info(LogSystem::Engine, "Game Started");
 
@@ -75,6 +76,7 @@ void CoreRuntime::RunLoop(){
         for (auto& eID: Project.EntityList) {
             Smanager.Update(eID.ID, dt);
         }
+        CollisionManager.Update(dt);
 
         renderer.Render(Project, Project.activeSceneID);
         renderer.EndFrame(window);

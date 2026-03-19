@@ -115,11 +115,11 @@ void Inspector::Render(){
         ImGui::Text("No Entity Selected");
     }
 
-
     if (CurrentEntity != nullptr) {
 
         CurrentEntity->DrawInfoUI();
 
+        ImGui::BeginChild("Child", ImVec2(0, ImGui::GetContentRegionAvail().y), true);
         auto& comps = CurrentEntity->ComponentIDs;
 
         uint32_t componentToDelete = 0;
@@ -175,7 +175,6 @@ void Inspector::Render(){
         ImGui::Spacing(); 
         float width = ImGui::GetContentRegionAvail().x;
         if (ImGui::Button("Add Component", ImVec2(width, 0))) {
-
             ImGui::OpenPopup("ComponentSelectionPopup");
         }
         ImGui::SetNextWindowSizeConstraints(
@@ -214,7 +213,7 @@ void Inspector::Render(){
         }   
         ImGui::PopStyleColor(2);
         ImGui::PopStyleVar(3);
-
+        ImGui::EndChild();
     }
  
     ImGui::End();   

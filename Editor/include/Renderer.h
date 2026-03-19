@@ -17,6 +17,7 @@ public:
 
     bool DrawGrid = true;
     bool DrawAxis = true;
+    bool DrawCollider = true;
 
     std::unordered_map<TextureAsset*, GLuint> editorTextureIDs;
     GLuint UploadTextureToGPU(TextureAsset* tex); 
@@ -24,6 +25,8 @@ public:
 
     void RenderGrid();
     void RenderAxis();
+
+    void RenderColliders(project& Proj);
     void RenderCameraGizmos(project& Proj);
     
     uint32_t GetFinalImage() const { return m_Framebuffer.GetColorAttachment(); }

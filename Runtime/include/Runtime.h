@@ -7,6 +7,7 @@
 #include "atomic"
 #include "thread"
 #include "Editor/include/Logger.h"
+#include "CollisionSystem.h"
 
 class CoreRuntime{
 private:
@@ -15,6 +16,7 @@ private:
     project Project;
     RuntimeRenderer renderer;
     ScriptManager Smanager;
+    CollisionSystem CollisionManager;
     Input* RInput = nullptr;
     Logger* Log = nullptr;
     std::atomic<bool> running{false};

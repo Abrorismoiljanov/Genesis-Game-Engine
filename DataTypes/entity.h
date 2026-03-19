@@ -70,9 +70,7 @@ public:
         return mat;
     }
 
-
     void DrawInfoUI();
-
 
 private:
 };

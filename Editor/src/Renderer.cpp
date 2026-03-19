@@ -172,7 +172,79 @@ void Renderer::Render(project& Proj, int selectedSceneID){
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
+    if (DrawCollider) {
+        RenderColliders(Proj);
+    }
     RenderCameraGizmos(Proj);
+}
+void Renderer::RenderColliders(project& Proj) {
+    glUseProgram(GridShader); 
+    glm::mat4 vp = m_Camera.GetViewProjection();
+    glUniformMatrix4fv(glGetUniformLocation(GridShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(vp));
+
+    for (uint32_t entityID : activeScene->EntityIDs) {
+        entity* e = Proj.GetEntityByID(entityID);
+        if (!e) continue;
+
+        for (uint32_t compID : e->ComponentIDs) {
+            Component* c = Proj.GetComponentByID(compID);
+            if (!c || c->Getname() != "Collision") continue;
+
+            CollisionComponent* col = static_cast<CollisionComponent*>(c);
+
+            glm::vec2 center = glm::vec2(e->transform.position + col->offset);
+            glm::vec2 half   = glm::vec2(col->halfSize.x * e->transform.scale.x,
+                                         col->halfSize.y * e->transform.scale.y);
+
+            // Rectangle corners
+            glm::vec2 topLeft     = center + glm::vec2(-half.x,  half.y);
+            glm::vec2 topRight    = center + glm::vec2( half.x,  half.y);
+            glm::vec2 bottomRight = center + glm::vec2( half.x, -half.y);
+            glm::vec2 bottomLeft  = center + glm::vec2(-half.x, -half.y);
+
+            // Vertex data for a filled quad (two triangles)
+            float vertices[] = {
+                topLeft.x,    topLeft.y,
+                bottomLeft.x, bottomLeft.y,
+                bottomRight.x, bottomRight.y,
+
+                bottomRight.x, bottomRight.y,
+                topRight.x,    topRight.y,
+                topLeft.x,     topLeft.y
+            };
+
+            GLuint vao, vbo;
+            glGenVertexArrays(1, &vao);
+            glGenBuffers(1, &vbo);
+
+            glBindVertexArray(vao);
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+
+            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(0);
+
+            // Blue with 0.5 alpha
+            glUniform4f(glGetUniformLocation(GridShader, "u_Color"), 0.0f, 0.0f, 1.0f, 0.5f);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            // Optional: outline
+            float outlineVertices[] = {
+                topLeft.x, topLeft.y, topRight.x, topRight.y,
+                topRight.x, topRight.y, bottomRight.x, bottomRight.y,
+                bottomRight.x, bottomRight.y, bottomLeft.x, bottomLeft.y,
+                bottomLeft.x, bottomLeft.y, topLeft.x, topLeft.y
+            };
+            glBufferData(GL_ARRAY_BUFFER, sizeof(outlineVertices), outlineVertices, GL_DYNAMIC_DRAW);
+            glUniform4f(glGetUniformLocation(GridShader, "u_Color"), 0.0f, 0.0f, 1.0f, 1.0f);
+            glLineWidth(2.0f);
+            glDrawArrays(GL_LINES, 0, 8);
+            glLineWidth(1.0f);
+
+            glDeleteBuffers(1, &vbo);
+            glDeleteVertexArrays(1, &vao);
+        }
+    }
 }
 
 void Renderer::RenderCameraGizmos(project& Proj){
