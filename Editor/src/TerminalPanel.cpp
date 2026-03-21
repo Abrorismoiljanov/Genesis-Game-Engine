@@ -25,7 +25,7 @@ void Terminal::Render(){
         ImVec4 colorMessage;
         ImVec4 colorSystem;
         switch (l.level) {
-            case LogLevel::Info:    colorMessage = ImVec4(1.0f, 0.5f, 1.0f, 1.0f); break;      
+            case LogLevel::Info:    colorMessage = ImVec4(0.0f, 0.8f, 0.9f, 1.0f); break;      
             case LogLevel::Warning: colorMessage = ImVec4(1.0f, 0.9f, 0.3f, 1.0f); break;     
             case LogLevel::Error:   colorMessage = ImVec4(1.0f, 0.2f, 0.2f, 1.0f); break;     
         }
