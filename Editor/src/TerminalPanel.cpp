@@ -22,22 +22,24 @@ void Terminal::Render(){
 
     for (auto& l : logs) {
 
-        ImVec4 color;
-        ImVec4 colorType;
+        ImVec4 colorMessage;
+        ImVec4 colorSystem;
         switch (l.level) {
-            case LogLevel::Info:    color = ImVec4(1,1,1,1); break;
-            case LogLevel::Warning: color = ImVec4(1,1,0,1); break;
-            case LogLevel::Error:   color = ImVec4(1,0.3f,0.3f,1); break;
+            case LogLevel::Info:    colorMessage = ImVec4(1.0f, 0.5f, 1.0f, 1.0f); break;      
+            case LogLevel::Warning: colorMessage = ImVec4(1.0f, 0.9f, 0.3f, 1.0f); break;     
+            case LogLevel::Error:   colorMessage = ImVec4(1.0f, 0.2f, 0.2f, 1.0f); break;     
         }
         switch (l.system) {
-            case LogSystem::Engine : colorType = ImVec4(1,1,0,1); break;
-            case LogSystem::Renderer : colorType = ImVec4(0,1,1,1); break;
-            case LogSystem::Script : colorType = ImVec4(0,1,0,1); break;
+            case LogSystem::Script:   colorSystem = ImVec4(0.0f, 1.0f, 0.5f, 1.0f); break;  
+            case LogSystem::Physics:  colorSystem = ImVec4(0.2f, 0.6f, 1.0f, 1.0f); break;  
+            case LogSystem::Renderer: colorSystem = ImVec4(1.0f, 0.5f, 0.0f, 1.0f); break;   
+            case LogSystem::Engine:   colorSystem = ImVec4(1.0f, 0.0f, 1.0f, 1.0f); break;   
+            case LogSystem::Gameplay: colorSystem = ImVec4(1.0f, 0.8f, 0.0f, 1.0f); break;   
         }
 
-        ImGui::TextColored(colorType, "[%s]",Log->LogSystemToString(l.system));
+        ImGui::TextColored(colorSystem, "[%s]",Log->LogSystemToString(l.system));
         ImGui::SameLine();
-        ImGui::TextColored(color, "%s", l.message.c_str());
+        ImGui::TextColored(colorMessage, "%s", l.message.c_str());
 
     }
 
