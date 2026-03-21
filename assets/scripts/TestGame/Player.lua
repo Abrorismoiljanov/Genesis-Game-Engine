@@ -7,7 +7,8 @@ end
 function script:OnUpdate(entity, dt)
 
     local speed = 100.0;
-
+    local col = GetComponent(entity, "Collision")
+ 
     if Input.IsKeyDown(KEY_W) then
         Log("W is pressed")
         entity.transform.position.y = entity.transform.position.y + speed * dt

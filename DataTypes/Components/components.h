@@ -5,6 +5,7 @@
 #include "GL/glew.h"
 #include "DataTypes/Assets/TextureAsset.h"
 #include "imgui.h"
+#include "sol/sol.hpp"
 
 using json = nlohmann::json;
 
@@ -27,6 +28,11 @@ public:
     virtual void DrawComponentUI(AssetManager& AssetManager,
                                  std::function<GLuint(TextureAsset*)> UploadTextureToGPU,
                                  std::function<ImTextureID(TextureAsset*)> GetPreviewTextureID) = 0;
+
+    virtual sol::object PushToLua(sol::state_view lua) {
+        return sol::nil;
+    }
+
     virtual json Serialize() const = 0;
     virtual void Deserialize(const json& data) = 0;
     virtual void OnRemove(AssetManager& AssetManager) = 0;

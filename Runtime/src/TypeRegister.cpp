@@ -21,4 +21,12 @@ void ScriptManager::RegisterTypes(){
                              "transform", &entity::transform
                              );
  
+    lua.new_usertype<CollisionComponent>("Collision",
+        "offset", &CollisionComponent::offset,
+        "halfSize", &CollisionComponent::halfSize,
+        "isTrigger", &CollisionComponent::isTrigger,
+        "isStatic", &CollisionComponent::isStatic,
+        "layer", &CollisionComponent::layer,
+        "mask", &CollisionComponent::mask
+    );
 }

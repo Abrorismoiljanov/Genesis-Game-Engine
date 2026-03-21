@@ -17,6 +17,10 @@ public:
         return "Collision";
     }
 
+    sol::object PushToLua(sol::state_view lua) {
+        return sol::make_object(lua, this);
+    }
+
     void OnRemove(AssetManager &AssetManager) override{
 
     }
