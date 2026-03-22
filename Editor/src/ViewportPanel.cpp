@@ -148,7 +148,7 @@ void Viewport::Render(){
             }
         }
  
-        ImGui::SetCursorPos(ImVec2(10, 30)); 
+        ImGui::SetCursorPos(ImVec2(10, 40)); 
 
         if (ImGui::Button(ICON_FA_ARROWS_UP_DOWN_LEFT_RIGHT)) {
             mode = ImGuizmo::TRANSLATE;
@@ -163,8 +163,13 @@ void Viewport::Render(){
         }
 
         ImGui::SameLine();
+        ImGui::Checkbox("Collider", &m_renderer->DrawCollider);
+        
         ImVec2 windowSize = ImGui::GetWindowSize();
-        ImGui::SetCursorPosX(windowSize.x - 300);
+        ImGui::SameLine();
+   
+  
+        ImGui::SetCursorPosX(windowSize.x - 210);
 
         ImGui::Checkbox("Grid", &m_renderer->DrawGrid);
 
@@ -172,11 +177,9 @@ void Viewport::Render(){
         
         ImGui::Checkbox("Axis", &m_renderer->DrawAxis);
     
-        ImGui::SameLine();
-        
-        ImGui::Checkbox("Collider", &m_renderer->DrawCollider);
-        
-        ImGui::SameLine();
+
+        ImGui::SameLine();      
+
 
         const char* label = Runtime.isRunning() ? ICON_FA_STOP " Stop" : ICON_FA_PLAY " Start";
 
