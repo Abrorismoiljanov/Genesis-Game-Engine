@@ -5,7 +5,7 @@
 #include "Logger.h"
 #include "Runtime/include/Runtime.h"
 #include "DataTypes/Input.h"
-
+#include "CommandSystem.h"
 
 class app{
 private:
@@ -22,9 +22,12 @@ private:
     CoreRuntime runtime;
     Input InputManager;
     Logger Log;
+    CommandSystem CmdSystem;
 
     Uint64 lastTime = 0;   
     float deltaTime = 0.0f; 
+
+    void InitCommands();
 
     void PollEvent(bool& running);
     void Update();

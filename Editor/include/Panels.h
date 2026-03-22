@@ -6,6 +6,7 @@
 #include "ImGuizmo.h"
 #include "Runtime/include/Runtime.h"
 #include "IconsFontAwesome6.h"
+#include "CommandSystem.h"
 
 class Panel{
 public:
@@ -67,7 +68,11 @@ private:
 
 class Terminal : public Panel {
 public:
-    Terminal(const std::string& n, project& proj, Logger* logger): Panel(n), Proj(proj), Log(logger) {}
+    Terminal(const std::string& n, project& proj, Logger* logger, CommandSystem* commandSystem): 
+        Panel(n), 
+        Proj(proj),
+        Log(logger),
+        CmdSystem(commandSystem) {}
 
     void Render() override;
     void Update(float dt) override;
@@ -83,6 +88,7 @@ public:
 
 
     Logger* Log = nullptr;
+    CommandSystem* CmdSystem = nullptr;
 
 private:
     project& Proj;

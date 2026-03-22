@@ -1,6 +1,8 @@
 #include "Editor/include/Panels.h"
 
 void Terminal::Render(){
+    static char inputBuf[256] = "";
+
     ImGui::Begin("Terminal");
 
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
@@ -27,7 +29,30 @@ void Terminal::Render(){
     std::vector<LogEntry> logs = Log->GetSnapshot();
     ImGui::PushFont(myFont);
 
+    ImGui::Separator();  
 
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0, 0, 0, 0));       
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0, 0, 0, 0));  
+    ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0, 0, 0, 0));  
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);         
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);       
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.2f, 1.0f, 0.2f, 1.0f)); 
+ 
+    ImGui::TextColored(ImVec4(0.2f, 1.0f, 0.2f, 1.0f), ">");
+    ImGui::SameLine();
+    ImGui::PushItemWidth(-1);        
+
+    if (ImGui::InputText("##terminal", inputBuf, sizeof(inputBuf),
+        ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_NoUndoRedo)){
+        CmdSystem->Execute(inputBuf);
+        inputBuf[0] = '\0';
+    }
+
+    ImGui::PopStyleVar(2);   
+    ImGui::PopStyleColor(4);
+
+    ImGui::PopItemWidth();
+ 
     for (auto& l : logs) {
 
         ImVec4 colorMessage;

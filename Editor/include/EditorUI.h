@@ -6,11 +6,19 @@
 #include "SelectedEntity.h"
 #include "Runtime/include/Runtime.h"
 #include "Logger.h"
-
+#include "CommandSystem.h"
 class EditorUI{
 public:
  
-    void Init(SDL_Window* window, SDL_GLContext glContext, project& Proj, Renderer* renderer, bool& running, CoreRuntime* runtime, Logger* Log);
+    void Init(SDL_Window* window, 
+              SDL_GLContext glContext, 
+              project& Proj,
+              Renderer* renderer,
+              bool& running,
+              CoreRuntime* runtime,
+              Logger* Log, 
+              CommandSystem* cmdSystem);
+   
     void Update(float deltatime);
     void Render(SDL_Window* window);
     void AddPanel(std::shared_ptr<Panel> panel) {
@@ -25,7 +33,8 @@ private:
     project& Project;
     std::vector<std::shared_ptr<Panel>> panels; 
     SelectedEntity Selection;
-    CoreRuntime* Runtime;
+    CoreRuntime* Runtime = nullptr;
+    CommandSystem* CmdSystem = nullptr;
 
     Renderer* renderer = nullptr;
 };
