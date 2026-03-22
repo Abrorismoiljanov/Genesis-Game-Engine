@@ -29,20 +29,36 @@ void CollisionSystem::Update(float dt){
             auto& A = bodies[i];
             auto& B = bodies[j];
  
-            glm::vec2 posA = A.transform->position + A.collider->offset;
-            glm::vec2 posB = B.transform->position + B.collider->offset;
+            glm::vec2 posA = glm::vec2(A.transform->position.x, A.transform->position.y) +
+                glm::vec2(A.collider->offset.x * A.transform->scale.x,
+                          A.collider->offset.y * A.transform->scale.y);
 
-            glm::vec2 halfA = A.collider->halfSize;
-            glm::vec2 halfB = B.collider->halfSize;
 
- 
-            glm::vec2 delta = posB - posA; 
-            
-            glm::vec2 intersect = glm::vec2(halfA.x + halfB.x - abs(delta.x),
-                                            halfA.y + halfB.y - abs(delta.y));
+            glm::vec2 posB = glm::vec2(B.transform->position.x, B.transform->position.y) +
+                glm::vec2(B.collider->offset.x * B.transform->scale.x,
+                           B.collider->offset.y * B.transform->scale.y);
+
+            glm::vec2 halfA = glm::vec2(
+                A.collider->halfSize.x * A.transform->scale.x,
+                A.collider->halfSize.y * A.transform->scale.y
+            );
+
+            glm::vec2 halfB = glm::vec2(
+                B.collider->halfSize.x * B.transform->scale.x,
+                B.collider->halfSize.y * B.transform->scale.y
+            );
+
+            glm::vec2 delta = posB - posA;
+
+            glm::vec2 intersect = glm::vec2(
+                halfA.x + halfB.x - abs(delta.x),
+                halfA.y + halfB.y - abs(delta.y)
+            );
+
 
             bool overlapX = intersect.x > 0.0f;
             bool overlapY = intersect.y > 0.0f;
+
             if (!(overlapX && overlapY)) continue;
             
             if (A.collider->isTrigger || B.collider->isTrigger){

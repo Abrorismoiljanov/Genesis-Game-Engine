@@ -11,7 +11,7 @@ using json = nlohmann::json;
 struct TransformData{
     glm::vec3 position {0.0f};
     float rotation {0.0f}; 
-    glm::vec3 scale {1.0f};
+    glm::vec3 scale    {1.0f};
 };
 
 class entity{
@@ -69,6 +69,7 @@ public:
         mat = glm::scale(mat, transform.scale);
         return mat;
     }
+
 
     void DrawInfoUI();
 
