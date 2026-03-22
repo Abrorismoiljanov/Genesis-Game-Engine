@@ -8,7 +8,15 @@ void Terminal::Render(){
     if (ImGui::Button("Clear")){
         Log->Clear();
     };
+    ImGui::SameLine();
 
+    if(ImGui::InputFloat("###Font", &fontSize)){
+        myFont = io.Fonts->AddFontFromFileTTF(
+        "/home/abror/Project/GGE/assets/fonts/JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Medium.ttf",
+        fontSize
+    );
+    }
+        
     ImGui::PopStyleVar();
     ImGui::Separator();
 

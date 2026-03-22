@@ -4,11 +4,11 @@ CoreRuntime::CoreRuntime(){}
 
 void CoreRuntime::Start(const project& Proj){
     Project = Proj.Clone();
+    CollisionManager.Init(Log, &Project, &Smanager);
     Smanager.Reset();
     Smanager.Proj = &Project;
     Smanager.Log = Log;
     Smanager.Initialize();
-    CollisionManager.Init(Log, &Project);
 
     Log->Info(LogSystem::Engine, "Game Started");
 

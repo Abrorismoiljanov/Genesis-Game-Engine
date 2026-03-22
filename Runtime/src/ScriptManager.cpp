@@ -107,6 +107,37 @@ void ScriptManager::Update(uint32_t entityID, float dt) {
     }
 }
 
+void ScriptManager::CallEvent(uint32_t tID, const std::string& funcName, uint32_t oID) {
+    auto* target = Proj->GetEntityByID(tID);
+    auto* other = Proj->GetEntityByID(oID);
+
+    for (uint32_t compID: target->ComponentIDs) {
+        auto* c = Proj->GetComponentByID(compID);
+        if (!c) continue;
+        if (c->Getname() != "Script") continue; 
+            
+        auto& scriptComp = static_cast<ScriptComponent&>(*c);
+        sol::table& luaTable = scriptComp.table; 
+        if (!scriptComp.table.valid()) continue;  
+ 
+        sol::object funcObj = luaTable[funcName];
+        if (funcObj.valid() && funcObj.get_type() == sol::type::function) {
+            sol::function func = funcObj;
+            if (other) {
+                try {
+                    func(scriptComp.table, other);
+                } catch (const sol::error& err) {
+                    if (Log)
+                        Log->Error(LogSystem::Script, std::string("Lua error in CallEvent: ") + err.what());
+                }
+            } else {
+                if (Log)
+                    Log->Warning(LogSystem::Script, "CallEvent: 'other' entity is null");
+            }
+        }
+    }
+}
+
 void ScriptManager::ClearScripts() {
     for (auto& e : Proj->EntityList) {
         entity* ent = Proj->GetEntityByID(e.ID);

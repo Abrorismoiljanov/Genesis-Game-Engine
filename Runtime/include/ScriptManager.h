@@ -18,7 +18,11 @@ public:
     void Update(uint32_t entityID, float dt);    
     void InitScripts(uint32_t entityID); 
     void ClearScripts();
- 
+
+    void CallEvent(uint32_t tID, const std::string& funcName, uint32_t oID);
+    bool HasMethod(entity& e, const std::string& name);
+    void CallMethod(entity& target, const std::string& method, entity& caller);
+
     void RegisterTypes();
     void RegisterGlobals();
     void RegisterInput();
