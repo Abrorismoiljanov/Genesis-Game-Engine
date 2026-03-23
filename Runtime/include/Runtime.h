@@ -14,6 +14,7 @@ private:
     SDL_Window* window;
     SDL_GLContext glContext;
     project Project;
+    project InitialProject;
     RuntimeRenderer renderer;
     ScriptManager Smanager;
     CollisionSystem CollisionManager;
@@ -27,6 +28,7 @@ private:
 public:
     CoreRuntime();
     void Start(const project& Proj);
+    void ResetGame();
     void Stop();
     void Pause();
     void RequestQuit();

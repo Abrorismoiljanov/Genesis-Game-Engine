@@ -3,6 +3,7 @@
 CoreRuntime::CoreRuntime(){}
 
 void CoreRuntime::Start(const project& Proj){
+    InitialProject = Proj.Clone();
     Project = Proj.Clone();
     CollisionManager.Init(Log, &Project, &Smanager);
     Smanager.Reset();
@@ -54,7 +55,11 @@ void CoreRuntime::RunLoop(){
     auto last = std::chrono::high_resolution_clock::now();
  
     while (running) {
-  
+        if (Smanager.Restart) {
+            ResetGame();
+            Smanager.Restart = false;
+        }
+
         auto now = std::chrono::high_resolution_clock::now();
         float dt = std::chrono::duration<float>(now - last).count();
         last = now;   
@@ -62,10 +67,18 @@ void CoreRuntime::RunLoop(){
         for (auto& eID: Project.GetSceneByID(Project.activeSceneID)->EntityIDs) {
             Smanager.InitScripts(eID);
         }
- 
+
+        if (RInput) {
+            if (RInput->IsKeyPressed(SDL_SCANCODE_ESCAPE)) {
+                RequestQuit();
+            }
+        }
+
         RInput->Update();
+
         renderer.BeginFrame(Project, Project.activeSceneID);
 
+ 
         for (auto& eID: Project.GetSceneByID(Project.activeSceneID)->EntityIDs) {
             Smanager.Update(eID, dt);
         }
@@ -116,4 +129,15 @@ void CoreRuntime::SetInput(Input* in) {
 
 void CoreRuntime::SetLog(Logger* log){
     Log = log;
+}
+
+void CoreRuntime::ResetGame(){
+    Project = InitialProject.Clone();
+    CollisionManager.Init(Log, &Project, &Smanager);
+    Smanager.Reset();
+    Smanager.Proj = &Project;
+    Smanager.Log = Log;
+    Smanager.Initialize();
+
+    renderer.Init(Project.Param.WindowWidth, Project.Param.WindowHeight, Project, window, Log);
 }

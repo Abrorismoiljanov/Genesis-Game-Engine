@@ -7,6 +7,9 @@ void ScriptManager::RegisterGlobals(){
             Log->Info(LogSystem::Script, msg); 
         }
     };
+    lua["ResetGame"] = [this](){
+        Restart = true;
+    };
 
     lua["ChangeScene"] = [this](const std::string& Scenename){
         for (auto& s: Proj->SceneList){

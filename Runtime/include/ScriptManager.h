@@ -11,6 +11,7 @@ class ScriptManager{
 public:    
     sol::state lua;
     project* Proj;
+    bool Restart = false;
     Input* input = nullptr; 
     Logger* Log = nullptr;
 

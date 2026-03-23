@@ -9,7 +9,8 @@
 
 struct SpriteComponent : public Component {
     AssetHandle materialHandle = INVALID_ASSET;
-    glm::vec2 size = {1.0f, 1.0f};              
+    glm::vec2 size = {1.0f, 1.0f};       
+    glm::vec2 offset = {0.0f, 0.0f};    
     IGFD::FileDialogConfig cfg;
 
 
@@ -21,6 +22,7 @@ json Serialize() const override {
         json j;
         j["materialHandle"] = materialHandle;
         j["size"]           = {size.x, size.y};
+        j["offset"]         = {offset.x, offset.y};
         return j;
     }
 
@@ -36,7 +38,10 @@ json Serialize() const override {
             size.x = data["size"][0].get<float>();
             size.y = data["size"][1].get<float>();
         }
-
+        if (data.contains("offset") && data["offset"].is_array() && data["offset"].size() == 2) {
+            offset.x = data["offset"][0].get<float>();
+            offset.y = data["offset"][1].get<float>();
+        }
     };
 
     void OnRemove(AssetManager& assetManager){
@@ -76,6 +81,7 @@ json Serialize() const override {
         }
 
         ImGui::DragFloat2("Size", &size.x, 0.1f);
+        ImGui::DragFloat2("Offset", &offset.x, 0.1f);
 
         std::string btnID = "Load Material##" + std::to_string(ID);
         if (ImGui::Button(btnID.c_str(), ImVec2(0,30))) {

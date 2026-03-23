@@ -19,7 +19,7 @@ void ScriptManager::InitScripts(uint32_t entityID) {
         if (!c || c->Getname() != "Script") continue;
         
         ScriptComponent* sc = static_cast<ScriptComponent*>(c);
-        if (sc->Initialized) return;
+        if (sc->Initialized) continue;
         sc->Initialized = true;
 
 
@@ -55,14 +55,13 @@ void ScriptManager::InitScripts(uint32_t entityID) {
         }
 
         sc->table = result;
-        sc->table["self_entity"] = e;  
         sc->onCreate  = sc->table["OnCreate"];
         sc->onUpdate  = sc->table["OnUpdate"];
         sc->onDestroy = sc->table["OnDestroy"];
 
         if (sc->onCreate.valid()) {
             sol::protected_function pf = sc->onCreate;
-            sol::protected_function_result res = pf(e);
+            sol::protected_function_result res = pf(sc->table, e, 0.0f);
 
             if (!res.valid()) {
                 sol::error err = res;

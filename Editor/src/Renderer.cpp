@@ -140,43 +140,43 @@ void Renderer::Render(project& Proj, int selectedSceneID){
         SpriteComponent* sprite = nullptr;
         CameraComponent* cam = nullptr;
  
+        
         for (uint32_t compID : e->ComponentIDs) {
             Component* c = Proj.GetComponentByID(compID);
             if (!c) continue;
             if (c->Getname() == "Sprite") {
-                sprite = static_cast<SpriteComponent*>(c);
+                SpriteComponent* sprite = static_cast<SpriteComponent*>(c);
+
+                auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
+                if (!mat) continue;
+                TextureAsset* tex = mat->GetTexture().get();
+                if (!tex) continue;
+                GLuint texID = editorTextureIDs[tex];
+
+                glm::mat4 model(1.0f);
+                model = glm::translate(model, glm::vec3(pos, 0.0f));
+                model = glm::rotate(model, glm::radians(rot), glm::vec3(0,0,1));
+                model = glm::translate(model, glm::vec3(sprite->offset, 0.0f));
+
+                model = glm::scale(model, glm::vec3(scale * sprite->size, 1.0f));
+                
+                glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, texID);
+                glUniform1i(glGetUniformLocation(DefaultShader, "u_Texture"), 0);
+
+                glBindVertexArray(QuadVAO);
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                glBindVertexArray(0);
             }
         }
-        if (!sprite) continue;
-
-        auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
-
-        if (!mat) continue;
-        TextureAsset* tex = mat->GetTexture().get();
-        if (!tex) continue;
-
-        GLuint texID = editorTextureIDs[tex];
- 
-        glm::mat4 model(1.0f);
-        model = glm::translate(model, glm::vec3(pos, 0.0f));
-        model = glm::rotate(model, glm::radians(rot), glm::vec3(0,0,1));
-        model = glm::scale(model, glm::vec3(scale * sprite->size, 1.0f));
-
-        glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texID);
-        glUniform1i(glGetUniformLocation(DefaultShader, "u_Texture"), 0);
-
-        glBindVertexArray(QuadVAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
     }
     if (DrawCollider) {
         RenderColliders(Proj);
     }
     RenderCameraGizmos(Proj);
-}
+};
+
 void Renderer::RenderColliders(project& Proj) {
     glUseProgram(GridShader); 
     glm::mat4 vp = m_Camera.GetViewProjection();

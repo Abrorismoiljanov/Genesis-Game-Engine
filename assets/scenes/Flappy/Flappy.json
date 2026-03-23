@@ -1,0 +1,720 @@
+{
+    "project": {
+        "DebugMode": false,
+        "Resolution": {
+            "height": 800,
+            "width": 500
+        },
+        "activeSceneID": 0,
+        "asset_manifest": [
+            {
+                "handle": 19,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/Terrain.png",
+                "type": "Material"
+            },
+            {
+                "handle": 17,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/Terrain.png",
+                "type": "Material"
+            },
+            {
+                "handle": 1,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipedown.png",
+                "type": "Material"
+            },
+            {
+                "handle": 2,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/sky.png",
+                "type": "Material"
+            },
+            {
+                "handle": 3,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/sky.png",
+                "type": "Material"
+            },
+            {
+                "handle": 7,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/player.png",
+                "type": "Material"
+            },
+            {
+                "handle": 8,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipetop.png",
+                "type": "Material"
+            },
+            {
+                "handle": 10,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipedown.png",
+                "type": "Material"
+            },
+            {
+                "handle": 11,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipetop.png",
+                "type": "Material"
+            },
+            {
+                "handle": 12,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipedown.png",
+                "type": "Material"
+            },
+            {
+                "handle": 13,
+                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipetop.png",
+                "type": "Material"
+            },
+            {
+                "handle": 20,
+                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/TerrainScript.lua",
+                "type": "Script"
+            },
+            {
+                "handle": 18,
+                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/TerrainScript.lua",
+                "type": "Script"
+            },
+            {
+                "handle": 16,
+                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/PlayerScript.lua",
+                "type": "Script"
+            },
+            {
+                "handle": 15,
+                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/PipeScript.lua",
+                "type": "Script"
+            },
+            {
+                "handle": 14,
+                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/PipeScript.lua",
+                "type": "Script"
+            },
+            {
+                "handle": 5,
+                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/BackgroundScript.lua",
+                "type": "Script"
+            },
+            {
+                "handle": 6,
+                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/BackgroundScript.lua",
+                "type": "Script"
+            },
+            {
+                "handle": 9,
+                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/PipeScript.lua",
+                "type": "Script"
+            }
+        ],
+        "components": [
+            {
+                "data": {
+                    "materialHandle": 1,
+                    "offset": [
+                        0.0,
+                        -580.0
+                    ],
+                    "size": [
+                        100.0,
+                        1000.0
+                    ]
+                },
+                "id": 0,
+                "owner": 0,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "Zoom": 1.0,
+                    "far": -1.0,
+                    "near": 1.0
+                },
+                "id": 1,
+                "owner": 1,
+                "type": "Camera"
+            },
+            {
+                "data": {
+                    "materialHandle": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "size": [
+                        510.0,
+                        800.0
+                    ]
+                },
+                "id": 2,
+                "owner": 2,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "materialHandle": 3,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "size": [
+                        510.0,
+                        800.0
+                    ]
+                },
+                "id": 3,
+                "owner": 3,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "scriptHandle": 5
+                },
+                "id": 4,
+                "owner": 2,
+                "type": "Script"
+            },
+            {
+                "data": {
+                    "scriptHandle": 6
+                },
+                "id": 5,
+                "owner": 3,
+                "type": "Script"
+            },
+            {
+                "data": {
+                    "materialHandle": 7,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "size": [
+                        32.0,
+                        32.0
+                    ]
+                },
+                "id": 6,
+                "owner": 4,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        16.0,
+                        16.0
+                    ],
+                    "isStatic": false,
+                    "isTrigger": false,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ]
+                },
+                "id": 7,
+                "owner": 4,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        44.900001525878906,
+                        500.0
+                    ],
+                    "isStatic": false,
+                    "isTrigger": true,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        580.0
+                    ]
+                },
+                "id": 8,
+                "owner": 0,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "materialHandle": 8,
+                    "offset": [
+                        0.0,
+                        580.0
+                    ],
+                    "size": [
+                        100.0,
+                        1000.0
+                    ]
+                },
+                "id": 10,
+                "owner": 0,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        44.0,
+                        500.0
+                    ],
+                    "isStatic": false,
+                    "isTrigger": true,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        -580.0
+                    ]
+                },
+                "id": 11,
+                "owner": 0,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "scriptHandle": 9
+                },
+                "id": 12,
+                "owner": 0,
+                "type": "Script"
+            },
+            {
+                "data": {
+                    "materialHandle": 10,
+                    "offset": [
+                        0.0,
+                        -580.0
+                    ],
+                    "size": [
+                        100.0,
+                        1000.0
+                    ]
+                },
+                "id": 13,
+                "owner": 5,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "materialHandle": 11,
+                    "offset": [
+                        0.0,
+                        580.0
+                    ],
+                    "size": [
+                        100.0,
+                        1000.0
+                    ]
+                },
+                "id": 14,
+                "owner": 5,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        44.0,
+                        500.0
+                    ],
+                    "isStatic": false,
+                    "isTrigger": true,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        580.0
+                    ]
+                },
+                "id": 15,
+                "owner": 5,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        44.0,
+                        500.0
+                    ],
+                    "isStatic": false,
+                    "isTrigger": true,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        -580.0
+                    ]
+                },
+                "id": 16,
+                "owner": 5,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "materialHandle": 12,
+                    "offset": [
+                        0.0,
+                        -580.0
+                    ],
+                    "size": [
+                        100.0,
+                        1000.0
+                    ]
+                },
+                "id": 17,
+                "owner": 6,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        44.0,
+                        500.0
+                    ],
+                    "isStatic": false,
+                    "isTrigger": true,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        -580.0
+                    ]
+                },
+                "id": 18,
+                "owner": 6,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "materialHandle": 13,
+                    "offset": [
+                        0.0,
+                        580.0
+                    ],
+                    "size": [
+                        100.0,
+                        1000.0
+                    ]
+                },
+                "id": 19,
+                "owner": 6,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        44.0,
+                        500.0
+                    ],
+                    "isStatic": false,
+                    "isTrigger": true,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        580.0
+                    ]
+                },
+                "id": 20,
+                "owner": 6,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "scriptHandle": 14
+                },
+                "id": 21,
+                "owner": 5,
+                "type": "Script"
+            },
+            {
+                "data": {
+                    "scriptHandle": 15
+                },
+                "id": 22,
+                "owner": 6,
+                "type": "Script"
+            },
+            {
+                "data": {
+                    "scriptHandle": 16
+                },
+                "id": 23,
+                "owner": 4,
+                "type": "Script"
+            },
+            {
+                "data": {
+                    "materialHandle": 17,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "size": [
+                        500.0,
+                        64.0
+                    ]
+                },
+                "id": 24,
+                "owner": 7,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        250.0,
+                        24.100000381469727
+                    ],
+                    "isStatic": true,
+                    "isTrigger": false,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ]
+                },
+                "id": 25,
+                "owner": 7,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "scriptHandle": 18
+                },
+                "id": 26,
+                "owner": 7,
+                "type": "Script"
+            },
+            {
+                "data": {
+                    "materialHandle": 19,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "size": [
+                        500.0,
+                        64.0
+                    ]
+                },
+                "id": 27,
+                "owner": 8,
+                "type": "Sprite"
+            },
+            {
+                "data": {
+                    "halfSize": [
+                        250.0,
+                        24.0
+                    ],
+                    "isStatic": true,
+                    "isTrigger": false,
+                    "layer": 1,
+                    "mask": 1,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ]
+                },
+                "id": 28,
+                "owner": 8,
+                "type": "Collision"
+            },
+            {
+                "data": {
+                    "scriptHandle": 20
+                },
+                "id": 29,
+                "owner": 8,
+                "type": "Script"
+            }
+        ],
+        "entities": [
+            {
+                "id": 0,
+                "name": "Pipe ",
+                "transform": {
+                    "position": [
+                        334.44287109375,
+                        73.33152770996094,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 1,
+                "name": "Camera",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 2,
+                "name": "Background",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 3,
+                "name": "Background",
+                "transform": {
+                    "position": [
+                        500.0,
+                        7.62939453125e-06,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 4,
+                "name": "Player",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.5,
+                        1.5,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 5,
+                "name": "Pipe ",
+                "transform": {
+                    "position": [
+                        613.2926635742188,
+                        19.284576416015625,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 6,
+                "name": "Pipe",
+                "transform": {
+                    "position": [
+                        887.4150390625,
+                        81.0905532836914,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 7,
+                "name": "Terrain",
+                "transform": {
+                    "position": [
+                        0.0,
+                        -380.0,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "id": 8,
+                "name": "Terrian",
+                "transform": {
+                    "position": [
+                        500.0,
+                        -380.0,
+                        0.0
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                }
+            }
+        ],
+        "name": "Flappy",
+        "nextComponentID": 30,
+        "nextEntityID": 9,
+        "nextSceneID": 1,
+        "scenes": [
+            {
+                "Camera": 1,
+                "EntityIDs": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    0,
+                    5,
+                    6,
+                    7,
+                    8
+                ],
+                "ID": 0,
+                "Param": {
+                    "BackgroundColor": [
+                        0.0,
+                        0.4388042688369751,
+                        0.6255924105644226,
+                        1.0
+                    ]
+                },
+                "Scenename": "Main Game"
+            }
+        ],
+        "window": {
+            "flags": 2,
+            "height": 800,
+            "width": 500
+        }
+    }
+}

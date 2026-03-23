@@ -154,46 +154,45 @@ void RuntimeRenderer::Render(project& Proj, int selectedSceneID){
 
     for (uint32_t entityID : activeScene->EntityIDs){
         entity* e = Proj.GetEntityByID(entityID);
-    if (!e) continue;
+        if (!e) continue;
 
+        glm::vec2 pos = e ? e->transform.position : glm::vec2(0.0f);
+        float rot = e ? e->transform.rotation : 0.0f;
+        glm::vec2 scale = e ? e->transform.scale : glm::vec2(1.0f);
 
-    glm::vec2 pos = e ? e->transform.position : glm::vec2(0.0f);
-    float rot = e ? e->transform.rotation : 0.0f;
-    glm::vec2 scale = e ? e->transform.scale : glm::vec2(1.0f);
-
-    SpriteComponent* sprite = nullptr;
-        for (uint32_t compID : e->ComponentIDs) {
+    
+        SpriteComponent* sprite = nullptr;
+         for (uint32_t compID : e->ComponentIDs) {
             Component* c = Proj.GetComponentByID(compID);
             if (!c) continue;
-       
             if (c->Getname() == "Sprite") {
-                sprite = static_cast<SpriteComponent*>(c);
-                break;
+                SpriteComponent* sprite = static_cast<SpriteComponent*>(c);
+
+                auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
+                if (!mat) continue;
+                TextureAsset* tex = mat->GetTexture().get();
+                if (!tex) continue;
+                GLuint texID = runtimeTextureIDs[tex];
+
+                glm::mat4 model(1.0f);
+                model = glm::translate(model, glm::vec3(pos, 0.0f));
+                model = glm::rotate(model, glm::radians(rot), glm::vec3(0,0,1));
+                model = glm::translate(model, glm::vec3(sprite->offset, 0.0f));
+
+                model = glm::scale(model, glm::vec3(scale * sprite->size, 1.0f));
+                
+                glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, texID);
+                glUniform1i(glGetUniformLocation(DefaultShader, "u_Texture"), 0);
+
+                glBindVertexArray(QuadVAO);
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                glBindVertexArray(0);
             }
         }
-        if (!sprite) continue;
-
-        auto mat = Proj.Assets.Get<MaterialAsset>(sprite->materialHandle);
-        if (!mat) continue;
-        TextureAsset* tex = mat->GetTexture().get();
-        if (!tex) continue;
-        GLuint texID = runtimeTextureIDs[tex];
-
-        glm::mat4 model(1.0f);
-        model = glm::translate(model, glm::vec3(pos, 0.0f));
-        model = glm::rotate(model, glm::radians(rot), glm::vec3(0,0,1));
-        model = glm::scale(model, glm::vec3(scale * sprite->size, 1.0f));
-
-        glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
-
-        glBindTexture(GL_TEXTURE_2D, texID);
-
-        glUniform1i(glGetUniformLocation(DefaultShader, "u_Texture"), 0);
-
-        glBindVertexArray(QuadVAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
     }
+     
     if (Proj.Param.Debug) {
         RenderColliders(Proj);
     }
