@@ -24,11 +24,27 @@ void CollisionSystem::Update(float dt){
         }
     }
      for (size_t i = 0; i < bodies.size(); i++) {
-          for (size_t j = i + 1; j < bodies.size(); j++) {
-    
+        for (size_t j = i + 1; j < bodies.size(); j++) {
+
             auto& A = bodies[i];
             auto& B = bodies[j];
+            
+            bool A_found = false;
+            bool B_found = false;
  
+            for (auto& s: Proj->SceneList) {
+                if (s.ID == Proj->activeSceneID) {
+                    for (auto& eID: s.EntityIDs) {
+                        if (A.ID == eID) A_found = true;
+                        if (B.ID == eID) B_found = true;
+                    }
+                    break;
+                }
+            }
+            if (!(A_found && B_found)) {
+                continue;
+            }
+
             glm::vec2 posA = glm::vec2(A.transform->position.x, A.transform->position.y) +
                 glm::vec2(A.collider->offset.x * A.transform->scale.x,
                           A.collider->offset.y * A.transform->scale.y);

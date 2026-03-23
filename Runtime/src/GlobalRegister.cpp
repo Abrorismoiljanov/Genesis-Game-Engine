@@ -7,7 +7,19 @@ void ScriptManager::RegisterGlobals(){
             Log->Info(LogSystem::Script, msg); 
         }
     };
-   
+
+    lua["ChangeScene"] = [this](const std::string& Scenename){
+        for (auto& s: Proj->SceneList){
+            if (s.Scenename == Scenename) {
+                Proj->activeSceneID = s.ID;
+                Log->Info(LogSystem::Script, Scenename + " was loaded");
+                return;
+            }
+        }
+        Log->Error(LogSystem::Script, Scenename + " Such a Scene does not exist");
+    };
+
+
     lua.set_function("GetComponent", [this](entity& e, const std::string& name) -> sol::object {
         for (uint32_t compID : e.ComponentIDs) {
             Component* c = Proj->GetComponentByID(compID);

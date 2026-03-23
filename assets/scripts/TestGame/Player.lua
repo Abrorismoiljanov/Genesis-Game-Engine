@@ -24,8 +24,19 @@ function script:OnUpdate(entity, dt)
     end
 end
 
-function script:OnTriggerEnter(other)
-    Log(other.name)
+function script:OnTriggerEnter(entity, other)
+    if other.name == "Portal to Test" then
+        if Input.IsKeyPressed(KEY_E) then 
+        entity.transform.position.x = other.transform.position.x + 17 
+            ChangeScene("Test")
+        end
+    end
+    if other.name == "Portal to Main" then
+        if Input.IsKeyPressed(KEY_E) then
+            ChangeScene("Main")
+            entity.transform.position.x = other.transform.position.x + 17 
+        end
+    end
 end
 
 return script

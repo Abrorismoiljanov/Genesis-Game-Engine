@@ -11,21 +11,22 @@ void ScriptManager::Initialize() {
 }
 
 void ScriptManager::InitScripts(uint32_t entityID) {
-        
     entity* e = Proj->GetEntityByID(entityID);
-        
+
     for (uint32_t compID : e->ComponentIDs) {
         Component* c = Proj->GetComponentByID(compID);
       
         if (!c || c->Getname() != "Script") continue;
-
         
         ScriptComponent* sc = static_cast<ScriptComponent*>(c);
- 
+        if (sc->Initialized) return;
+        sc->Initialized = true;
+
+
         std::shared_ptr<ScriptAsset> scriptAsset = Proj->Assets.Get<ScriptAsset>(sc->scriptHandle);
      
         if (!scriptAsset) {
-            std::cerr << "[ScriptManager] Invalid script handle: " << sc->scriptHandle << std::endl;
+            Log->Error(LogSystem::Script, "Invalid script Handle: " + std::to_string(sc->scriptHandle));
             continue;
         }
 
@@ -67,12 +68,15 @@ void ScriptManager::InitScripts(uint32_t entityID) {
                 sol::error err = res;
                 std::cout << err.what() << std::endl;
             }
+ 
         }
     }
 }
 
 void ScriptManager::Update(uint32_t entityID, float dt) {
+
     entity* e = Proj->GetEntityByID(entityID);
+    
 
     for (uint32_t compID : e->ComponentIDs) {
         Component* c = Proj->GetComponentByID(compID);
@@ -123,9 +127,9 @@ void ScriptManager::CallEvent(uint32_t tID, const std::string& funcName, uint32_
         sol::object funcObj = luaTable[funcName];
         if (funcObj.valid() && funcObj.get_type() == sol::type::function) {
             sol::function func = funcObj;
-            if (other) {
+            if (other && target) {
                 try {
-                    func(scriptComp.table, other);
+                    func(scriptComp.table, target, other);
                 } catch (const sol::error& err) {
                     if (Log)
                         Log->Error(LogSystem::Script, std::string("Lua error in CallEvent: ") + err.what());

@@ -11,7 +11,8 @@ public:
     sol::environment env;
 
     sol::table table;
- 
+    bool Initialized = false;
+
     sol::function onCreate;
     sol::function onUpdate;
     sol::function onDestroy;

@@ -50,10 +50,6 @@ void CoreRuntime::RunLoop(){
     }
     renderer.Init(Project.Param.WindowWidth, Project.Param.WindowHeight, Project, window, Log);
 
-    for (auto& eID : Project.EntityList) {
-        Smanager.InitScripts(eID.ID);
-    }
-
     auto frameStart = std::chrono::high_resolution_clock::now();
     auto last = std::chrono::high_resolution_clock::now();
  
@@ -63,18 +59,15 @@ void CoreRuntime::RunLoop(){
         float dt = std::chrono::duration<float>(now - last).count();
         last = now;   
 
-        if (RInput) {
-            if (RInput->IsKeyPressed(SDL_SCANCODE_ESCAPE)) {
-                RequestQuit();
-            }
+        for (auto& eID: Project.GetSceneByID(Project.activeSceneID)->EntityIDs) {
+            Smanager.InitScripts(eID);
         }
+ 
         RInput->Update();
-
         renderer.BeginFrame(Project, Project.activeSceneID);
 
- 
-        for (auto& eID: Project.EntityList) {
-            Smanager.Update(eID.ID, dt);
+        for (auto& eID: Project.GetSceneByID(Project.activeSceneID)->EntityIDs) {
+            Smanager.Update(eID, dt);
         }
         CollisionManager.Update(dt);
 
