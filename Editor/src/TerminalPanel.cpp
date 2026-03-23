@@ -12,15 +12,8 @@ void Terminal::Render(){
     };
     ImGui::SameLine();
 
-    if(ImGui::InputFloat("###Font", &fontSize)){
-        myFont = io.Fonts->AddFontFromFileTTF(
-        "/home/abror/Project/GGE/assets/fonts/JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Medium.ttf",
-        fontSize
-    );
-    }
         
     ImGui::PopStyleVar();
-    ImGui::Separator();
 
 
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
@@ -28,8 +21,6 @@ void Terminal::Render(){
     ImGui::BeginChild("LogRegion", ImVec2(0, 0), true); 
     std::vector<LogEntry> logs = Log->GetSnapshot();
     ImGui::PushFont(myFont);
-
-    ImGui::Separator();  
 
     ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0, 0, 0, 0));       
     ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0, 0, 0, 0));  
@@ -48,6 +39,7 @@ void Terminal::Render(){
         inputBuf[0] = '\0';
     }
 
+    ImGui::Separator();
     ImGui::PopStyleVar(2);   
     ImGui::PopStyleColor(4);
 
