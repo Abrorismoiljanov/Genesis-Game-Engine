@@ -48,9 +48,9 @@ void ProjectSettingsPanel::Render(){
         
         if (ImGui::Checkbox("Fullscreen", &fullscreen)) {
             if (fullscreen) {
-                Proj.Param.WindowParam |= SDL_WINDOW_FULLSCREEN; // add fullscreen
+                Proj.Param.WindowParam |= SDL_WINDOW_FULLSCREEN; 
             } else {
-                Proj.Param.WindowParam &= ~SDL_WINDOW_FULLSCREEN; // remove fullscreen
+                Proj.Param.WindowParam &= ~SDL_WINDOW_FULLSCREEN; 
             }
         }
         ImGui::Separator();

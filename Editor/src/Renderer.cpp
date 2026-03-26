@@ -101,9 +101,6 @@ void Renderer::EndFrame(){
     m_Framebuffer.UnBind();
 }
 void Renderer::Render(project& Proj, int selectedSceneID){
-
-    for (auto& [texPtr, texID] : editorTextureIDs) {
-    }
  
     if (DrawGrid) {
         RenderGrid();
@@ -124,7 +121,6 @@ void Renderer::Render(project& Proj, int selectedSceneID){
     glUniformMatrix4fv(glGetUniformLocation(DefaultShader, "u_VP"), 1, GL_FALSE, glm::value_ptr(view));
 
     if (Proj.SceneList.empty()) return;
-
 
 
     for (uint32_t entityID : activeScene->EntityIDs){

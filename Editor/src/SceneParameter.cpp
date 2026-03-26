@@ -13,6 +13,8 @@ void SceneParamPanel::Render(){
     ImGui::Begin("Scene Parameter");
     if (!ValidScene) {
         ImGui::Text("Please Select a Scene");
+        ImGui::End();
+        return;
     }
  
     if (ValidScene) {
@@ -45,9 +47,9 @@ void SceneParamPanel::Render(){
 
     ImGui::Text("Active Camera");
     ImGui::SameLine();
-
     if (defaultScene->Camera != -1) {
         entity* camEntity = Proj.GetEntityByID(defaultScene->Camera);
+        
         bool camValid = false;
         if (camEntity) {
             for (auto& cID : camEntity->ComponentIDs) {

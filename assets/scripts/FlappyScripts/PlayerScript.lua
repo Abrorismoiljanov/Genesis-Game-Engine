@@ -33,7 +33,6 @@ function script:OnUpdate(entity, dt)
     else
         
         script.deathTimer = script.deathTimer - dt
-        entity.transform.rotation = 180
         if script.deathTimer < 0 then
             ResetGame()
         end

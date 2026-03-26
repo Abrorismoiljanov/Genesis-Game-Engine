@@ -102,13 +102,14 @@ void app::Render(){
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
     
+    UI.Render(window);
+    
     renderer.BeginFrame(Project, UI.SelectedScene);
     if (!Project.SceneList.empty())
         renderer.Render(Project, UI.SelectedScene);
  
     renderer.EndFrame();
 
-    UI.Render(window);
     SDL_GL_SwapWindow(window);
 }
 
