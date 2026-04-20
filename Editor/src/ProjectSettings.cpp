@@ -27,15 +27,14 @@ void ProjectSettingsPanel::Render(){
 
         ImGui::Text("Starter Scene");
         ImGui::SameLine();
-
+ 
         if (ImGui::Combo("##StarterScene", &currentPresetScene,
-                         [](void* data, int idx, const char** out_text) {
+                         [](void* data, int idx) -> const char* {
                          auto* vec = static_cast<std::vector<scene>*>(data);
-                         *out_text = (*vec)[idx].Scenename.c_str();
-                         return true;
+                         return (*vec)[idx].Scenename.c_str();
                          },
-                         &Proj.SceneList, Proj.SceneList.size())){
-           
+                         &Proj.SceneList, Proj.SceneList.size()))
+        {
             Proj.activeSceneID = Proj.SceneList[currentPresetScene].ID;
         }
         ImGui::Separator();
@@ -68,17 +67,18 @@ void ProjectSettingsPanel::Render(){
         ImGui::Separator();
         ImGui::Text("Resolution");
         ImGui::SameLine();
-        if (ImGui::Combo("", &currentPresetRes,[](void* data, int idx, const char** out_text) {
-            auto* p = (ResolutionPreset*)data;
-            *out_text = p[idx].label;
-            return true;
-        }, presets, IM_ARRAYSIZE(presets))){
-            
-            if (currentPresetRes != IM_ARRAYSIZE(presets) - 1) {
-                Proj.Param.Resolution.width  = presets[currentPresetRes].w;
-                Proj.Param.Resolution.height = presets[currentPresetRes].h;
-            }
-        }
+if (ImGui::Combo("", &currentPresetRes,
+    [](void* data, int idx) -> const char* {
+        auto* p = (ResolutionPreset*)data;
+        return p[idx].label;
+    },
+    presets, IM_ARRAYSIZE(presets)))
+{
+    if (currentPresetRes != IM_ARRAYSIZE(presets) - 1) {
+        Proj.Param.Resolution.width  = presets[currentPresetRes].w;
+        Proj.Param.Resolution.height = presets[currentPresetRes].h;
+    }
+}
         if (currentPresetRes == IM_ARRAYSIZE(presets) - 1) {
             ImGui::InputInt("Width",  &Proj.Param.Resolution.width);
             ImGui::InputInt("Height", &Proj.Param.Resolution.height);

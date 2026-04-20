@@ -5,6 +5,7 @@ function script:OnCreate(entity, dt)
     script.velocity = 0
     script.alive = true
     script.deathTimer = 1.5
+    script.jumpTimer = 0.3
 end
 
 function script:OnUpdate(entity, dt)
@@ -13,9 +14,14 @@ function script:OnUpdate(entity, dt)
   
     if script.alive then
   
-        if Input.IsKeyPressed(KEY_SPACE) then
-            self.velocity = flap
-            self.alive = true
+        script.jumpTimer = script.jumpTimer - dt
+        
+        if Input.IsKeyDown(KEY_SPACE) then
+            if script.jumpTimer < 0 then
+                self.velocity = flap
+                Log("Jump")
+                script.jumpTimer = 0.5
+            end
         end
 
 
@@ -36,6 +42,7 @@ function script:OnUpdate(entity, dt)
         if script.deathTimer < 0 then
             ResetGame()
         end
+
     end
 end
 

@@ -3,6 +3,8 @@ set_version("0.1.0")
 
 add_rules("mode.debug", "mode.release")
 
+add_requires("imgui", "sdl2", "glew")
+
 target("Editor")
     set_kind("binary")
 
@@ -12,8 +14,13 @@ target("Editor")
         "DataTypesDef/*.cpp",
         "vendor/lua/src/*.c"
     )
-    add_links("SDL2", "GLEW", "GL")
-    add_includedirs(
+
+
+add_packages("imgui", "sdl2", "glew")
+
+add_links("SDL2", "GLEW", "GL")
+ 
+add_includedirs(
         ".",
         "DataTypes",
         "DataTypesDef",
