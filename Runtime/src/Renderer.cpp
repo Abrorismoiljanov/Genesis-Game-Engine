@@ -11,8 +11,8 @@ void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window, Logg
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    DefaultShader = CompileShader("/home/abror/Project/GGE/Shader/VSH.glsl","/home/abror/Project/GGE/Shader/FSH.glsl");
-    DebugShader = CompileShader("/home/abror/Project/GGE/Shader/GridVert.glsl","/home/abror/Project/GGE/Shader/GridFrag.glsl");
+    DefaultShader = CompileShader("Shader/VSH.glsl","Shader/FSH.glsl");
+    DebugShader = CompileShader("Shader/GridVert.glsl","Shader/GridFrag.glsl");
     
     float vertices[] = {
         -0.5f, -0.5f,  0.0f, 0.0f,

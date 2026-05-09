@@ -82,7 +82,7 @@ public:
     float fontSize = 20.0f;
 
     ImFont* myFont = io.Fonts->AddFontFromFileTTF(
-        "/home/abror/Project/GGE/assets/fonts/JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Medium.ttf",
+        "assets/fonts/JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Medium.ttf",
         fontSize
     );
 

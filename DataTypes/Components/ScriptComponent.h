@@ -50,7 +50,7 @@ public:
 
         if (ImGui::Button("Select Script")){
             IGFD::FileDialogConfig config;
-            config.path = "/home/abror/Project/GGE/assets/scripts/";
+            config.path = "assets/scripts/";
 
             ImGuiFileDialog::Instance()->OpenDialog(
                 "ChooseLuaScript",
@@ -65,8 +65,8 @@ public:
         if (ImGui::Button("New Script")){
 
             IGFD::FileDialogConfig config;
- 
-            config.path = "/home/abror/Project/GGE/assets/scripts/";
+  
+            config.path = "assets/scripts/";
 
  
             ImGuiFileDialog::Instance()->OpenDialog(

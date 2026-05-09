@@ -1,6 +1,6 @@
 {
     "project": {
-        "DebugMode": false,
+        "DebugMode": true,
         "Resolution": {
             "height": 800,
             "width": 500
@@ -9,97 +9,97 @@
         "asset_manifest": [
             {
                 "handle": 19,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/Terrain.png",
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/Terrain.png",
                 "type": "Material"
             },
             {
                 "handle": 17,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/Terrain.png",
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/Terrain.png",
                 "type": "Material"
             },
             {
                 "handle": 1,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipedown.png",
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/pipedown.png",
                 "type": "Material"
             },
             {
                 "handle": 2,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/sky.png",
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/sky.png",
                 "type": "Material"
             },
             {
                 "handle": 3,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/sky.png",
-                "type": "Material"
-            },
-            {
-                "handle": 7,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/player.png",
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/sky.png",
                 "type": "Material"
             },
             {
                 "handle": 8,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipetop.png",
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/pipetop.png",
                 "type": "Material"
             },
             {
-                "handle": 10,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipedown.png",
-                "type": "Material"
-            },
-            {
-                "handle": 11,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipetop.png",
-                "type": "Material"
-            },
-            {
-                "handle": 12,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipedown.png",
+                "handle": 7,
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/player.png",
                 "type": "Material"
             },
             {
                 "handle": 13,
-                "texture_path": "/home/abror/Project/GGE/assets/textures/Flappy/pipetop.png",
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/pipetop.png",
                 "type": "Material"
             },
             {
-                "handle": 20,
-                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/TerrainScript.lua",
+                "handle": 10,
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/pipedown.png",
+                "type": "Material"
+            },
+            {
+                "handle": 11,
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/pipetop.png",
+                "type": "Material"
+            },
+            {
+                "handle": 12,
+                "texture_path": "/home/abror/Projects/Genesis-Game-Engine/assets/textures/Flappy/pipedown.png",
+                "type": "Material"
+            },
+            {
+                "handle": 24,
+                "path": "/home/abror/Projects/Genesis-Game-Engine/assets/scripts/FlappyScripts/TerrainScript.lua",
                 "type": "Script"
             },
             {
-                "handle": 18,
-                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/TerrainScript.lua",
+                "handle": 23,
+                "path": "/home/abror/Projects/Genesis-Game-Engine/assets/scripts/FlappyScripts/TerrainScript.lua",
                 "type": "Script"
             },
             {
-                "handle": 16,
-                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/PlayerScript.lua",
+                "handle": 25,
+                "path": "/home/abror/Projects/Genesis-Game-Engine/assets/scripts/FlappyScripts/PlayerScript.lua",
                 "type": "Script"
             },
             {
-                "handle": 15,
-                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/PipeScript.lua",
+                "handle": 28,
+                "path": "/home/abror/Projects/Genesis-Game-Engine/assets/scripts/FlappyScripts/PipeScript.lua",
                 "type": "Script"
             },
             {
-                "handle": 14,
-                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/PipeScript.lua",
+                "handle": 27,
+                "path": "/home/abror/Projects/Genesis-Game-Engine/assets/scripts/FlappyScripts/PipeScript.lua",
                 "type": "Script"
             },
             {
-                "handle": 5,
-                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/BackgroundScript.lua",
+                "handle": 21,
+                "path": "/home/abror/Projects/Genesis-Game-Engine/assets/scripts/FlappyScripts/BackgroundScript.lua",
                 "type": "Script"
             },
             {
-                "handle": 6,
-                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/BackgroundScript.lua",
+                "handle": 22,
+                "path": "/home/abror/Projects/Genesis-Game-Engine/assets/scripts/FlappyScripts/BackgroundScript.lua",
                 "type": "Script"
             },
             {
-                "handle": 9,
-                "path": "/home/abror/Project/GGE/assets/scripts/FlappyScripts/PipeScript.lua",
+                "handle": 26,
+                "path": "/home/abror/Projects/Genesis-Game-Engine/assets/scripts/FlappyScripts/PipeScript.lua",
                 "type": "Script"
             }
         ],
@@ -138,7 +138,7 @@
                         0.0
                     ],
                     "size": [
-                        510.0,
+                        500.0,
                         800.0
                     ]
                 },
@@ -154,7 +154,7 @@
                         0.0
                     ],
                     "size": [
-                        510.0,
+                        500.0,
                         800.0
                     ]
                 },
@@ -164,7 +164,7 @@
             },
             {
                 "data": {
-                    "scriptHandle": 5
+                    "scriptHandle": 21
                 },
                 "id": 4,
                 "owner": 2,
@@ -172,7 +172,7 @@
             },
             {
                 "data": {
-                    "scriptHandle": 6
+                    "scriptHandle": 22
                 },
                 "id": 5,
                 "owner": 3,
@@ -269,7 +269,7 @@
             },
             {
                 "data": {
-                    "scriptHandle": 9
+                    "scriptHandle": 26
                 },
                 "id": 12,
                 "owner": 0,
@@ -417,7 +417,7 @@
             },
             {
                 "data": {
-                    "scriptHandle": 14
+                    "scriptHandle": 27
                 },
                 "id": 21,
                 "owner": 5,
@@ -425,7 +425,7 @@
             },
             {
                 "data": {
-                    "scriptHandle": 15
+                    "scriptHandle": 28
                 },
                 "id": 22,
                 "owner": 6,
@@ -433,7 +433,7 @@
             },
             {
                 "data": {
-                    "scriptHandle": 16
+                    "scriptHandle": 25
                 },
                 "id": 23,
                 "owner": 4,
@@ -476,7 +476,7 @@
             },
             {
                 "data": {
-                    "scriptHandle": 18
+                    "scriptHandle": 23
                 },
                 "id": 26,
                 "owner": 7,
@@ -519,7 +519,7 @@
             },
             {
                 "data": {
-                    "scriptHandle": 20
+                    "scriptHandle": 24
                 },
                 "id": 29,
                 "owner": 8,
@@ -690,8 +690,8 @@
                 "Camera": 1,
                 "EntityIDs": [
                     1,
-                    2,
                     3,
+                    2,
                     4,
                     0,
                     5,

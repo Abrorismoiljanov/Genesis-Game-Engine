@@ -3,40 +3,81 @@ set_version("0.1.0")
 
 add_rules("mode.debug", "mode.release")
 
-add_requires("imgui", "sdl2", "glew")
+-- xmake will auto-fetch these packages
+add_requires("imgui v1.92.7-docking", {configs = {sdl2_no_renderer = true, opengl3 = true}})
+add_requires("imguizmo", "sdl2", "glm", "nlohmann_json")
+set_policy("package.sync_requires_to_deps", true)
+add_requireconfs("imguizmo.imgui", {override = true, version = "v1.92.7-docking", configs = {sdl2_no_renderer = true, opengl3 = true}})
 
 target("Editor")
     set_kind("binary")
+    set_languages("cxx17")
+    set_rundir(".")
+
+    add_packages("imgui", "imguizmo", "sdl2", "glm", "nlohmann_json")
+
+    add_defines("SOL_NO_LUA_HPP=1", "IMGUI_IMPL_OPENGL_LOADER_CUSTOM")
+    add_cxflags("-include GL/glew.h")
+
+    if is_plat("linux") then
+        add_links("GLEW")
+        add_syslinks("GL", "pthread", "dl")
+    elseif is_plat("macosx") then
+        add_syslinks("pthread")
+        add_frameworks("OpenGL", "Cocoa", "IOKit", "CoreVideo")
+    elseif is_plat("windows") then
+        add_syslinks("opengl32", "gdi32")
+    end
+
+    add_includedirs(
+        ".",
+        "DataTypes",
+        "DataTypesDef",
+        "sol",
+        "vendor/lua",
+        "Editor/include",
+        "Runtime/include",
+        "ImGuiFileDialog"
+    )
 
     add_files(
         "Editor/src/*.cpp",
         "Runtime/src/*.cpp",
         "DataTypesDef/*.cpp",
-        "vendor/lua/src/*.c"
+        "vendor/lua/lapi.c",
+        "vendor/lua/lauxlib.c",
+        "vendor/lua/lbaselib.c",
+        "vendor/lua/lcode.c",
+        "vendor/lua/lcorolib.c",
+        "vendor/lua/lctype.c",
+        "vendor/lua/ldblib.c",
+        "vendor/lua/ldebug.c",
+        "vendor/lua/ldo.c",
+        "vendor/lua/ldump.c",
+        "vendor/lua/lfunc.c",
+        "vendor/lua/lgc.c",
+        "vendor/lua/linit.c",
+        "vendor/lua/liolib.c",
+        "vendor/lua/llex.c",
+        "vendor/lua/lmathlib.c",
+        "vendor/lua/lmem.c",
+        "vendor/lua/loadlib.c",
+        "vendor/lua/lobject.c",
+        "vendor/lua/lopcodes.c",
+        "vendor/lua/loslib.c",
+        "vendor/lua/lparser.c",
+        "vendor/lua/lstate.c",
+        "vendor/lua/lstring.c",
+        "vendor/lua/lstrlib.c",
+        "vendor/lua/ltable.c",
+        "vendor/lua/ltablib.c",
+        "vendor/lua/ltm.c",
+        "vendor/lua/lundump.c",
+        "vendor/lua/lutf8lib.c",
+        "vendor/lua/lvm.c",
+        "vendor/lua/lzio.c",
+        "ImGuiFileDialog/ImGuiFileDialog.cpp"
     )
-
-
-add_packages("imgui", "sdl2", "glew")
-
-add_links("SDL2", "GLEW", "GL")
- 
-add_includedirs(
-        ".",
-        "DataTypes",
-        "DataTypesDef",
-        "sol",
-        "vendor/lua/src",
-        "./imgui",
-        "./imgui/backends"
-    )
-add_files("./imgui/imgui.cpp",
-              "./imgui/ImGuizmo.cpp",
-              "./imgui/imgui_draw.cpp",
-              "./imgui/imgui_widgets.cpp",
-              "./imgui/imgui_tables.cpp",
-              "./imgui/backends/imgui_impl_sdl2.cpp",
-              "./imgui/backends/imgui_impl_opengl3.cpp",
-              "./ImGuiFileDialog/ImGuiFileDialog.cpp")
 
 
 --

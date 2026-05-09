@@ -1,7 +1,7 @@
 #include "CompRegister.h"
 #include "DataTypes/Components/SpriteComponent.h"
 #include "DataTypes/Components/ScriptComponent.h"
-#include "Components/CollisionComponent.h"
+#include "DataTypes/Components/CollisionComponent.h"
 void RegisterAllComponents() {
     auto& reg = ComponentRegistry::Get();
         

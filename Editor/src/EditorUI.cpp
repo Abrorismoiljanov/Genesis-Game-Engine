@@ -1,6 +1,6 @@
 #include "Editor/include/EditorUI.h"
-#include "../imgui/backends/imgui_impl_opengl3.h"
-#include "../imgui/backends/imgui_impl_sdl2.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl2.h"
 #include "SDL2/SDL.h"
 #include "Editor/include/ComponentRegisterList.h"
 #include "ImGuiFileDialog/ImGuiFileDialog.h"
@@ -30,7 +30,7 @@ void EditorUI::Init(SDL_Window* window,
     float fontSize = 16.0f;
 
     io.Fonts->AddFontFromFileTTF(
-        "/home/abror/Project/GGE/assets/fonts/JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Medium.ttf",
+        "assets/fonts/JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Medium.ttf",
         fontSize
     );
 
@@ -45,7 +45,7 @@ void EditorUI::Init(SDL_Window* window,
     };
 
     io.Fonts->AddFontFromFileTTF(
-        "/home/abror/Project/GGE/assets/fonts/fontawesome-free-7.2.0-desktop/otfs/Font Awesome 7 Free-Solid-900.otf",
+        "assets/fonts/fontawesome-free-7.2.0-desktop/otfs/Font Awesome 7 Free-Solid-900.otf",
         fontSize,
         &config,
         icon_ranges
@@ -122,7 +122,7 @@ if (ImGuiFileDialog::Instance()->Display("LoadProjectDlg"))
 void EditorUI::RenderMenuBar(SDL_Window* window) {
 
     IGFD::FileDialogConfig cfg;
-    cfg.path = "/home/abror/Project/GGE/assets/";
+    cfg.path = "assets/";
     if (ImGui::BeginMainMenuBar()) {
 
         if (ImGui::BeginMenu("File")) {
