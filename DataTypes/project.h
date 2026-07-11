@@ -18,6 +18,7 @@
 #include "Assets/MaterialAsset.h"
 #include "unordered_set"
 #include "fstream"
+#include "DataTypes/outside/FilePaths.h"
 
 using json = nlohmann::json;
 struct ResolutionP{
@@ -120,7 +121,7 @@ struct project{
                     json entry;
                     entry["handle"] = h;
                     entry["type"] = "Material";
-                    entry["texture_path"] = tex->Path;
+                    entry["texture_path"] = FilePaths::ToRelative(tex->Path);
                     pj["asset_manifest"].push_back(entry);
                 }
             } 
@@ -130,7 +131,7 @@ struct project{
                 json entry;
                 entry["handle"] = h;
                 entry["type"] = "Script";
-                entry["path"] = script->Path;
+                entry["path"] = FilePaths::ToRelative(script->Path);
                 pj["asset_manifest"].push_back(entry);
             }
         }
@@ -245,9 +246,9 @@ struct project{
                 std::string texture_path = entry.value("texture_path", "");
 
                 if (type == "Material" && !texture_path.empty() || saved_handle != INVALID_ASSET) {
- 
+                    std::string resolved = FilePaths::ToAbsolute(texture_path);
                     auto new_tex = std::make_shared<TextureAsset>();
-                    new_tex->LoadFromFile(texture_path);
+                    new_tex->LoadFromFile(resolved);
 
                     auto new_mat = std::make_shared<MaterialAsset>();
                     new_mat->SetTexture(new_tex);
@@ -258,7 +259,7 @@ struct project{
                 std::string path = entry.value("path", "");
                 if (type == "Script" && saved_handle != INVALID_ASSET && !path.empty()) {
                     auto script = std::make_shared<ScriptAsset>();
-                    script->Path = path;
+                    script->Path = FilePaths::ToAbsolute(path);
                     Assets.RegisterAssetWithHandle(script, saved_handle);
                 }
             }

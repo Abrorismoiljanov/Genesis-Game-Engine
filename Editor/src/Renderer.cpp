@@ -1,6 +1,7 @@
 #include "Editor/include/Renderer.h"
 #include "DataTypes/Components/SpriteComponent.h"
 #include "DataTypes/outside/ShaderUtils.h"
+#include "DataTypes/outside/FilePaths.h"
 #include "Editor/include/FrameBuffer.h"
 #include "GL/glew.h"
 
@@ -9,8 +10,10 @@ void Renderer::Init(int w, int h) {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  DefaultShader = CompileShader("Shader/VSH.glsl", "Shader/FSH.glsl");
-  GridShader = CompileShader("Shader/GridVert.glsl", "Shader/GridFrag.glsl");
+  DefaultShader = CompileShader(FilePaths::Resolve("Shader/VSH.glsl").c_str(),
+                                FilePaths::Resolve("Shader/FSH.glsl").c_str());
+  GridShader = CompileShader(FilePaths::Resolve("Shader/GridVert.glsl").c_str(),
+                              FilePaths::Resolve("Shader/GridFrag.glsl").c_str());
 
   m_Framebuffer.Create(w, h);
 

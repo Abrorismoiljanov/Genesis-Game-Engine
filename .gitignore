@@ -1,5 +1,4 @@
 build/
-.xmake/
 .cache/
 .git/
 .gitignore
@@ -10,6 +9,7 @@ build/
 *.tmp
 *.temp
 
-
-# ImGui / other third-party headers
-./vendor/
+# cart (generated)
+CMakeLists.txt
+.cart/
+compile_commands.json

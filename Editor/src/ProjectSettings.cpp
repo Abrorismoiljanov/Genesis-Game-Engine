@@ -56,7 +56,7 @@ void ProjectSettingsPanel::Render(){
         ImGui::Text("Window Size");
         ImGui::SameLine();
         int size[2] = { Proj.Param.WindowWidth, Proj.Param.WindowHeight };
-        if (ImGui::InputInt2("", size)) {
+        if (ImGui::InputInt2("##winSize", size)) {
 
             size[0] = std::max(size[0], 100);
             size[1] = std::max(size[1], 100);
@@ -67,7 +67,7 @@ void ProjectSettingsPanel::Render(){
         ImGui::Separator();
         ImGui::Text("Resolution");
         ImGui::SameLine();
-if (ImGui::Combo("", &currentPresetRes,
+if (ImGui::Combo("##resPreset", &currentPresetRes,
     [](void* data, int idx) -> const char* {
         auto* p = (ResolutionPreset*)data;
         return p[idx].label;

@@ -1,0 +1,53 @@
+[project]
+name = "genesis"
+version = "0.1.0"
+edition = "c++17"
+type = "executable"
+
+[build]
+standard = "c++17"
+
+[dependencies]
+sdl2 = "system"
+glm = "system"
+nlohmann_json = "system"
+opengl = "system"
+glew = "system"
+
+[fetch]
+imgui = { url = "https://github.com/ocornut/imgui", tag = "v1.92.7-docking" }
+imguizmo = { url = "https://github.com/CedricGuillemet/ImGuizmo", tag = "master" }
+
+[source]
+extra_dirs = [
+    "Editor/src",
+    "Runtime/src",
+    "DataTypesDef",
+    "vendor/lua",
+]
+extra_files = [
+    "vendor/ImGuiFileDialog/ImGuiFileDialog.cpp",
+]
+
+[include]
+dirs = [
+    ".",
+    "DataTypes",
+    "DataTypesDef",
+    "vendor",
+    "vendor/lua",
+    "Editor/include",
+    "Runtime/include",
+    ".cart/vendor/imguizmo/src",
+    ".cart/vendor/imgui/backends",
+]
+
+[defines]
+SOL_NO_LUA_HPP = "1"
+IMGUI_IMPL_OPENGL_LOADER_GLEW = ""
+IMGUI_DEFINE_MATH_OPERATORS = ""
+
+[links]
+linux = ["GLEW", "GL", "pthread", "dl"]
+windows = ["opengl32", "glew32", "SDL2main", "SDL2"]
+macos = ["GLEW", "GL", "pthread"]

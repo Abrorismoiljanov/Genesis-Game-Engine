@@ -40,7 +40,7 @@ void SceneParamPanel::Render(){
 
         ImGui::Text("Background Color");
         ImGui::SameLine();
-        ImGui::ColorEdit4("", glm::value_ptr(defaultScene->Param.BackgroundColor), ImGuiColorEditFlags_DisplayRGB |
+        ImGui::ColorEdit4("##bgColor", glm::value_ptr(defaultScene->Param.BackgroundColor), ImGuiColorEditFlags_DisplayRGB |
                           ImGuiColorEditFlags_AlphaBar |
                           ImGuiColorEditFlags_NoInputs);
     }
@@ -67,7 +67,7 @@ void SceneParamPanel::Render(){
             previewName = camEntity->name.c_str();
         }
     }
-    if (ImGui::BeginCombo("##", previewName)) {
+    if (ImGui::BeginCombo("##cameraCombo", previewName)) {
         for (auto& eID: defaultScene->EntityIDs) {
             entity* Entity = Proj.GetEntityByID(eID);
             bool hasCamera = false;

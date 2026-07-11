@@ -2,6 +2,7 @@
 #include "Runtime/include/RuntimeRenderer.h"
 #include "DataTypes/Components/SpriteComponent.h"
 #include "DataTypes/outside/ShaderUtils.h"
+#include "DataTypes/outside/FilePaths.h"
 
 void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window, Logger* Log){
 
@@ -11,8 +12,10 @@ void RuntimeRenderer::Init(int w, int h, project& Proj, SDL_Window* window, Logg
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    DefaultShader = CompileShader("Shader/VSH.glsl","Shader/FSH.glsl");
-    DebugShader = CompileShader("Shader/GridVert.glsl","Shader/GridFrag.glsl");
+    DefaultShader = CompileShader(FilePaths::Resolve("Shader/VSH.glsl").c_str(),
+                                   FilePaths::Resolve("Shader/FSH.glsl").c_str());
+    DebugShader = CompileShader(FilePaths::Resolve("Shader/GridVert.glsl").c_str(),
+                                 FilePaths::Resolve("Shader/GridFrag.glsl").c_str());
     
     float vertices[] = {
         -0.5f, -0.5f,  0.0f, 0.0f,

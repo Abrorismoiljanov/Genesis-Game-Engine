@@ -7,6 +7,7 @@
 #include "Runtime/include/Runtime.h"
 #include "IconsFontAwesome6.h"
 #include "CommandSystem.h"
+#include "DataTypes/outside/FilePaths.h"
 
 class Panel{
 public:
@@ -82,7 +83,7 @@ public:
     float fontSize = 20.0f;
 
     ImFont* myFont = io.Fonts->AddFontFromFileTTF(
-        "assets/fonts/JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Medium.ttf",
+        FilePaths::Resolve("assets/fonts/JetBrainsMono-2.304/fonts/ttf/JetBrainsMono-Medium.ttf").c_str(),
         fontSize
     );
 

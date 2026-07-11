@@ -4,6 +4,7 @@
 #include "DataTypes/Assets/ScriptAsset.h"
 #include "AssetManager.h"
 #include "sol/sol.hpp"
+#include "DataTypes/outside/FilePaths.h"
 
 class ScriptComponent : public Component {
 public:
@@ -50,7 +51,7 @@ public:
 
         if (ImGui::Button("Select Script")){
             IGFD::FileDialogConfig config;
-            config.path = "assets/scripts/";
+            config.path = FilePaths::Scripts();
 
             ImGuiFileDialog::Instance()->OpenDialog(
                 "ChooseLuaScript",
@@ -66,7 +67,7 @@ public:
 
             IGFD::FileDialogConfig config;
   
-            config.path = "assets/scripts/";
+            config.path = FilePaths::Scripts();
 
  
             ImGuiFileDialog::Instance()->OpenDialog(
