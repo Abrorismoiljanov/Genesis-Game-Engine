@@ -1,16 +1,7 @@
-<pre align="center">
-┌────────────────────┐
-│ ⡎⠑ ⣏⡉ ⡷⣸ ⣏⡉ ⢎⡑ ⡇ ⢎⡑│
-│ ⠣⠝ ⠧⠤ ⠇⠹ ⠧⠤ ⠢⠜ ⠇ ⠢⠜│
-└────────────────────┘
-</pre>
+# Genesis Game Engine
 
-<h1 align="center">Game Engine</h1>
-
-<p align="center">
-  A custom 2D game engine with an interactive editor, built from scratch in C++17.<br/>
-  ECS architecture, Lua scripting, scene management — the works.
-</p>
+A custom 2D game engine with an interactive editor, built from scratch in C++17.
+ECS architecture, Lua scripting, scene management — the works.
 
 <p align="center">
   <a href="#features">Features</a> &bull;
