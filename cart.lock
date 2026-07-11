@@ -1,0 +1,24 @@
+version = "1"
+
+[dependencies.glew]
+version = "system"
+
+[dependencies.sdl2]
+version = "system"
+
+[dependencies.nlohmann_json]
+version = "system"
+
+[dependencies.imguizmo]
+version = "master"
+url = "https://github.com/CedricGuillemet/ImGuizmo"
+
+[dependencies.imgui]
+version = "v1.92.7-docking"
+url = "https://github.com/ocornut/imgui"
+
+[dependencies.glm]
+version = "system"
+
+[dependencies.opengl]
+version = "system"

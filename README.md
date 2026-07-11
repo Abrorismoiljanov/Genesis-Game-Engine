@@ -1,8 +1,13 @@
-<p align="center">
-  <img src="./docs/logo.svg" width="100" alt="Genesis Logo"/>
-</p>
+<pre align="center">
+ ███████╗███╗   ██╗████████╗██╗██████╗  ██████╗ ███████╗
+ ██╔════╝████╗  ██║╚══██╔══╝██║██╔══██╗██╔════╝ ██╔════╝
+ █████╗  ██╔██╗ ██║   ██║   ██║██████╔╝██║  ███╗█████╗  
+ ██╔══╝  ██║╚██╗██║   ██║   ██║██╔══██╗██║   ██║██╔══╝  
+ ███████╗██║ ╚████║   ██║   ██║██████╔╝╚██████╔╝███████╗
+ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═════╝  ╚═════╝ ╚══════╝
+</pre>
 
-<h1 align="center">Genesis Game Engine</h1>
+<h1 align="center">Game Engine</h1>
 
 <p align="center">
   A custom 2D game engine with an interactive editor, built from scratch in C++17.<br/>
