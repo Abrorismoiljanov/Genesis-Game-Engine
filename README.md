@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/Screenshots/1.png" width="800" alt="Genesis Game Engine Editor"/>
+  <img src="./docs/logo.svg" width="100" alt="Genesis Logo"/>
 </p>
 
 <h1 align="center">Genesis Game Engine</h1>
